@@ -1,4 +1,5 @@
-# Fenêtre qui programme le joueur
+"""Fenêtre qui programme le joueur"""
+
 import pygame
 import Items
 import Levels
@@ -9,9 +10,7 @@ from Settings import *
 pygame.init()
 Text = pygame.font.SysFont("Arial", 20)
 
-# On coup le spritesheet qui contient les animations du joueur
-
-
+# Spritesheet des dinosaurs.
 Dinos = [
     "Sprites/DinoSprites - doux.png",
     "Sprites/DinoSprites - mort.png",
@@ -24,59 +23,64 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group, id, name):
         super().__init__(group)
         self.id = id
+        self.name = name
+        # self.nametag = Nametag(self)
+
+        self.star_lost = False
         self.star_count = 0
+
         self.hp = 3
         self.healthbar = (Heart(0), Heart(1), Heart(2))
         self.heartframe = 0
         self.heartspin = [pygame.time.get_ticks(), pygame.time.get_ticks()]
-        self.name = name
+
         self.death_timer = pygame.time.get_ticks()
         self.appear = False
-        self.spritesheet = pygame.image.load(Dinos[self.id]).convert_alpha()
-        self.frame = 0
-        self.action = 0
+
         self.direction = pygame.math.Vector2(0, 0)
         self.speed = 4
         self.facing = "right"
-        self.last_update = pygame.time.get_ticks()
-        self.invincibilty_mesure = pygame.time.get_ticks()
+        self.prev_time = time.time()
+
         self.flyback_mesure = pygame.time.get_ticks()
         self.taking_knockback = False
         self.knockback_direction = pygame.math.Vector2()
+
+        self.took_damage = False
         self.invincibilty = False
         self.invincibilty_power = False
         self.invincibilty_power_mesure = pygame.time.get_ticks()
+        self.invincibilty_mesure = pygame.time.get_ticks()
+
         self.frozen = False
         self.frozen_mesure = pygame.time.get_ticks()
+
         self.items_list = [
             Items.Weapon("sword", (Levels.map.weapon_sprites), self.id),
             Items.Weapon("sword", (Levels.map.weapon_sprites), self.id),
             Items.Weapon("sword", (Levels.map.weapon_sprites), self.id),
         ]
         self.using_item = False
+        self.item_timer = pygame.time.get_ticks()
         self.inusage = None
         self.weaponask = False
         self.bowask = False
-        self.took_damage = False
-        self.star_lost = False
-        self.prev_time = time.time()
-        self.item_timer = pygame.time.get_ticks()
+
+        self.spritesheet = pygame.image.load(Dinos[self.id]).convert_alpha()
+        self.frame = 0
+        self.action = 0
+        self.last_update = pygame.time.get_ticks()
+
         animation_length = [4, 6, 3, 4]
         self.animation_list = create_animation(
             self.spritesheet, animation_length, 24, 24, 0, 0, 45
         )
+
         self.kill_list = []
         self.image = self.animation_list[self.action][self.frame]
         self.rect = self.image.get_rect(center=pos)
-        self.nametag = Nametag(self)
 
-    """ Initialise les attributs du joueurs. Dans ceci on retrouve dans l'ordre : Le nombre d'étoiles
-    son spritesheet, le parti de l'animation auquel il est en cours, l'animation qu'il effectue, son direction
-    modélisé par une vecteur, sa vitesse, son sens d'orientation, le temps du dernier mise a jour de son animation,
-    le temps depuis qu'il est devenu invincible, la duration d'une animation, si il est invinvible, une liste qui contient tous ses animations
-    la longeur de chaque animation, son image, et son rectangle.
-    """
-
+    # Réuni tous les methodes du joueurs ainsi que gérer ses animations
     def update(self):
         animation_cooldown = 100
         heart_cooldown = 100
@@ -111,17 +115,17 @@ class Player(pygame.sprite.Sprite):
             self.mouvement()
             self.flicker()
             self.image = self.animation_list[self.action][self.frame]
-            self.nametag.rect.topleft = self.rect.bottomright
+            # self.nametag.rect.topleft = self.rect.bottomright
         self.dead()
 
-    # Met a jour tous les attributs du joueur
-
+    # On applique une animation de dégat quand le joueur est invincible.
     def flicker(self):
         if self.invincibilty:
             self.action = 3
 
-    # Change l'animation a celui indiquant qu'il prend des dégâts si il est invincible
-
+    # Gère le mouvement et l'état de ses animations en fonction du mouvement.
+    # Le joueur peut bouger dans les 8 huits directions.
+    # On applique un animation de marche quand il bouge.
     def mouvement(self):
         keys = pygame.key.get_pressed()
         if not self.frozen and not self.taking_knockback:
@@ -156,9 +160,8 @@ class Player(pygame.sprite.Sprite):
             self.rect.y += self.direction.y * self.speed * dt * 60
             self.prev_time = now
             self.check_collision("vertical")
-        """Le mouvement. Une normalisation des vecteurs est effectuer pour éviter un bug avec les diagonales
-        Sa direction de mouvement est multiplié par sa vitesse, puis on vérifie si il rentre en collision avec un mur."""
 
+    # Gère les collisions avec les murs, le joueur ne peut pas franchir un mur.
     def check_collision(self, direction):
         if direction == "horizontal":
             for sprite in Levels.map.obsticle_sprites:
@@ -175,8 +178,10 @@ class Player(pygame.sprite.Sprite):
                         self.rect.top = sprite.rect.bottom
                     if self.direction.y > 0:
                         self.rect.bottom = sprite.rect.top
-        """Collision. Si il est en collision avec un mur, alors ses coordonnés sont égals aux côtés qu'il parcourt"""
 
+    # Gère le ramassement des items et des étoiles.
+    # On le tue l'item et on le met dans kill list pour qu'il puisse être tuer pour les autres joueurs.
+    # On applique aussi son effet
     def pickup(self):
         if not self.invincibilty:
             for sprite in Levels.map.pickup_sprites:
@@ -188,8 +193,9 @@ class Player(pygame.sprite.Sprite):
                         self.kill_list.append(sprite.id)
                     sprite.kill()
 
-    # Ramassement des items. Si il rentre en contact avec un item, on applique son effet et on le supprime.
-
+    # met l'item dans item_list
+    # Le nombre d'item ne peut pas dépasser 3
+    # Si le list est remplie, les items déjà dans le list ne sont pas remplacés.
     def give(self, effect):
         for item in range(len(self.items_list)):
             if not self.items_list[item]:
@@ -212,6 +218,9 @@ class Player(pygame.sprite.Sprite):
                     self.items_list[item] = Items.Spell(effect)
                     break
 
+    # Applique les changement correspondants lorsque le joueur prend des dégats:
+    # On perd un hp, on devient invincible et on perd un étoile si on à un.
+    # On prend aussi de la knockback, la direction de ceci étant en fonction de la source des dégats.
     def Ouch(self, dealer=None):
         if not self.invincibilty and not self.invincibilty_power:
             self.invincibilty = True
@@ -250,6 +259,8 @@ class Player(pygame.sprite.Sprite):
                     self.frame = 0
                 self.action = 3
 
+    # Vérifie si on à rentré en collision avec un source de dégats.
+    # Si c'est un gèle, on devient gelé.
     def Damage_Check(self):
         for sprite in Levels.map.enemy_sprites:
             if sprite.rect.colliderect(self.rect):
@@ -257,12 +268,10 @@ class Player(pygame.sprite.Sprite):
         for sprite in Levels.map.weapon_sprites:
             if sprite.rect.colliderect(self.rect):
                 if sprite.id != self.id:
-                    # self.taking_knockback,self.knockback_direction=True,sprite.direction
                     self.Ouch(sprite)
         for sprite in Levels.map.arrow_sprites:
             if sprite.rect.colliderect(self.rect):
                 if sprite.id != self.id:
-                    # self.taking_knockback,self.knockback_direction=True,sprite.direction
                     self.Ouch(sprite)
         for sprite in Levels.map.flash_sprites:
             if sprite.rect.colliderect(self.rect):
@@ -283,6 +292,8 @@ class Player(pygame.sprite.Sprite):
                 if sprite.id != self.id:
                     self.frozen = True
 
+    # On prend de la knockback quand il est appelé pendant un certain temps.
+    # On ne peut pas bouger quand on prend de la knockback.
     def knockback(self):
         current_time = pygame.time.get_ticks()
         duration = 50
@@ -302,9 +313,7 @@ class Player(pygame.sprite.Sprite):
             self.flyback_mesure = pygame.time.get_ticks()
             self.speed = 4
 
-    """Prise de dégats. Si on rente en contact avec un enemies, 
-    on devient invincible et on perd une étoile qu'on a qui va rebondir. On change a l'animation de dégât"""
-
+    # Compte le temps pendant lequel on est invincible
     def invincible_tick(self):
         if self.invincibilty:
             invincibilty_frames = 1000
@@ -317,6 +326,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.invincibilty_mesure = pygame.time.get_ticks()
 
+    # Compte le temps pendant lequel on est gelé
     def freeze_tick(self):
         if self.frozen:
             frozen_frames = 10000
@@ -327,8 +337,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.frozen_mesure = pygame.time.get_ticks()
 
-        # Compteur d'invincibilité.
-
+    # Permet d'utiliser les items, quand le bouton correspondant est appuié.
     def use_item(self):
         keys = pygame.key.get_pressed()
         keyboard = [keys[pygame.K_j], keys[pygame.K_k], keys[pygame.K_l]]
@@ -352,6 +361,9 @@ class Player(pygame.sprite.Sprite):
                             self.inusage = self.items_list[i].type
                             self.items_list[i] = ""
 
+    # Montre l'item quand il est utilisé.
+    # Si il s'agit d'un bow, on peut envoyer des arrows avec la touche espace.
+    # Les items permettent de faire des dégats aux autres joueurs.
     def show_item(self):
         cooldown = 3000
         if self.using_item:
@@ -371,6 +383,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.item_timer = pygame.time.get_ticks()
 
+    # Donne de l'invincibilité quand l'item invincible est utilisé
     def invincibilty_powerup(self):
         duration = 6000
         if self.invincibilty_power:
@@ -381,11 +394,15 @@ class Player(pygame.sprite.Sprite):
         else:
             self.invincibilty_power_mesure = pygame.time.get_ticks()
 
+    # Change l'animation du joueur quand il se retourne.
     def turn(self):
         for animation in self.animation_list:
             for frame in range(len(animation)):
                 animation[frame] = pygame.transform.flip(animation[frame], True, False)
 
+    # Gère la mort. Si l'hp du joueur est<=0 il meurt pendant un temps.
+    # Il ne peut pas accèdé aux autres méthodes, et il n'apparait plus sur l'écran.
+    # Après que le temps est écoulé, il réaparait à un position random.
     def dead(self):
         death_time = 10000
         death_time_post_tp = 4000
@@ -420,22 +437,20 @@ class otherPlayer(pygame.sprite.Sprite):
         super().__init__(group)
         self.id = id
         self.name = name
+
         self.spritesheet = pygame.image.load(Dinos[self.id]).convert_alpha()
         self.facing = "right"
         self.action = 0
         self.frame = 0
         self.weapon = None
         self.direction = pygame.math.Vector2()
+
         self.animation_list = []
         animation_length = [4, 6, 3, 4]
-        steps = 0
-        for ani in animation_length:
-            temp = []
-            for i in range(ani):
-                cut = cut_image(self.spritesheet, 24, 24, steps, 0, 45)
-                temp.append(cut)
-                steps += 1
-            self.animation_list.append(temp)
+        self.animation_list = create_animation(
+            self.spritesheet, animation_length, 24, 24, 0, 0, 45
+        )
+
         self.image = self.animation_list[self.action][self.frame]
         self.rect = self.image.get_rect(center=pos)
 
@@ -444,9 +459,12 @@ class otherPlayer(pygame.sprite.Sprite):
             for frame in range(len(animation)):
                 animation[frame] = pygame.transform.flip(animation[frame], True, False)
 
+    # Fonction qui met à jour l'état des autres joueurs en fonction de l'information reçu par le serveur.
     def update(self, player_information):
+        # Le position est mise à jour
         self.rect.center = player_information[self.id]["position"]
         self.direction = player_information[self.id]["direction"]
+        # L'animation effectué est donné.
         self.action, self.frame = (
             player_information[self.id]["action_frame"][0],
             player_information[self.id]["action_frame"][1],
@@ -454,6 +472,7 @@ class otherPlayer(pygame.sprite.Sprite):
         if self.facing != player_information[self.id]["facing"]:
             self.turn()
             self.facing = player_information[self.id]["facing"]
+        # Si il demande d'utilisé un arme on lui donne
         if (
             player_information[self.id]["weaponask"] == "sword"
             or player_information[self.id]["weaponask"] == "spear"
@@ -488,6 +507,7 @@ class otherPlayer(pygame.sprite.Sprite):
                 500,
                 self.id,
             )
+        # Si il utilse un arme on lui donne l'arme.
         if player_information[self.id]["inusage"] and self.weapon:
             if self.weapon not in Levels.map.visible_sprites:
                 self.weapon.add(Levels.map.visible_sprites)
@@ -502,6 +522,7 @@ class otherPlayer(pygame.sprite.Sprite):
             if self.weapon:
                 self.weapon.kill()
                 self.weapon = None
+        # Pris des dégats
         if (
             player_information[self.id]["took_damage"]
             and player_information[self.id]["invincibilty"]
@@ -518,6 +539,7 @@ class otherPlayer(pygame.sprite.Sprite):
                     "player",
                     0,
                 )
+        # Si il récupère un étoile on le tue
         for sprite in Levels.map.star_sprites:
             if (
                 sprite.origin == "player"
@@ -525,7 +547,9 @@ class otherPlayer(pygame.sprite.Sprite):
                 and not player_information[self.id]["invincibilty"]
             ):
                 sprite.kill()
+
         self.image = self.animation_list[self.action][self.frame]
+        # Il disparait quand il meurt
         if player_information[self.id]["hp"] <= 0:
             self.image.set_alpha(0)
         else:

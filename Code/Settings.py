@@ -1,5 +1,7 @@
 import pygame
 
+Placeholder_map = "Map1"
+
 
 def cut_image(image, width, height, index_x, index_y, size):
     coupure = pygame.Surface((width, height))

@@ -3,8 +3,6 @@ import pygame
 import random
 import time
 
-Placeholer_map = "Map1"
-
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, pos, group, id):
