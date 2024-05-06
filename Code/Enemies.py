@@ -2,6 +2,7 @@
 import pygame
 import random
 import time
+from Settings import *
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -56,14 +57,25 @@ class Enemy(pygame.sprite.Sprite):
         for sprite in map.flash_sprites:
             if sprite.rect.colliderect(self.rect):
                 player.kill_list.append(self.id)
+                Particle(
+                    self.rect.center,
+                    (map.visible_sprites, map.particle_sprites),
+                    "lightning",
+                )
                 self.kill()
         for sprite in map.freeze_sprites:
             if sprite.rect.colliderect(self.rect):
+                Particle(
+                    self.rect.center,
+                    (map.visible_sprites, map.particle_sprites),
+                    "freeze",
+                )
                 self.frozen = True
 
     def freezetime(self):
         duration = 10000
         if self.frozen:
+            self.prev_time = time.time()
             current_time = pygame.time.get_ticks()
             if current_time - self.frozen_timer >= duration:
                 self.frozen = False

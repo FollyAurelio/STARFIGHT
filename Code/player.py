@@ -28,11 +28,16 @@ class Player(pygame.sprite.Sprite):
 
         self.star_lost = False
         self.star_count = 0
+        self.star_list = []
 
         self.hp = 3
-        self.healthbar = (Heart(0), Heart(1), Heart(2))
-        self.heartframe = 0
-        self.heartspin = [pygame.time.get_ticks(), pygame.time.get_ticks()]
+        self.healthbar = [
+            Hud_Item(0, "heart"),
+            Hud_Item(1, "heart"),
+            Hud_Item(2, "heart"),
+        ]
+        self.hudframe = 0
+        self.hudspin = [pygame.time.get_ticks(), pygame.time.get_ticks()]
 
         self.death_timer = pygame.time.get_ticks()
         self.appear = False
@@ -55,11 +60,7 @@ class Player(pygame.sprite.Sprite):
         self.frozen = False
         self.frozen_mesure = pygame.time.get_ticks()
 
-        self.items_list = [
-            Items.Weapon("sword", (Levels.map.weapon_sprites), self.id),
-            Items.Weapon("sword", (Levels.map.weapon_sprites), self.id),
-            Items.Weapon("sword", (Levels.map.weapon_sprites), self.id),
-        ]
+        self.items_list = ["", "", ""]
         self.using_item = False
         self.item_timer = pygame.time.get_ticks()
         self.inusage = None
@@ -73,7 +74,7 @@ class Player(pygame.sprite.Sprite):
 
         animation_length = [4, 6, 3, 4]
         self.animation_list = create_animation(
-            self.spritesheet, animation_length, 24, 24, 0, 0, 45
+            self.spritesheet, animation_length, 24, 24, 0, 0, 45, 45
         )
 
         self.kill_list = []
@@ -93,16 +94,16 @@ class Player(pygame.sprite.Sprite):
             self.action,
             self.frame,
         )
-        if current_time - self.heartspin[1] >= spin_cooldown:
-            self.heartspin[0], self.heartframe = animate(
+        if current_time - self.hudspin[1] >= spin_cooldown:
+            self.hudspin[0], self.hudframe = animate(
                 [["1", "2", "3", "4", "5", "6"]],
                 heart_cooldown,
-                self.heartspin[0],
+                self.hudspin[0],
                 0,
-                self.heartframe,
+                self.hudframe,
             )
-            if self.heartframe == 0:
-                self.heartspin[1] = current_time
+            if self.hudframe == 0:
+                self.hudspin[1] = current_time
         if self.hp > 0:
             self.Damage_Check()
             self.knockback()
@@ -189,6 +190,7 @@ class Player(pygame.sprite.Sprite):
                     sprite.effect_apply(self)
                     if sprite.effect == "star":
                         self.kill_list.append(sprite.id)
+                        self.star_list.append(Hud_Item(self.star_count, "star"))
                     else:
                         self.kill_list.append(sprite.id)
                     sprite.kill()
@@ -199,7 +201,7 @@ class Player(pygame.sprite.Sprite):
     def give(self, effect):
         for item in range(len(self.items_list)):
             if not self.items_list[item]:
-                if effect == "sword" or effect == "spear" or effect == "axe":
+                if effect == "sword":
                     self.items_list[item] = Items.Weapon(
                         effect, (Levels.map.weapon_sprites), self.id
                     )
@@ -226,13 +228,15 @@ class Player(pygame.sprite.Sprite):
             self.invincibilty = True
             self.took_damage = True
             self.hp -= 1
+            self.taking_knockback = True
             if dealer:
                 if dealer in Levels.map.enemy_sprites:
-                    self.taking_knockback = True
                     if self.direction == (0, 0):
                         self.knockback_direction = dealer.direction
                     else:
                         self.knockback_direction = -self.direction
+            else:
+                self.knockback_direction = pygame.math.Vector2()
                 if (
                     dealer in Levels.map.weapon_sprites
                     or dealer in Levels.map.arrow_sprites
@@ -243,6 +247,7 @@ class Player(pygame.sprite.Sprite):
                     )
             if self.star_count > 0:
                 self.star_count -= 1
+                self.star_list.pop()
                 self.star_lost = True
                 Levels.Star(
                     self.rect.center,
@@ -277,6 +282,14 @@ class Player(pygame.sprite.Sprite):
             if sprite.rect.colliderect(self.rect):
                 if sprite.id != self.id:
                     self.Ouch()
+                    if sprite.type == "lightning":
+                        Particle(
+                            self.rect.center,
+                            (Levels.map.visible_sprites, Levels.map.particle_sprites),
+                            "lightning",
+                        )
+            else:
+                self.isshock = False
         for sprite in Levels.map.bomb_sprites:
             if sprite.rect.colliderect(self.rect):
                 if sprite.id != self.id:
@@ -284,6 +297,7 @@ class Player(pygame.sprite.Sprite):
                         sprite,
                         (Levels.map.visible_sprites, Levels.map.flash_sprites),
                         200,
+                        "explosion",
                         sprite.id,
                     )
                     sprite.kill()
@@ -291,6 +305,11 @@ class Player(pygame.sprite.Sprite):
             if sprite.rect.colliderect(self.rect):
                 if sprite.id != self.id:
                     self.frozen = True
+                    Particle(
+                        self.rect.center,
+                        (Levels.map.visible_sprites, Levels.map.particle_sprites),
+                        "freeze",
+                    )
 
     # On prend de la knockback quand il est appelé pendant un certain temps.
     # On ne peut pas bouger quand on prend de la knockback.
@@ -448,7 +467,7 @@ class otherPlayer(pygame.sprite.Sprite):
         self.animation_list = []
         animation_length = [4, 6, 3, 4]
         self.animation_list = create_animation(
-            self.spritesheet, animation_length, 24, 24, 0, 0, 45
+            self.spritesheet, animation_length, 24, 24, 0, 0, 45, 45
         )
 
         self.image = self.animation_list[self.action][self.frame]
@@ -473,11 +492,7 @@ class otherPlayer(pygame.sprite.Sprite):
             self.turn()
             self.facing = player_information[self.id]["facing"]
         # Si il demande d'utilisé un arme on lui donne
-        if (
-            player_information[self.id]["weaponask"] == "sword"
-            or player_information[self.id]["weaponask"] == "spear"
-            or player_information[self.id]["weaponask"] == "axe"
-        ) and not self.weapon:
+        if (player_information[self.id]["weaponask"] == "sword") and not self.weapon:
             self.weapon = Items.Weapon(
                 player_information[self.id]["weaponask"],
                 (Levels.map.weapon_sprites),
@@ -505,6 +520,7 @@ class otherPlayer(pygame.sprite.Sprite):
                 self,
                 (Levels.map.visible_sprites, Levels.map.flash_sprites),
                 500,
+                "lightning",
                 self.id,
             )
         # Si il utilse un arme on lui donne l'arme.
@@ -547,6 +563,24 @@ class otherPlayer(pygame.sprite.Sprite):
                 and not player_information[self.id]["invincibilty"]
             ):
                 sprite.kill()
+        # Pour le particle
+        for sprite in Levels.map.freeze_sprites:
+            if sprite.rect.colliderect(self.rect):
+                if sprite.id != self.id:
+                    Particle(
+                        self.rect.center,
+                        (Levels.map.visible_sprites, Levels.map.particle_sprites),
+                        "freeze",
+                    )
+        for sprite in Levels.map.flash_sprites:
+            if sprite.rect.colliderect(self.rect):
+                if sprite.id != self.id:
+                    if sprite.type == "lightning":
+                        Particle(
+                            self.rect.center,
+                            (Levels.map.visible_sprites, Levels.map.particle_sprites),
+                            "lightning",
+                        )
 
         self.image = self.animation_list[self.action][self.frame]
         # Il disparait quand il meurt
@@ -570,19 +604,34 @@ class Nametag(pygame.sprite.Sprite):
         )
 
 
-class Heart(pygame.sprite.Sprite):
-    def __init__(self, heart_id):
-        self.animation_list = create_animation(
-            Useful_Item_sprites, [6], 16, 16, 25, 14, 30
-        )
+class Hud_Item(pygame.sprite.Sprite):
+    def __init__(self, id, type):
+        self.type = type
+        if self.type == "heart":
+            self.animation_list = create_animation(
+                Useful_Item_sprites, [6], 16, 16, 25, 14, 30, 30
+            )
+        if self.type == "star":
+            self.animation_list = create_animation(
+                Useful_Item_sprites, [6], 16, 16, 12, 12, 30, 30
+            )
         self.image = self.animation_list[0][0]
-        self.id = heart_id
-        self.rect = self.image.get_rect(center=[(0, 30), (30, 30), (60, 30)][heart_id])
+        self.id = id
+        if self.type == "heart":
+            self.rect = self.image.get_rect(center=(id * 30, 30))
+        if self.type == "star":
+            self.rect = self.image.get_rect(
+                center=(((id - 1) % 16) * 30, 60 + 30 * ((id - 1) // 16))
+            )
 
-    def show_hp(self, player, screen):
-        if player.hp >= self.id + 1:
-            screen.blit(self.image, self.rect.center)
-        self.image = self.animation_list[0][player.heartframe]
+    def show(self, player, screen):
+        if self.type == "heart":
+            if player.hp >= self.id + 1:
+                screen.blit(self.image, self.rect.center)
+        if self.type == "star":
+            if player.star_count >= self.id:
+                screen.blit(self.image, self.rect.center)
+        self.image = self.animation_list[0][player.hudframe]
 
 
 # 14,25,6 long

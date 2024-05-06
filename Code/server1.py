@@ -167,8 +167,6 @@ def threaded_client(conn, client_number):
                 break
             else:
                 player_information[client_number] = data
-                if player_information[client_number]["weaponask"]:
-                    print(player_information[client_number]["weaponask"])
 
             conn.send(pickle.dumps(player_information))
         except:
@@ -218,7 +216,7 @@ def server_operations():
                     ):
                         Map_information[category][spawner]["state"] = "alive"
                         Map_information[category][spawner]["Item_type"] = (
-                            random.randint(0, 7)
+                            random.randint(2, 2)
                         )
                         Map_information[category][spawner][
                             "last_check"

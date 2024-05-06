@@ -12,18 +12,16 @@ class Item(pygame.sprite.Sprite):
         self.effect = [
             "invincible",
             "sword",
-            "spear",
-            "axe",
             "bow",
             "bomb",
             "freeze",
             "lightning",
         ][effect]
-        if self.effect in ["invincible", "sword", "spear"]:  # ,"spear","axe","bow"
+        if self.effect in ["invincible", "sword", "spear", "bow"]:
             self.image = [
-                cut_image(Weapons_sprites, 75, 100, 340 / 75, 320 / 100, 50),
-                cut_image(Weapons_sprites, 60, 92, 0, 0, 50),
-                cut_image(Weapons_sprites, 30, 110, 115 / 30, 195 / 110, 80),
+                cut_image(Weapons_sprites, 75, 100, 340 / 75, 320 / 100, 50, 50),
+                cut_image(Weapons_sprites, 60, 92, 0, 0, 50, 50),
+                cut_image(Weapons_sprites, 40, 100, 364 / 40, 200 / 100, 50, 80),
             ][effect]
         else:
             self.image = pygame.Surface((50, 50))
@@ -31,8 +29,6 @@ class Item(pygame.sprite.Sprite):
                 [
                     "purple",
                     "blue",
-                    "green",
-                    "pink",
                     "orange",
                     "black",
                     "lightblue",
@@ -66,8 +62,8 @@ class Star(pygame.sprite.Sprite):
         self.action = 0
         self.last_update = pygame.time.get_ticks()
         self.animation_list = create_animation(
-            Useful_Item_sprites, [7], 16, 16, 4, 12, 30
-        ) + [create_animation(Useful_Item_sprites, [6], 16, 16, 12, 12, 30)[0]]
+            Useful_Item_sprites, [7], 16, 16, 4, 12, 30, 30
+        ) + [create_animation(Useful_Item_sprites, [6], 16, 16, 12, 12, 30, 30)[0]]
         self.image = self.animation_list[self.action][self.frame]
         self.rect = self.image.get_rect(center=pos)
 
@@ -75,6 +71,7 @@ class Star(pygame.sprite.Sprite):
 
     def effect_apply(self, player):
         player.star_count += 1
+
         # Augmente le nombre de stars quand on en ramasse
 
     def update(self):
@@ -101,20 +98,18 @@ class Weapon(pygame.sprite.Sprite):
         self.id = id
         self.type = type
         if self.type == "sword":
-            self.image = cut_image(Weapons_sprites, 60, 92, 0, 0, 50)
-        if self.type == "spear":
-            self.image = pygame.Surface((70, 30))
-            self.image.fill("green")
-        if self.type == "axe":
-            self.image = pygame.Surface((50, 50))
-            self.image.fill("pink")
+            self.image = cut_image(Weapons_sprites, 60, 92, 0, 0, 50, 50)
         if self.type == "bow":
-            self.image = pygame.Surface((50, 50))
-            self.image.fill("orange")
+            self.image = cut_image(
+                Weapons_sprites, 40, 100, 364 / 40, 200 / 100, 50, 80
+            )
         self.rect = self.image.get_rect()
         self.bow_cooldown = pygame.time.get_ticks()
         self.direction = pygame.math.Vector2(1, 0)
-        self.orientation = "top"
+        if self.type == "sword":
+            self.orientation = "top"
+        else:
+            self.orientation = "right"
         self.orignal_image = self.image
 
     def use_weapon(self, player):
@@ -157,24 +152,32 @@ class Weapon(pygame.sprite.Sprite):
             self.direction = pygame.math.Vector2((-1, -1))
 
     def reorientate(self, new_direction):
-        directions = [
-            "top",
-            "topleft",
-            "left",
-            "bottomleft",
-            "bottom",
-            "bottomright",
-            "right",
-            "topright",
-        ]
+        if self.type == "sword":
+            directions = [
+                "top",
+                "topleft",
+                "left",
+                "bottomleft",
+                "bottom",
+                "bottomright",
+                "right",
+                "topright",
+            ]
+        else:
+            directions = [
+                "right",
+                "topright",
+                "top",
+                "topleft",
+                "left",
+                "bottomleft",
+                "bottom",
+                "bottomright",
+            ]
         coef = 45 * directions.index(new_direction)
-        # if coef!=0:
-        #     print(coef)
+        self.orientation = new_direction
         self.image = self.orignal_image
-        w, h = self.image.get_width(), self.image.get_height()
         self.image = pygame.transform.rotate(self.image, coef)
-        # if coef%90!=0:
-        #     self.image=pygame.transform.scale(self.image,(w,h))
 
     def shoot_arrow(self, player, map):
         cooldown = 300
@@ -194,14 +197,25 @@ class Arrow(pygame.sprite.Sprite):
     def __init__(self, bow, group, id):
         super().__init__(group)
         self.id = id
-        self.image = pygame.Surface((25, 25))
-        self.image.fill("grey")
+        self.image = cut_image(Weapons_sprites, 35, 85, 590 / 35, 215 / 85, 40, 50)
         self.rect = self.image.get_rect(center=bow.rect.center)
         self.direction = bow.direction
         if self.direction.magnitude() != 0:
             self.direction.normalize()
         self.speed = 6
         self.time = pygame.time.get_ticks()
+        directions = [
+            "top",
+            "topleft",
+            "left",
+            "bottomleft",
+            "bottom",
+            "bottomright",
+            "right",
+            "topright",
+        ]
+        coef = 45 * directions.index(bow.orientation)
+        self.image = pygame.transform.rotate(self.image, coef)
 
     def update(self, map):
         cooldown = 3000
@@ -231,7 +245,13 @@ class Spell:
         if self.type == "freeze":
             Freeze(player, (map.visible_sprites, map.freeze_sprites), player.id)
         if self.type == "lightning":
-            Flash(player, (map.visible_sprites, map.flash_sprites), 500, player.id)
+            Flash(
+                player,
+                (map.visible_sprites, map.flash_sprites),
+                500,
+                "lightning",
+                player.id,
+            )
 
     def __repr__(self):
         return self.type
@@ -250,26 +270,45 @@ class Bomb(pygame.sprite.Sprite):
     def detonate(self, map):
         for enemy in map.enemy_sprites:
             if enemy.rect.colliderect(self.rect):
-                Flash(self, (map.visible_sprites, map.flash_sprites), 200, self.id)
+                Flash(
+                    self,
+                    (map.visible_sprites, map.flash_sprites),
+                    200,
+                    "explosion",
+                    self.id,
+                )
                 self.kill()
         for player in map.other_player_sprites:
             if player.rect.colliderect(self.rect):
                 if player.id != self.id:
-                    Flash(self, (map.visible_sprites, map.flash_sprites), 200, self.id)
+                    Flash(
+                        self,
+                        (map.visible_sprites, map.flash_sprites),
+                        200,
+                        "explosion",
+                        self.id,
+                    )
                     self.kill()
 
 
 class Flash(pygame.sprite.Sprite):
-    def __init__(self, pos, group, size, id):
+    def __init__(self, pos, group, size, type, id):
         super().__init__(group)
         self.id = id
+        self.type = type
         self.image = pygame.Surface((size, size))
-        self.image.fill("orange")
+        if type == "explosion":
+            self.image.fill("orange")
+        if type == "lightning":
+            self.image.set_alpha(0)
         self.rect = self.image.get_rect(center=pos.rect.center)
         self.timer = pygame.time.get_ticks()
 
     def flash(self):
-        attack_time = 800
+        if self.type == "explosion":
+            attack_time = 800
+        if self.type == "lightning":
+            attack_time = 10
         current_time = pygame.time.get_ticks()
         if current_time - self.timer >= attack_time:
             self.kill()
@@ -280,7 +319,7 @@ class Freeze(pygame.sprite.Sprite):
         super().__init__(group)
         self.id = id
         self.image = pygame.Surface((250, 250))
-        self.image.fill("lightblue")
+        self.image.set_alpha(0)
         self.rect = self.image.get_rect(center=player.rect.center)
 
         self.timer = pygame.time.get_ticks()

@@ -111,6 +111,7 @@ class Map:
         self.other_player_sprites = pygame.sprite.Group()
         self.spawner_sprites = pygame.sprite.Group()
         self.respawn_tile_sprites = pygame.sprite.Group()
+        self.particle_sprites = pygame.sprite.Group()
         self.ids = 4
 
         # Génère le map
@@ -249,10 +250,14 @@ class Map:
             sprite.freeze()
         for sprite in self.other_player_sprites:
             sprite.update(player_information)
+        for sprite in self.particle_sprites:
+            sprite.update()
         self.starbounce()
         self.visible_sprites.custom_draw(player)
         for heart in player.healthbar:
-            heart.show_hp(player, screen)
+            heart.show(player, screen)
+        for star in player.star_list:
+            star.show(player, screen)
 
 
 # Instance de la map qui va être utilisé
