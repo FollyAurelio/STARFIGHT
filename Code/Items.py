@@ -17,12 +17,12 @@ class Item(pygame.sprite.Sprite):
             "freeze",
             "lightning",
         ][effect]
-        if self.effect in ["invincible", "sword", "bow", "freeze", "lightning"]:
+        if self.effect in ["invincible", "sword", "bow", "bomb", "freeze", "lightning"]:
             self.image = [
-                cut_image(Weapons_sprites, 75, 100, 340 / 75, 320 / 100, 50, 50),
-                cut_image(Weapons_sprites, 60, 92, 0, 0, 50, 50),
-                cut_image(Weapons_sprites, 40, 100, 364 / 40, 200 / 100, 50, 80),
-                "",
+                cut_image(Useful_Item_sprites, 16, 16, 48, 36, 50, 50),
+                cut_image(Useful_Item_sprites, 16, 16, 46, 35, 50, 50),
+                cut_image(Useful_Item_sprites, 16, 16, 46, 37, 50, 50),
+                cut_image(Useful_Item_sprites, 16, 16, 53, 35, 50, 50),
                 cut_image(Ice_cream, 64, 64, 0, 0, 50, 50),
                 cut_image(Lightning_icon, 64, 64, 0, 0, 50, 50),
             ][effect]
@@ -101,11 +101,10 @@ class Weapon(pygame.sprite.Sprite):
         self.id = id
         self.type = type
         if self.type == "sword":
-            self.image = cut_image(Weapons_sprites, 60, 92, 0, 0, 50, 50)
+            self.image = cut_image(Useful_Item_sprites, 16, 16, 46, 35, 50, 50)
         if self.type == "bow":
-            self.image = cut_image(
-                Weapons_sprites, 40, 100, 364 / 40, 200 / 100, 50, 80
-            )
+            self.image = cut_image(Useful_Item_sprites, 16, 16, 46, 37, 50, 50)
+
         self.rect = self.image.get_rect()
         self.bow_cooldown = pygame.time.get_ticks()
         self.direction = pygame.math.Vector2(1, 0)
@@ -200,7 +199,7 @@ class Arrow(pygame.sprite.Sprite):
     def __init__(self, bow, group, id):
         super().__init__(group)
         self.id = id
-        self.image = cut_image(Weapons_sprites, 35, 85, 590 / 35, 215 / 85, 40, 50)
+        self.image = cut_image(Useful_Item_sprites, 16, 16, 47, 37, 30, 30)
         self.rect = self.image.get_rect(center=bow.rect.center)
         self.direction = bow.direction
         if self.direction.magnitude() != 0:
@@ -264,8 +263,7 @@ class Bomb(pygame.sprite.Sprite):
     def __init__(self, player, group, id, invisible=None):
         super().__init__(group)
         self.id = id
-        self.image = pygame.Surface((50, 50))
-        self.image.fill("black")
+        self.image = cut_image(Useful_Item_sprites, 16, 16, 53, 35, 50, 50)
         self.rect = self.image.get_rect(center=player.rect.center)
         if invisible:
             self.image.set_alpha(0)

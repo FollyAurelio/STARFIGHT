@@ -57,11 +57,12 @@ class Enemy(pygame.sprite.Sprite):
         for sprite in map.flash_sprites:
             if sprite.rect.colliderect(self.rect):
                 player.kill_list.append(self.id)
-                Particle(
-                    self.rect.center,
-                    (map.visible_sprites, map.particle_sprites),
-                    "lightning",
-                )
+                if sprite.type == "lightning":
+                    Particle(
+                        self.rect.center,
+                        (map.visible_sprites, map.particle_sprites),
+                        "lightning",
+                    )
                 self.kill()
         for sprite in map.freeze_sprites:
             if sprite.rect.colliderect(self.rect):

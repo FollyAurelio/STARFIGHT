@@ -54,6 +54,7 @@ Lightning_icon = pygame.image.load(
 Ice_animation = create_animation(Ice, [8], 32, 32, 0, 0, 50, 50)
 Lightning_animation = create_animation(Light, [12], 75, 64, 0, 0, 100, 100)
 Ice_cream = pygame.image.load("Sprites/download-icon-cream-131982518805283723_64.png")
+Bomb_icon = pygame.image.load("Sprites/bomb_character_o_idle.png")
 
 
 class Particle(pygame.sprite.Sprite):
