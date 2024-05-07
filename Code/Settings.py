@@ -48,8 +48,12 @@ Ice = pygame.image.load(
 Light = pygame.image.load(
     "Sprites/Thunder Effect 02/Thunder Effect 02/Thunder Strike/Thunderstrike wo blur.png"
 ).convert_alpha()
+Lightning_icon = pygame.image.load(
+    "Sprites/download-icon-lightning-131982518827228370_64.png"
+)
 Ice_animation = create_animation(Ice, [8], 32, 32, 0, 0, 50, 50)
 Lightning_animation = create_animation(Light, [12], 75, 64, 0, 0, 100, 100)
+Ice_cream = pygame.image.load("Sprites/download-icon-cream-131982518805283723_64.png")
 
 
 class Particle(pygame.sprite.Sprite):

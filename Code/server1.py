@@ -216,7 +216,7 @@ def server_operations():
                     ):
                         Map_information[category][spawner]["state"] = "alive"
                         Map_information[category][spawner]["Item_type"] = (
-                            random.randint(2, 2)
+                            random.randint(0, 5)
                         )
                         Map_information[category][spawner][
                             "last_check"
@@ -250,10 +250,14 @@ def server_operations():
 
 client_number = 0
 open_slots = []
+banlist = []
 # Connection des nouvelles joueurs, tourne en permance.
 while True:
     try:
         conn, addr = server.accept()
+        if addr[0] in banlist:
+            conn.close()
+            break
     except:
         break
     if client_number >= 4:

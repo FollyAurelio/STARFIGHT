@@ -17,11 +17,14 @@ class Item(pygame.sprite.Sprite):
             "freeze",
             "lightning",
         ][effect]
-        if self.effect in ["invincible", "sword", "spear", "bow"]:
+        if self.effect in ["invincible", "sword", "bow", "freeze", "lightning"]:
             self.image = [
                 cut_image(Weapons_sprites, 75, 100, 340 / 75, 320 / 100, 50, 50),
                 cut_image(Weapons_sprites, 60, 92, 0, 0, 50, 50),
                 cut_image(Weapons_sprites, 40, 100, 364 / 40, 200 / 100, 50, 80),
+                "",
+                cut_image(Ice_cream, 64, 64, 0, 0, 50, 50),
+                cut_image(Lightning_icon, 64, 64, 0, 0, 50, 50),
             ][effect]
         else:
             self.image = pygame.Surface((50, 50))
