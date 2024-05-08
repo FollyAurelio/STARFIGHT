@@ -297,17 +297,27 @@ class Flash(pygame.sprite.Sprite):
         super().__init__(group)
         self.id = id
         self.type = type
-        self.image = pygame.Surface((size, size))
         if type == "explosion":
-            self.image.fill("orange")
+            self.frame = 0
+            self.last_update = pygame.time.get_ticks()
+            self.animation_list = create_animation(
+                Bomb_explosion, [8], 48, 48, 0, 0, size, size
+            )
+            self.image = self.animation_list[0][self.frame]
         if type == "lightning":
+            self.image = pygame.Surface((size, size))
             self.image.set_alpha(0)
         self.rect = self.image.get_rect(center=pos.rect.center)
         self.timer = pygame.time.get_ticks()
 
     def flash(self):
         if self.type == "explosion":
+            cooldown = 100
             attack_time = 800
+            self.last_update, self.frame = animate(
+                self.animation_list, cooldown, self.last_update, 0, self.frame
+            )
+            self.image = self.animation_list[0][self.frame]
         if self.type == "lightning":
             attack_time = 10
         current_time = pygame.time.get_ticks()

@@ -61,7 +61,7 @@ class menu:
         self.menus[self.state].draw(screen)
         if self.state == 0 or self.state == 1:
             screen.blit(
-                Starfight.render(f"STARFIGHT", False, (255, 255, 255)), (165, 0)
+                Block_text.render(f"STARFIGHT", False, (255, 255, 255)), (55, 0)
             )
         if self.state == 2:
             screen.blit(Starfight.render(f"HOST", False, (255, 255, 255)), (205, 0))

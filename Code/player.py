@@ -235,16 +235,15 @@ class Player(pygame.sprite.Sprite):
                         self.knockback_direction = dealer.direction
                     else:
                         self.knockback_direction = -self.direction
-            else:
-                self.knockback_direction = pygame.math.Vector2()
                 if (
                     dealer in Levels.map.weapon_sprites
                     or dealer in Levels.map.arrow_sprites
                 ):
-                    self.taking_knockback, self.knockback_direction = (
-                        True,
-                        dealer.direction,
-                    )
+                    self.knockback_direction = dealer.direction
+
+            else:
+                self.knockback_direction = pygame.math.Vector2(0, 0)
+
             if self.star_count > 0:
                 self.star_count -= 1
                 self.star_list.pop()

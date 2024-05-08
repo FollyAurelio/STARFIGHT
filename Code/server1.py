@@ -216,7 +216,7 @@ def server_operations():
                     ):
                         Map_information[category][spawner]["state"] = "alive"
                         Map_information[category][spawner]["Item_type"] = (
-                            random.randint(0, 5)
+                            random.randint(3, 3)
                         )
                         Map_information[category][spawner][
                             "last_check"
