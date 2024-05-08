@@ -1,10 +1,12 @@
 import pygame
+from Settings import *
 from Client import *
 from _thread import *
 
 pygame.init()
 Starfight = pygame.font.SysFont("Arial", 40)
 Text = pygame.font.SysFont("Arial", 20)
+Background = cut_image(Star_background, 256, 224, 0, 0, 500, 500)
 
 
 def server_start():
@@ -58,13 +60,17 @@ class menu:
     def show_menu(self, screen):
         self.menus[self.state].draw(screen)
         if self.state == 0 or self.state == 1:
-            screen.blit(Starfight.render(f"STARFIGHT", False, (0, 0, 0)), (165, 0))
+            screen.blit(
+                Starfight.render(f"STARFIGHT", False, (255, 255, 255)), (165, 0)
+            )
         if self.state == 2:
-            screen.blit(Starfight.render(f"HOST", False, (0, 0, 0)), (205, 0))
+            screen.blit(Starfight.render(f"HOST", False, (255, 255, 255)), (205, 0))
         if self.state == 3:
-            screen.blit(Starfight.render(f"JOIN", False, (0, 0, 0)), (205, 0))
+            screen.blit(Starfight.render(f"JOIN", False, (255, 255, 255)), (205, 0))
         if self.name:
-            screen.blit(Text.render(f"Name : {self.name}", False, (0, 0, 0)), (0, 0))
+            screen.blit(
+                Text.render(f"Name : {self.name}", False, (255, 255, 255)), (0, 0)
+            )
         for button in self.menus[self.state]:
             button.update(self, screen)
 

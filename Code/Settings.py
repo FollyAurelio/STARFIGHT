@@ -36,6 +36,7 @@ def create_animation(
     return animation_list
 
 
+Star_background = pygame.image.load("Sprites/Enjl-Starry Space Background/preview.png")
 Useful_Item_sprites = pygame.image.load(
     "Sprites/coins-chests-etc-2-0.png"
 ).convert_alpha()

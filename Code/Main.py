@@ -5,7 +5,8 @@ import pygame
 import time
 
 pygame.init()
-screen = pygame.display.set_mode((500, 500))
+width, height = 500, 500
+screen = pygame.display.set_mode((width, height))
 clock = pygame.time.Clock()
 running = True
 # Le temps du jeu en secondes
@@ -14,6 +15,19 @@ Text = pygame.font.SysFont("Arial", 20)
 setup = False
 from Client import *
 from MainMenu import *
+
+overlap = Background
+
+(
+    b_x,
+    ov_x,
+    scrollx,
+) = (
+    0,
+    500,
+    0.3,
+)
+
 
 while running:
     # Si on est dans le menu, on affiche le menu en fonction de son état.
@@ -24,7 +38,14 @@ while running:
                 box.insert(Main_menu, event)
             if event.type == pygame.QUIT:
                 running = False
-        screen.fill("darkgreen")
+        screen.fill("black")
+        if b_x >= width:
+            b_x = -width
+        if ov_x >= width:
+            ov_x = -width
+        b_x, ov_x = b_x + scrollx, ov_x + scrollx
+        screen.blit(Background, (b_x, 0))
+        screen.blit(overlap, (ov_x, 0))
         # A la fin du parti on revient dans la menu et on affiche les étoiles de tous les joueurs
         if Main_menu.state == 6:
             endscreen(player_information, screen)

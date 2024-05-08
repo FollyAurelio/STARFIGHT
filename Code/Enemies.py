@@ -19,19 +19,19 @@ class Enemy(pygame.sprite.Sprite):
         self.frozen = False
         self.frozen_timer = pygame.time.get_ticks()
 
-    def move(self, player, map, map_info):
+    def move(self, map, map_info):
         self.direction.x = map_info["Enemies"][self.id]["movement"][0]
         self.direction.y = map_info["Enemies"][self.id]["movement"][1]
         if not self.frozen:
             now = time.time()
             dt = now - self.prev_time
             self.rect.x += self.direction.x * dt * 60
-            self.check_collision(player, "horizontal", map)
+            self.check_collision("horizontal", map)
             self.rect.y += self.direction.y * dt * 60
-            self.check_collision(player, "vertical", map)
+            self.check_collision("vertical", map)
             self.prev_time = now
 
-    def check_collision(self, player, direction, map):
+    def check_collision(self, direction, map):
         if direction == "horizontal":
             for sprite in map.obsticle_sprites:
                 if sprite.rect.colliderect(self.rect):
@@ -46,6 +46,19 @@ class Enemy(pygame.sprite.Sprite):
                         self.rect.top = sprite.rect.bottom
                     if self.direction.y > 0:
                         self.rect.bottom = sprite.rect.top
+
+    def freezetime(self):
+        duration = 10000
+        if self.frozen:
+            self.prev_time = time.time()
+            current_time = pygame.time.get_ticks()
+            if current_time - self.frozen_timer >= duration:
+                self.frozen = False
+                self.frozen_timer = current_time
+        else:
+            self.frozen_timer = pygame.time.get_ticks()
+
+    def Take_damage(self, player, map):
         for sprite in map.weapon_sprites:
             if sprite.rect.colliderect(self.rect):
                 player.kill_list.append(self.id)
@@ -73,17 +86,6 @@ class Enemy(pygame.sprite.Sprite):
                 )
                 self.frozen = True
 
-    def freezetime(self):
-        duration = 10000
-        if self.frozen:
-            self.prev_time = time.time()
-            current_time = pygame.time.get_ticks()
-            if current_time - self.frozen_timer >= duration:
-                self.frozen = False
-                self.frozen_timer = current_time
-        else:
-            self.frozen_timer = pygame.time.get_ticks()
-
     # def project(self,player,map):
     #     if not self.frozen:
     #         current_time=pygame.time.get_ticks()
@@ -95,7 +97,8 @@ class Enemy(pygame.sprite.Sprite):
     #             map.Enemy_list[temp]=(self.rect.center,True)
     def update(self, player, map, map_info):
         self.freezetime()
-        self.move(player, map, map_info)
+        self.Take_damage(player, map)
+        self.move(map, map_info)
 
 
 # class Range(pygame.sprite.Sprite):
