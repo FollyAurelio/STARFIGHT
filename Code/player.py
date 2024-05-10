@@ -543,7 +543,6 @@ class otherPlayer(pygame.sprite.Sprite):
             and player_information[self.id]["invincibilty"]
         ):
             if player_information[self.id]["star_lost"]:
-                print("i")
                 Items.Star(
                     self.rect.center,
                     (

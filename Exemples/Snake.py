@@ -44,7 +44,7 @@ class Player(pygame.sprite.Sprite):
             self.direction = pygame.math.Vector2(0, -50)
         if self.direction != (0, -50) and keys[pygame.K_s]:
             self.direction = pygame.math.Vector2(0, 50)
-        if current_time - self.cooldown >= 300:
+        if current_time - self.cooldown >= 400:
             self.prevx = self.rect.x
             self.prevy = self.rect.y
             self.cooldown = current_time
@@ -120,7 +120,7 @@ while running:
         player.pickup_cherry()
         player.die()
 
-        if time.time() - Timer >= 5:
+        if time.time() - Timer >= 1:
             Cherry(
                 (random.randint(0, width), random.randint(0, height)),
                 (All_sprites, Cherrys),

@@ -19,7 +19,12 @@ class menu:
         self.title_screen = pygame.sprite.Group()
         self.host_join = pygame.sprite.Group()
         self.hosting = pygame.sprite.Group()
-        self.chosing_map = pygame.sprite.Group()
+        self.chosing_map_1 = pygame.sprite.Group()
+        self.chosing_map_2 = pygame.sprite.Group()
+        self.chosing_map_3 = pygame.sprite.Group()
+        self.chosing_map_4 = pygame.sprite.Group()
+        self.chosing_map_5 = pygame.sprite.Group()
+        self.settings = pygame.sprite.Group()
         self.joining = pygame.sprite.Group()
         self.joining_join = pygame.sprite.Group()
         self.end_screen = pygame.sprite.Group()
@@ -28,17 +33,102 @@ class menu:
             self.host_join,
             self.hosting,
             self.joining,
-            self.chosing_map,
+            self.chosing_map_1,
+            self.chosing_map_2,
+            self.chosing_map_3,
+            self.chosing_map_4,
+            self.chosing_map_5,
+            self.settings,
             self.joining_join,
             self.end_screen,
         ]
         Button((250, 250), 100, 100, self.title_screen, "Play")
+
         Button((100, 250), 100, 100, self.host_join, "Host")
         Button((400, 250), 100, 100, self.host_join, "Join")
+        Button((250, 400), 100, 50, self.host_join, "Back")
+
         Button((150, 475), 100, 50, self.hosting, "Maps")
-        Button((100, 100), 200, 100, self.chosing_map, "Map1")
-        Button((100, 200), 200, 100, self.chosing_map, "Map2")
-        Button((250, 475), 100, 50, self.hosting, "Start Game")
+
+        Button((100, 400), 100, 50, self.joining, "Back")
+
+        Button(
+            (50, 450),
+            100,
+            25,
+            (
+                self.chosing_map_1,
+                self.chosing_map_2,
+                self.chosing_map_3,
+                self.chosing_map_4,
+                self.chosing_map_5,
+            ),
+            "1",
+        )
+        Button(
+            (150, 450),
+            100,
+            25,
+            (
+                self.chosing_map_1,
+                self.chosing_map_2,
+                self.chosing_map_3,
+                self.chosing_map_4,
+                self.chosing_map_5,
+            ),
+            "2",
+        )
+        Button(
+            (250, 450),
+            100,
+            25,
+            (
+                self.chosing_map_1,
+                self.chosing_map_2,
+                self.chosing_map_3,
+                self.chosing_map_4,
+                self.chosing_map_5,
+            ),
+            "3",
+        )
+        Button(
+            (350, 450),
+            100,
+            25,
+            (
+                self.chosing_map_1,
+                self.chosing_map_2,
+                self.chosing_map_3,
+                self.chosing_map_4,
+                self.chosing_map_5,
+            ),
+            "4",
+        )
+        Button(
+            (450, 450),
+            100,
+            25,
+            (
+                self.chosing_map_1,
+                self.chosing_map_2,
+                self.chosing_map_3,
+                self.chosing_map_4,
+                self.chosing_map_5,
+            ),
+            "5",
+        )
+
+        Button((100, 400), 100, 50, self.settings, "Back")
+        Button((340, 120), 70, 25, self.settings, "-time")
+        Button((420, 120), 70, 25, self.settings, "+time")
+
+        Button((100, 100), 200, 100, self.chosing_map_1, "Map1")
+        Button((100, 200), 200, 100, self.chosing_map_1, "Ghost2")
+        Button((100, 300), 200, 100, self.chosing_map_1, "Race3")
+
+        Button((250, 475), 100, 50, self.hosting, "Start")
+        Button((350, 475), 100, 50, self.hosting, "Set")
+
         self.flashcards = [
             FlashCard((20, 50), (self.hosting, self.joining_join), 0),
             FlashCard((140, 50), (self.hosting, self.joining_join), 1),
@@ -54,23 +144,49 @@ class menu:
         self.Connected_list = []
         self.network = ""
         self.map_chosen = "Map1"
+        self.Game_time = 300
         self.name = ""
         self.name_list = []
 
     def show_menu(self, screen):
         self.menus[self.state].draw(screen)
+        if self.state == 0 and self.name == "":
+            screen.blit(
+                Mini_square_text.render(
+                    f"Enter a name and press enter", False, (255, 255, 255)
+                ),
+                (20, 400),
+            )
         if self.state == 0 or self.state == 1:
             screen.blit(
                 Block_text.render(f"STARFIGHT", False, (255, 255, 255)), (55, 0)
             )
         if self.state == 2:
             screen.blit(Starfight.render(f"HOST", False, (255, 255, 255)), (205, 0))
-        if self.state == 3:
+        if self.state == 3 or self.state == 10:
             screen.blit(Starfight.render(f"JOIN", False, (255, 255, 255)), (205, 0))
+        if self.state == 3:
+            screen.blit(
+                Mini_square_text.render(f"Enter the host's IP", False, (255, 255, 255)),
+                (100, 300),
+            )
+        if self.state == 9:
+            screen.blit(Starfight.render(f"SET", False, (255, 255, 255)), (205, 0))
+            screen.blit(
+                Mini_square_text.render(
+                    f"TIME : {self.Game_time}", False, (255, 255, 255)
+                ),
+                (100, 100),
+            )
         if self.name:
             screen.blit(
                 Text.render(f"Name : {self.name}", False, (255, 255, 255)), (0, 0)
             )
+        if self.state == 2 or self.state >= 4:
+            screen.blit(
+                Text.render(f"Map : {self.map_chosen}", False, (255, 255, 255)), (0, 25)
+            )
+        screen.blit(Text.render(f"IP : {MyIP}", False, (255, 255, 255)), (350, 0))
         for button in self.menus[self.state]:
             button.update(self, screen)
 
@@ -83,41 +199,59 @@ class Button(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
         self.function = function
         self.Functions = ["Play", "Host", "Join", "Maps"]
-        self.map_list = ["Map1", "Map2"]
+        self.map_list = ["Map1", "Map2", "Map3"]
+        self.map_screens = ["1", "2", "3", "4", "5"]
+        self.buttoncooldown = pygame.time.get_ticks()
 
     def update(self, menu, screen):
+        current_time = pygame.time.get_ticks()
         screen.blit(
-            Text.render(f"{self.function}", False, (0, 0, 0)),
-            (self.rect.centerx - 20, self.rect.centery - 10),
+            Mini_square_text.render(f"{self.function}", False, (0, 0, 0)),
+            (self.rect.centerx - 35, self.rect.centery - 20),
         )
+        if self.rect.collidepoint(pygame.mouse.get_pos()):
+            self.image.set_alpha(155)
+        else:
+            self.image.set_alpha(255)
         if (
             pygame.mouse.get_pressed()[0]
             and self.rect.collidepoint(pygame.mouse.get_pos())
-            and self.function in self.Functions
-            and menu.name
+            and current_time - self.buttoncooldown >= 100
         ):
-            menu.state = self.Functions.index(self.function) + 1
-        elif (
-            pygame.mouse.get_pressed()[0]
-            and self.rect.collidepoint(pygame.mouse.get_pos())
-            and self.function == "Start Game"
-        ):
-            menu.inmenu = False
-        elif (
-            pygame.mouse.get_pressed()[0]
-            and self.rect.collidepoint(pygame.mouse.get_pos())
-            and self.function in self.map_list
-        ):
-            menu.map_chosen = self.function
-            menu.state = 2
-        if (
-            pygame.mouse.get_pressed()[0]
-            and self.rect.collidepoint(pygame.mouse.get_pos())
-            and self.function == "Host"
-        ):
-            start_new_thread(server_start, ())
-            menu.network = Network()
-            menu.serverstarted = True
+            self.buttoncooldown = current_time
+            if self.function in self.Functions and menu.name:
+                menu.state = self.Functions.index(self.function) + 1
+            elif self.function == "Start":
+                menu.inmenu = False
+            elif self.function in self.map_list:
+                menu.map_chosen = self.function
+                menu.state = 2
+            elif self.function == "Back":
+                if menu.state == 3:
+                    menu.state = 1
+                elif menu.state == 1:
+                    menu.state = 0
+                elif menu.state == 9:
+                    menu.state = 2
+
+            elif self.function in self.map_screens:
+                menu.state = 3 + int(self.function)
+            elif self.function == "Set":
+                menu.state = 9
+            elif self.function == "+time" and menu.Game_time < 500:
+                menu.Game_time += 10
+            elif self.function == "-time" and menu.Game_time > 0:
+                menu.Game_time -= 10
+            if self.function == "Host":
+                start_new_thread(server_start, ())
+                menu.network = Network()
+                menu.serverstarted = True
+        if self.function in self.map_screens and menu.state - 3 == int(self.function):
+            self.image.set_alpha(155)
+        elif self.rect.collidepoint(pygame.mouse.get_pos()):
+            self.image.set_alpha(155)
+        else:
+            self.image.set_alpha(255)
 
 
 class FlashCard(pygame.sprite.Sprite):
@@ -146,7 +280,7 @@ class FlashCard(pygame.sprite.Sprite):
             self.connected = ""
         screen.blit(
             Text.render(f"{self.connected}", False, (0, 0, 0)),
-            (self.rect.centerx - 30, self.rect.centery - 130),
+            (self.rect.centerx - 35, self.rect.centery - 130),
         )
         screen.blit(
             Text.render(f"{self.name}", False, (0, 0, 0)),
@@ -156,7 +290,7 @@ class FlashCard(pygame.sprite.Sprite):
             if id == self.id and self.id in menu.Connected_list:
                 screen.blit(
                     Text.render(f"{name}", False, (0, 0, 0)),
-                    (self.rect.centerx - 30, self.rect.centery - 60),
+                    (self.rect.centerx - 50, self.rect.centery - 60),
                 )
 
 
@@ -178,19 +312,23 @@ class inputbox(pygame.sprite.Sprite):
                     menu.network = Network(self.text)
                     if menu.network.id:
                         menu.serverstarted = True
-                        menu.state = 5
+                        menu.state = 10
                     else:
                         self.error = True
                 if self.function == "Name":
                     menu.name = self.text
                     self.text = ""
+                    self.error = False
                     if not menu.name:
                         self.error = True
 
             elif event.key == pygame.K_BACKSPACE:
                 self.text = self.text[:-1]
             elif self.exist:
-                self.text += event.unicode
+                if len(self.text) <= 10 and self.function == "Name":
+                    self.text += event.unicode
+                elif self.function == "Join":
+                    self.text += event.unicode
 
     def update(self, menu, screen):
         if (menu.state == 0 and self.function == "Name") or (
@@ -203,45 +341,37 @@ class inputbox(pygame.sprite.Sprite):
         screen.blit(Text.render(f"{self.text}", False, (0, 0, 0)), (self.rect.topleft))
         if self.error and self.function == "Join":
             screen.blit(
-                Text.render(f"Check your ip", False, (0, 0, 0)),
-                (self.rect.centerx - 10, self.rect.centery + 10),
+                Mini_square_text.render(f"Failed to connect", False, (255, 0, 0)),
+                (100, 350),
             )
         if self.error and self.function == "Name":
             screen.blit(
-                Text.render(f"Enter a name", False, (0, 0, 0)),
-                (self.rect.centerx - 10, self.rect.centery + 10),
+                Mini_square_text.render(f"Invalid Name", False, (255, 0, 0)),
+                (150, 450),
             )
 
 
 Main_menu = menu()
 
 
+def determine_winner(information):
+    pass
+
+
 def endscreen(information, screen):
-    screen.blit(Starfight.render(f"RESULTS", False, (0, 0, 0)), (205, 0))
+    screen.blit(Starfight.render(f"RESULTS", False, (255, 255, 255)), (170, 0))
+    for id in range(4):
+        screen.blit(
+            Mini_square_text.render(
+                f"{information[id]['name']} : {information[id]['star_count']} stars",
+                False,
+                (255, 255, 255),
+            ),
+            (0, 100 * (id + 1)),
+        )
     screen.blit(
-        Text.render(
-            f"Player 1 : {information[0]['star_count']} stars", False, (0, 0, 0)
+        Mini_square_text.render(
+            f"Close the game to play again", False, (255, 255, 255)
         ),
-        (0, 100),
-    )
-    screen.blit(
-        Text.render(
-            f"Player 2 : {information[1]['star_count']} stars", False, (0, 0, 0)
-        ),
-        (0, 200),
-    )
-    screen.blit(
-        Text.render(
-            f"Player 3 : {information[2]['star_count']} stars", False, (0, 0, 0)
-        ),
-        (0, 300),
-    )
-    screen.blit(
-        Text.render(
-            f"Player 4 : {information[3]['star_count']} stars", False, (0, 0, 0)
-        ),
-        (0, 400),
-    )
-    screen.blit(
-        Text.render(f"Close the game to play again", False, (0, 0, 0)), (0, 450)
+        (0, 450),
     )

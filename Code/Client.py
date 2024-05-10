@@ -1,6 +1,8 @@
 import socket
 import pickle
 
+MyIP = socket.gethostbyname(socket.gethostname())
+
 
 class Network:
     def __init__(self, ip=""):
@@ -11,7 +13,7 @@ class Network:
         if ip:
             host = ip
         else:
-            host = socket.gethostbyname(socket.gethostname())
+            host = MyIP
         port = 12345
         try:
             self.client.connect((host, port))

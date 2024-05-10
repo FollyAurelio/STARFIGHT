@@ -9,8 +9,6 @@ width, height = 500, 500
 screen = pygame.display.set_mode((width, height))
 clock = pygame.time.Clock()
 running = True
-# Le temps du jeu en secondes
-Game_time = 10000
 Text = pygame.font.SysFont("Arial", 20)
 setup = False
 from Client import *
@@ -47,15 +45,24 @@ while running:
         screen.blit(Background, (b_x, 0))
         screen.blit(overlap, (ov_x, 0))
         # A la fin du parti on revient dans la menu et on affiche les étoiles de tous les joueurs
-        if Main_menu.state == 6:
+        if Main_menu.state == 11:
             endscreen(player_information, screen)
         # Affichage du menu
         Main_menu.show_menu(screen)
         # Que si on a commencé le serveur
         if Main_menu.serverstarted:
-            Main_menu.Connected_list, Main_menu.inmenu, Main_menu.name_list = (
-                Main_menu.network.send(
-                    (Main_menu.inmenu, Main_menu.map_chosen, Main_menu.name)
+            (
+                Main_menu.Connected_list,
+                Main_menu.inmenu,
+                Main_menu.name_list,
+                Main_menu.map_chosen,
+                Main_menu.Game_time,
+            ) = Main_menu.network.send(
+                (
+                    Main_menu.inmenu,
+                    Main_menu.map_chosen,
+                    Main_menu.name,
+                    Main_menu.Game_time,
                 )
             )
     else:
@@ -95,7 +102,7 @@ while running:
             setup = True
             Timer = time.time()
         # Pendant que le jeu est en cours
-        if time.time() - Timer <= Game_time:
+        if time.time() - Timer <= Main_menu.Game_time:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -143,17 +150,22 @@ while running:
             debug_position(
                 [
                     (player.rect.center, (0, 0)),
-                    (player.star_count, (450, 450)),
-                    (player.hp, (450, 400)),
                     (player.items_list, (0, 450)),
-                    (round(Game_time - (time.time() - Timer)), (400, 0)),
                 ],
                 screen,
+            )
+            screen.blit(
+                Mini_square_text.render(
+                    f"{round(Main_menu.Game_time - (time.time() - Timer))}",
+                    False,
+                    (0, 0, 0),
+                ),
+                (400, 0),
             )
         else:
             # Actions appliqués à la fin du jeu
             Main_menu.network.client.close()
-            Main_menu.state = 6
+            Main_menu.state = 11
             Main_menu.inmenu = True
             Main_menu.serverstarted = False
 

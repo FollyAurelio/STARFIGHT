@@ -62,6 +62,9 @@ Bomb_explosion = pygame.image.load(
     "Sprites/explosions-pack-web/explosions-pack-web/spritesheets/explosion-6.png"
 )
 Block_text = pygame.font.Font("Sprites/kenney_kenney-fonts/Fonts/Kenney Blocks.ttf", 60)
+Mini_square_text = pygame.font.Font(
+    "Sprites/kenney_kenney-fonts/Fonts/Kenney Mini Square.ttf", 30
+)
 
 
 class Particle(pygame.sprite.Sprite):
