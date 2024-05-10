@@ -80,6 +80,7 @@ class Player(pygame.sprite.Sprite):
         self.kill_list = []
         self.image = self.animation_list[self.action][self.frame]
         self.rect = self.image.get_rect(center=pos)
+        self.nametag = Nametag(self, (Levels.map.visible_sprites))
 
     # Réuni tous les methodes du joueurs ainsi que gérer ses animations
     def update(self):
@@ -116,7 +117,7 @@ class Player(pygame.sprite.Sprite):
             self.mouvement()
             self.flicker()
             self.image = self.animation_list[self.action][self.frame]
-            # self.nametag.rect.topleft = self.rect.bottomright
+            self.nametag.rect.center = (self.rect.centerx, self.rect.centery - 30)
         self.dead()
 
     # On applique une animation de dégat quand le joueur est invincible.
@@ -471,6 +472,7 @@ class otherPlayer(pygame.sprite.Sprite):
 
         self.image = self.animation_list[self.action][self.frame]
         self.rect = self.image.get_rect(center=pos)
+        self.nametag = Nametag(self, (Levels.map.visible_sprites))
 
     def turn(self):
         for animation in self.animation_list:
@@ -481,6 +483,7 @@ class otherPlayer(pygame.sprite.Sprite):
     def update(self, player_information):
         # Le position est mise à jour
         self.rect.center = player_information[self.id]["position"]
+        self.nametag.rect.center = (self.rect.centerx, self.rect.centery - 30)
         self.direction = player_information[self.id]["direction"]
         # L'animation effectué est donné.
         self.action, self.frame = (
@@ -589,16 +592,16 @@ class otherPlayer(pygame.sprite.Sprite):
 
 
 class Nametag(pygame.sprite.Sprite):
-    def __init__(self, player):
-        self.image = pygame.Surface((50, 50))
-        self.image.set_colorkey((0, 0, 0))
-        self.rect = self.image.get_rect(topleft=player.rect.bottomright)
-        l = Text.render(f"{player.name}", False, (0, 0, 0))
-        self.image.blit(l, self.rect.center)
+    def __init__(self, player, group):
+        super().__init__(group)
+        self.image = Text.render(
+            f"{player.name}",
+            False,
+            (0, 0, 0),
+        )
 
-    def update(self, player, screen):
-        screen.blit(
-            Text.render(f"{player.name}", False, (0, 0, 0)), player.nametag.rect.center
+        self.rect = self.image.get_rect(
+            center=(player.rect.centerx, player.rect.centery - 30)
         )
 
 

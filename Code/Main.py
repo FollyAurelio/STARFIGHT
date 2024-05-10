@@ -136,8 +136,6 @@ while running:
             if not map_info:
                 print("Unable to connect to server")
                 break
-            if player.star_lost:
-                print("a")
             # Réinisialise certaines attributs
             player.kill_list = []
             player.weaponask = False
