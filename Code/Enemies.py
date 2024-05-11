@@ -1,6 +1,5 @@
 # Crée des ennemies
 import pygame
-import random
 import time
 from Settings import *
 

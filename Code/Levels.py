@@ -2,7 +2,6 @@
 
 import pygame
 from Items import Item, Star
-import random
 
 # On utilse Pytmx qui est un module qui permet de lire nos fichers type tmx que l'on crée avec Tiled, un outil pour faire les maps.
 from pytmx.util_pygame import load_pygame
@@ -14,10 +13,8 @@ import time
 
 # L'Import de la map nécessite l'initialisation de pygame.
 pygame.init()
-if Placeholder_map == "Map1":
-    tmx_data = load_pygame("Maps/MAP.tmx")
-if Placeholder_map == "Map2":
-    tmx_data = load_pygame("Maps/MAP2.tmx")
+
+tmx_data = load_pygame(Maps[Placeholder_map])
 
 
 # Caméra qui permet de placer tous les éléments du map en fonction de la position du joueur.
@@ -118,7 +115,10 @@ class Map:
         for layer in tmx_data.layers:
             for x, y, surf in layer.tiles():
                 pos = (x * 50, y * 50)
-                Tile(pos, surf, (self.visible_sprites, self.obsticle_sprites))
+                if layer.name == "Walls":
+                    Tile(pos, surf, (self.visible_sprites, self.obsticle_sprites))
+                else:
+                    Tile(pos, surf, (self.visible_sprites))
         # Génère les spawners
         Spawner_Tile(
             (300, 300),

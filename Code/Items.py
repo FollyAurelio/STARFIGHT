@@ -1,6 +1,5 @@
 # Fenêtre qui programme les items
 import pygame
-import random
 import time
 from Settings import *
 
@@ -17,27 +16,14 @@ class Item(pygame.sprite.Sprite):
             "freeze",
             "lightning",
         ][effect]
-        if self.effect in ["invincible", "sword", "bow", "bomb", "freeze", "lightning"]:
-            self.image = [
-                cut_image(Useful_Item_sprites, 16, 16, 48, 36, 50, 50),
-                cut_image(Useful_Item_sprites, 16, 16, 46, 35, 50, 50),
-                cut_image(Useful_Item_sprites, 16, 16, 46, 37, 50, 50),
-                cut_image(Useful_Item_sprites, 16, 16, 53, 35, 50, 50),
-                cut_image(Ice_cream, 64, 64, 0, 0, 50, 50),
-                cut_image(Lightning_icon, 64, 64, 0, 0, 50, 50),
-            ][effect]
-        else:
-            self.image = pygame.Surface((50, 50))
-            self.image.fill(
-                [
-                    "purple",
-                    "blue",
-                    "orange",
-                    "black",
-                    "lightblue",
-                    "gold",
-                ][effect]
-            )
+        self.image = [
+            cut_image(Useful_Item_sprites, 16, 16, 48, 36, 50, 50),
+            cut_image(Useful_Item_sprites, 16, 16, 46, 35, 50, 50),
+            cut_image(Useful_Item_sprites, 16, 16, 46, 37, 50, 50),
+            cut_image(Useful_Item_sprites, 16, 16, 53, 35, 50, 50),
+            cut_image(Ice_cream, 64, 64, 0, 0, 50, 50),
+            cut_image(Lightning_icon, 64, 64, 0, 0, 50, 50),
+        ][effect]
 
         self.rect = self.image.get_rect(center=pos)
         # Initialise le type d'item aléatoire
@@ -220,7 +206,7 @@ class Arrow(pygame.sprite.Sprite):
         self.image = pygame.transform.rotate(self.image, coef)
 
     def update(self, map):
-        cooldown = 3000
+        cooldown = 10000
         current_time = pygame.time.get_ticks()
         if current_time - self.time >= cooldown:
             self.kill()

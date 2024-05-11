@@ -10,14 +10,6 @@ from Settings import *
 pygame.init()
 Text = pygame.font.SysFont("Arial", 20)
 
-# Spritesheet des dinosaurs.
-Dinos = [
-    "Sprites/DinoSprites - doux.png",
-    "Sprites/DinoSprites - mort.png",
-    "Sprites/DinoSprites - tard.png",
-    "Sprites/DinoSprites - vita.png",
-]
-
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group, id, name):
@@ -290,8 +282,6 @@ class Player(pygame.sprite.Sprite):
                             (Levels.map.visible_sprites, Levels.map.particle_sprites),
                             "lightning",
                         )
-            else:
-                self.isshock = False
         for sprite in Levels.map.bomb_sprites:
             if sprite.rect.colliderect(self.rect):
                 if sprite.id != self.id:

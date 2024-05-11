@@ -4,6 +4,7 @@ pygame.init()
 pygame.font.init()
 
 Placeholder_map = "Map1"
+Maps = {"Map1": "Maps/MAP.tmx", "Food1": "Maps/Food1.tmx"}
 
 
 def cut_image(image, width, height, index_x, index_y, sizex, sizey):
@@ -39,6 +40,12 @@ def create_animation(
     return animation_list
 
 
+Dinos = [
+    "Sprites/DinoSprites - doux.png",
+    "Sprites/DinoSprites - mort.png",
+    "Sprites/DinoSprites - tard.png",
+    "Sprites/DinoSprites - vita.png",
+]
 Star_background = pygame.image.load("Sprites/Enjl-Starry Space Background/preview.png")
 Useful_Item_sprites = pygame.image.load(
     "Sprites/coins-chests-etc-2-0.png"

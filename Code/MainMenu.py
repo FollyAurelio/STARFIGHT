@@ -123,7 +123,7 @@ class menu:
         Button((420, 120), 70, 25, self.settings, "+time")
 
         Button((100, 100), 200, 100, self.chosing_map_1, "Map1")
-        Button((100, 200), 200, 100, self.chosing_map_1, "Ghost2")
+        Button((100, 200), 200, 100, self.chosing_map_1, "Food1")
         Button((100, 300), 200, 100, self.chosing_map_1, "Race3")
 
         Button((250, 475), 100, 50, self.hosting, "Start")
@@ -199,7 +199,7 @@ class Button(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
         self.function = function
         self.Functions = ["Play", "Host", "Join", "Maps"]
-        self.map_list = ["Map1", "Map2", "Map3"]
+        self.map_list = ["Map1", "Map2", "Food1"]
         self.map_screens = ["1", "2", "3", "4", "5"]
         self.buttoncooldown = pygame.time.get_ticks()
 
