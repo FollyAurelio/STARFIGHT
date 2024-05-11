@@ -160,7 +160,7 @@ def threaded_client(conn, client_number):
         if client_number == 0:
             info = pickle.loads(conn.recv(2048))
             Map_information = info
-            start_new_thread(server_operations, ())
+            start_new_thread(server_operations, (map_chosen,))
     # Game loop principal, on échange les infos du joueur et des maps.
     while True:
         if breakall:
@@ -203,7 +203,7 @@ def threaded_client(conn, client_number):
 
 
 # Gère les opérations du serveur pour le map.
-def server_operations():
+def server_operations(map):
     global Map_information
     global kill_list
     while True:
@@ -220,9 +220,14 @@ def server_operations():
                         Map_information[category][spawner]["cooldown"],
                     ):
                         Map_information[category][spawner]["state"] = "alive"
-                        Map_information[category][spawner]["Item_type"] = (
-                            random.randint(2, 2)
-                        )
+                        if map == "Map1":
+                            Map_information[category][spawner]["Item_type"] = (
+                                random.randint(0, 5)
+                            )
+                        if map == "Food1":
+                            Map_information[category][spawner]["Item_type"] = (
+                                random.randint(6, 7)
+                            )
                         Map_information[category][spawner][
                             "last_check"
                         ] = pygame.time.get_ticks()

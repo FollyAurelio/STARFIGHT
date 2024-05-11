@@ -15,6 +15,8 @@ class Item(pygame.sprite.Sprite):
             "bomb",
             "freeze",
             "lightning",
+            "speedup",
+            "slowdown",
         ][effect]
         self.image = [
             cut_image(Useful_Item_sprites, 16, 16, 48, 36, 50, 50),
@@ -23,6 +25,8 @@ class Item(pygame.sprite.Sprite):
             cut_image(Useful_Item_sprites, 16, 16, 53, 35, 50, 50),
             cut_image(Ice_cream, 64, 64, 0, 0, 50, 50),
             cut_image(Lightning_icon, 64, 64, 0, 0, 50, 50),
+            cut_image(Useful_Item_sprites, 16, 15, 36, 14, 50, 50),
+            cut_image(Useful_Item_sprites, 16, 15, 36, 16, 50, 50),
         ][effect]
 
         self.rect = self.image.get_rect(center=pos)
@@ -30,7 +34,19 @@ class Item(pygame.sprite.Sprite):
 
     def effect_apply(self, player):
         if self.effect == "speedup":
-            player.speed += 1
+            if player.speed < 11:
+                player.speed += 1
+                if player.speed > 4:
+                    player.bonus_item.append(Hud_Item(player.speed, "speedup"))
+                else:
+                    player.player.bonus_item.pop()
+        if self.effect == "slowdown":
+            if player.speed > 1:
+                player.speed -= 1
+                if player.speed <= 4:
+                    player.bonus_item.append(Hud_Item(player.speed, "slowdown"))
+                else:
+                    player.player.bonus_item.pop()
         else:
             player.give(self.effect)
         # L'effet que l'item a quand il est ramassé

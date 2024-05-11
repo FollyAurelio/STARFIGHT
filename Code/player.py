@@ -53,6 +53,7 @@ class Player(pygame.sprite.Sprite):
 
         self.items_list = ["", "", ""]
         self.item_hud = [Hud_Item(0, ""), Hud_Item(1, ""), Hud_Item(2, "")]
+        self.bonus_item = []
         self.using_item = False
         self.item_timer = pygame.time.get_ticks()
         self.inusage = None
@@ -583,73 +584,6 @@ class otherPlayer(pygame.sprite.Sprite):
             self.image.set_alpha(0)
         else:
             self.image.set_alpha(255)
-
-
-class Nametag(pygame.sprite.Sprite):
-    def __init__(self, player, group):
-        super().__init__(group)
-        self.image = Text.render(
-            f"{player.name}",
-            False,
-            (0, 0, 0),
-        )
-
-        self.rect = self.image.get_rect(
-            center=(player.rect.centerx, player.rect.centery - 30)
-        )
-
-
-class Hud_Item(pygame.sprite.Sprite):
-    def __init__(self, id, type):
-        self.type = type
-        if self.type == "heart":
-            self.animation_list = create_animation(
-                Useful_Item_sprites, [6], 16, 16, 25, 14, 30, 30
-            )
-            self.image = self.animation_list[0][0]
-            self.rect = self.image.get_rect(center=(id * 30, 30))
-        if self.type == "star":
-            self.animation_list = create_animation(
-                Useful_Item_sprites, [6], 16, 16, 12, 12, 30, 30
-            )
-            self.image = self.animation_list[0][0]
-            self.rect = self.image.get_rect(
-                center=(((id - 1) % 16) * 30, 60 + 30 * ((id - 1) // 16))
-            )
-
-        self.id = id
-
-    def show(self, player, screen):
-        if self.type == "heart":
-            if player.hp >= self.id + 1:
-                screen.blit(self.image, self.rect.center)
-                self.image = self.animation_list[0][player.hudframe]
-        if self.type == "star":
-            if player.star_count >= self.id:
-                screen.blit(self.image, self.rect.center)
-                self.image = self.animation_list[0][player.hudframe]
-        if self.type in ["invincible", "sword", "bow", "bomb", "freeze", "lightning"]:
-            effect_index = [
-                "invincible",
-                "sword",
-                "bow",
-                "bomb",
-                "freeze",
-                "lightning",
-            ].index(self.type)
-            self.image = [
-                cut_image(Useful_Item_sprites, 16, 16, 48, 36, 50, 50),
-                cut_image(Useful_Item_sprites, 16, 16, 46, 35, 50, 50),
-                cut_image(Useful_Item_sprites, 16, 16, 46, 37, 50, 50),
-                cut_image(Useful_Item_sprites, 16, 16, 53, 35, 50, 50),
-                cut_image(Ice_cream, 64, 64, 0, 0, 50, 50),
-                cut_image(Lightning_icon, 64, 64, 0, 0, 50, 50),
-            ][effect_index]
-            self.rect = self.image.get_rect(center=(50 * self.id, 400))
-            screen.blit(self.image, self.rect.center)
-
-    def __repr__(self):
-        return self.type
 
 
 # 14,25,6 long

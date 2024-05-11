@@ -5,6 +5,7 @@ pygame.font.init()
 
 Placeholder_map = "Map1"
 Maps = {"Map1": "Maps/MAP.tmx", "Food1": "Maps/Food1.tmx"}
+Text = pygame.font.SysFont("Arial", 20)
 
 
 def cut_image(image, width, height, index_x, index_y, sizex, sizey):
@@ -97,3 +98,78 @@ class Particle(pygame.sprite.Sprite):
             self.frame == 11 and self.type == "lightning"
         ):
             self.kill()
+
+
+class Nametag(pygame.sprite.Sprite):
+    def __init__(self, player, group):
+        super().__init__(group)
+        self.image = Text.render(
+            f"{player.name}",
+            False,
+            (0, 0, 0),
+        )
+
+        self.rect = self.image.get_rect(
+            center=(player.rect.centerx, player.rect.centery - 30)
+        )
+
+
+class Hud_Item(pygame.sprite.Sprite):
+    def __init__(self, id, type):
+        self.type = type
+        if self.type == "heart":
+            self.animation_list = create_animation(
+                Useful_Item_sprites, [6], 16, 16, 25, 14, 30, 30
+            )
+            self.image = self.animation_list[0][0]
+            self.rect = self.image.get_rect(center=(id * 30, 30))
+        if self.type == "star":
+            self.animation_list = create_animation(
+                Useful_Item_sprites, [6], 16, 16, 12, 12, 30, 30
+            )
+            self.image = self.animation_list[0][0]
+            self.rect = self.image.get_rect(
+                center=(((id - 1) % 16) * 30, 60 + 30 * ((id - 1) // 16))
+            )
+        if self.type == "speedup":
+            self.image = cut_image(Useful_Item_sprites, 16, 15, 36, 13, 50, 50)
+            self.rect = self.image.get_rect(center=(400, 400 - (id - 5) * 50))
+        if self.type == "slowdown":
+            self.image = cut_image(Useful_Item_sprites, 16, 15, 36, 15, 50, 50)
+            self.rect = self.image.get_rect(center=(400, 400 + (id - 3) * 50))
+
+        self.id = id
+
+    def show(self, player, screen):
+        if self.type == "heart":
+            if player.hp >= self.id + 1:
+                screen.blit(self.image, self.rect.center)
+                self.image = self.animation_list[0][player.hudframe]
+        if self.type == "star":
+            if player.star_count >= self.id:
+                screen.blit(self.image, self.rect.center)
+                self.image = self.animation_list[0][player.hudframe]
+        if self.type in ["invincible", "sword", "bow", "bomb", "freeze", "lightning"]:
+            effect_index = [
+                "invincible",
+                "sword",
+                "bow",
+                "bomb",
+                "freeze",
+                "lightning",
+            ].index(self.type)
+            self.image = [
+                cut_image(Useful_Item_sprites, 16, 16, 48, 36, 50, 50),
+                cut_image(Useful_Item_sprites, 16, 16, 46, 35, 50, 50),
+                cut_image(Useful_Item_sprites, 16, 16, 46, 37, 50, 50),
+                cut_image(Useful_Item_sprites, 16, 16, 53, 35, 50, 50),
+                cut_image(Ice_cream, 64, 64, 0, 0, 50, 50),
+                cut_image(Lightning_icon, 64, 64, 0, 0, 50, 50),
+            ][effect_index]
+            self.rect = self.image.get_rect(center=(50 * self.id, 400))
+            screen.blit(self.image, self.rect.center)
+        if self.type == "speedup" or self.type == "slowdown":
+            screen.blit(self.image, self.rect.center)
+
+    def __repr__(self):
+        return self.type
