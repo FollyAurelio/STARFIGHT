@@ -24,7 +24,6 @@ class Player(pygame.sprite.Sprite):
         super().__init__(group)
         self.id = id
         self.name = name
-        # self.nametag = Nametag(self)
 
         self.star_lost = False
         self.star_count = 0
@@ -61,6 +60,7 @@ class Player(pygame.sprite.Sprite):
         self.frozen_mesure = pygame.time.get_ticks()
 
         self.items_list = ["", "", ""]
+        self.item_hud = [Hud_Item(0, ""), Hud_Item(1, ""), Hud_Item(2, "")]
         self.using_item = False
         self.item_timer = pygame.time.get_ticks()
         self.inusage = None
@@ -202,10 +202,12 @@ class Player(pygame.sprite.Sprite):
     def give(self, effect):
         for item in range(len(self.items_list)):
             if not self.items_list[item]:
+                self.item_hud[item].type = effect
                 if effect == "sword":
                     self.items_list[item] = Items.Weapon(
                         effect, (Levels.map.weapon_sprites), self.id
                     )
+
                     break
                 if effect == "bow":
                     self.items_list[item] = Items.Weapon(
@@ -379,6 +381,7 @@ class Player(pygame.sprite.Sprite):
                             self.weaponask = self.items_list[i].type
                             self.inusage = self.items_list[i].type
                             self.items_list[i] = ""
+                            self.item_hud[i].type = ""
 
     # Montre l'item quand il est utilisé.
     # Si il s'agit d'un bow, on peut envoyer des arrows avec la touche espace.
@@ -394,6 +397,7 @@ class Player(pygame.sprite.Sprite):
             if current_time - self.item_timer >= cooldown:
                 self.items_list[self.using_item - 1].kill()
                 self.items_list[self.using_item - 1] = ""
+                self.item_hud[self.using_item - 1].type = ""
                 self.using_item = False
                 self.inusage = None
                 self.speed = 4
@@ -612,27 +616,50 @@ class Hud_Item(pygame.sprite.Sprite):
             self.animation_list = create_animation(
                 Useful_Item_sprites, [6], 16, 16, 25, 14, 30, 30
             )
+            self.image = self.animation_list[0][0]
+            self.rect = self.image.get_rect(center=(id * 30, 30))
         if self.type == "star":
             self.animation_list = create_animation(
                 Useful_Item_sprites, [6], 16, 16, 12, 12, 30, 30
             )
-        self.image = self.animation_list[0][0]
-        self.id = id
-        if self.type == "heart":
-            self.rect = self.image.get_rect(center=(id * 30, 30))
-        if self.type == "star":
+            self.image = self.animation_list[0][0]
             self.rect = self.image.get_rect(
                 center=(((id - 1) % 16) * 30, 60 + 30 * ((id - 1) // 16))
             )
+
+        self.id = id
 
     def show(self, player, screen):
         if self.type == "heart":
             if player.hp >= self.id + 1:
                 screen.blit(self.image, self.rect.center)
+                self.image = self.animation_list[0][player.hudframe]
         if self.type == "star":
             if player.star_count >= self.id:
                 screen.blit(self.image, self.rect.center)
-        self.image = self.animation_list[0][player.hudframe]
+                self.image = self.animation_list[0][player.hudframe]
+        if self.type in ["invincible", "sword", "bow", "bomb", "freeze", "lightning"]:
+            effect_index = [
+                "invincible",
+                "sword",
+                "bow",
+                "bomb",
+                "freeze",
+                "lightning",
+            ].index(self.type)
+            self.image = [
+                cut_image(Useful_Item_sprites, 16, 16, 48, 36, 50, 50),
+                cut_image(Useful_Item_sprites, 16, 16, 46, 35, 50, 50),
+                cut_image(Useful_Item_sprites, 16, 16, 46, 37, 50, 50),
+                cut_image(Useful_Item_sprites, 16, 16, 53, 35, 50, 50),
+                cut_image(Ice_cream, 64, 64, 0, 0, 50, 50),
+                cut_image(Lightning_icon, 64, 64, 0, 0, 50, 50),
+            ][effect_index]
+            self.rect = self.image.get_rect(center=(50 * self.id, 400))
+            screen.blit(self.image, self.rect.center)
+
+    def __repr__(self):
+        return self.type
 
 
 # 14,25,6 long

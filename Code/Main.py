@@ -148,7 +148,6 @@ while running:
             debug_position(
                 [
                     (player.rect.center, (0, 0)),
-                    (player.items_list, (0, 450)),
                 ],
                 screen,
             )

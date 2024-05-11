@@ -258,6 +258,8 @@ class Map:
             heart.show(player, screen)
         for star in player.star_list:
             star.show(player, screen)
+        for item in player.item_hud:
+            item.show(player, screen)
 
 
 # Instance de la map qui va être utilisé
