@@ -563,6 +563,13 @@ class otherPlayer(pygame.sprite.Sprite):
                 and not player_information[self.id]["invincibilty"]
             ):
                 sprite.kill()
+        for sprite in Levels.map.pickup_sprites:
+            if (
+                sprite.effect in ["bronze", "silver", "gold"]
+                and sprite.rect.colliderect(self.rect)
+                and not player_information[self.id]["invincibilty"]
+            ):
+                sprite.kill()
         # Pour le particle
         for sprite in Levels.map.freeze_sprites:
             if sprite.rect.colliderect(self.rect):

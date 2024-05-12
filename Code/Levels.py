@@ -127,6 +127,12 @@ class Map:
                 pos = (x * 50, y * 50)
                 if layer.name == "Walls":
                     Tile(pos, surf, (self.visible_sprites, self.obsticle_sprites))
+                elif layer.name == "Coins":
+                    Coin(
+                        pos,
+                        (self.visible_sprites, self.pickup_sprites),
+                        random.randint(0, 2),
+                    )
                 else:
                     Tile(pos, surf, (self.visible_sprites))
         # Génère les spawners
@@ -214,21 +220,21 @@ class Map:
                             sprite.direction = pygame.math.Vector2(-1, -1)
 
     def coin_spawn(self):
-        cooldown = 100
+        cooldown = 10000
         current_time = pygame.time.get_ticks()
         if current_time - self.coin_cooldown >= cooldown and Placeholder_map == "Food1":
             self.coin_cooldown = current_time
-            self.coin_list.append(
-                Coin(
-                    (random.randint(0, 3000), random.randint(0, 3000)),
-                    (self.visible_sprites, self.pickup_sprites),
-                    random.randint(0, 2),
-                )
-            )
-            for sprite in self.obsticle_sprites:
-                if sprite.rect.colliderect(self.coin_list[-1].rect):
-                    self.coin_list[-1].kill()
-                    self.coin_list.pop()
+            for sprite in self.pickup_sprites:
+                if sprite.effect in ["bronze", "silver", "gold"]:
+                    sprite.kill()
+            for layer in tmx_data.layers:
+                for x, y, surf in layer.tiles():
+                    if layer.name == "Coins":
+                        Coin(
+                            (x * 50, y * 50),
+                            (self.visible_sprites, self.pickup_sprites),
+                            random.randint(0, 2),
+                        )
 
     # Tue tous les éléments non murs du map.
     def allkill(self):
@@ -289,13 +295,13 @@ class Map:
         self.coin_spawn()
         self.visible_sprites.custom_draw(player)
         for heart in player.healthbar:
-            heart.show(player, screen)
+            heart.show(player, screen, Placeholder_map)
         for star in player.star_list:
-            star.show(player, screen)
+            star.show(player, screen, Placeholder_map)
         for item in player.item_hud:
-            item.show(player, screen)
+            item.show(player, screen, Placeholder_map)
         for item in player.bonus_item:
-            item.show(player, screen)
+            item.show(player, screen, Placeholder_map)
 
 
 # Instance de la map qui va être utilisé

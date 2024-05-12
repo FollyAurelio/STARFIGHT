@@ -140,7 +140,7 @@ class Hud_Item(pygame.sprite.Sprite):
 
         self.id = id
 
-    def show(self, player, screen):
+    def show(self, player, screen, map_chosen):
         if self.type == "heart":
             if player.hp >= self.id + 1:
                 screen.blit(self.image, self.rect.center)
@@ -170,6 +170,13 @@ class Hud_Item(pygame.sprite.Sprite):
             screen.blit(self.image, self.rect.center)
         if self.type == "speedup" or self.type == "slowdown":
             screen.blit(self.image, self.rect.center)
+        if map_chosen == "Food1":
+            screen.blit(
+                Mini_square_text.render(
+                    f"Coins : {player.coin_count}", False, (0, 0, 0)
+                ),
+                (0, 300),
+            )
 
     def __repr__(self):
         return self.type
