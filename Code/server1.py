@@ -226,7 +226,7 @@ def server_operations(map):
                             )
                         if map == "Food1":
                             Map_information[category][spawner]["Item_type"] = (
-                                random.randint(6, 6)
+                                random.randint(8, 8)
                             )
                         Map_information[category][spawner][
                             "last_check"
