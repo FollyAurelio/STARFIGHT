@@ -132,11 +132,11 @@ class Hud_Item(pygame.sprite.Sprite):
                 center=(((id - 1) % 16) * 30, 60 + 30 * ((id - 1) // 16))
             )
         if self.type == "speedup":
-            self.image = cut_image(Useful_Item_sprites, 16, 15, 36, 13, 50, 50)
-            self.rect = self.image.get_rect(center=(400, 400 - (id - 5) * 50))
+            self.image = cut_image(Useful_Item_sprites, 16, 15, 36, 14, 50, 50)
+            self.rect = self.image.get_rect(center=(400, 400 - (id - 1) * 50))
         if self.type == "slowdown":
-            self.image = cut_image(Useful_Item_sprites, 16, 15, 36, 15, 50, 50)
-            self.rect = self.image.get_rect(center=(400, 400 + (id - 3) * 50))
+            self.image = cut_image(Useful_Item_sprites, 16, 15, 36, 16, 50, 50)
+            self.rect = self.image.get_rect(center=(400, 400 + (id + 1) * 50))
 
         self.id = id
 

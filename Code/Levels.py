@@ -260,6 +260,8 @@ class Map:
             star.show(player, screen)
         for item in player.item_hud:
             item.show(player, screen)
+        for item in player.bonus_item:
+            item.show(player, screen)
 
 
 # Instance de la map qui va être utilisé

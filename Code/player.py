@@ -35,6 +35,7 @@ class Player(pygame.sprite.Sprite):
 
         self.direction = pygame.math.Vector2(0, 0)
         self.speed = 4
+        self.extra_speed = 0
         self.facing = "right"
         self.prev_time = time.time()
 
@@ -150,9 +151,9 @@ class Player(pygame.sprite.Sprite):
                 self.direction = self.direction.normalize()
             now = time.time()
             dt = now - self.prev_time
-            self.rect.x += self.direction.x * self.speed * dt * 60
+            self.rect.x += self.direction.x * (self.speed + self.extra_speed) * dt * 60
             self.check_collision("horizontal")
-            self.rect.y += self.direction.y * self.speed * dt * 60
+            self.rect.y += self.direction.y * (self.speed + self.extra_speed) * dt * 60
             self.prev_time = now
             self.check_collision("vertical")
 
@@ -423,11 +424,13 @@ class Player(pygame.sprite.Sprite):
         self.prev_time = time.time()
         current_time = pygame.time.get_ticks()
         if self.hp <= 0:
+            self.speed = 4
+            self.extra_speed = 0
+            self.bonus_item = []
             self.image.set_alpha(0)
             if self.using_item:
                 self.items_list[self.using_item - 1].kill()
                 self.using_item = False
-                self.speed = 4
                 self.item_timer = pygame.time.get_ticks()
             self.inusage = None
             self.items_list = ["", "", ""]

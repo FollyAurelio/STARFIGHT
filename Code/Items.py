@@ -34,19 +34,19 @@ class Item(pygame.sprite.Sprite):
 
     def effect_apply(self, player):
         if self.effect == "speedup":
-            if player.speed < 11:
-                player.speed += 1
-                if player.speed > 4:
-                    player.bonus_item.append(Hud_Item(player.speed, "speedup"))
+            if player.extra_speed < 7:
+                player.extra_speed += 1
+                if player.extra_speed > 0:
+                    player.bonus_item.append(Hud_Item(player.extra_speed, "speedup"))
                 else:
-                    player.player.bonus_item.pop()
-        if self.effect == "slowdown":
-            if player.speed > 1:
-                player.speed -= 1
-                if player.speed <= 4:
-                    player.bonus_item.append(Hud_Item(player.speed, "slowdown"))
+                    player.bonus_item.pop()
+        elif self.effect == "slowdown":
+            if player.extra_speed > -3:
+                player.extra_speed -= 1
+                if player.extra_speed < 0:
+                    player.bonus_item.append(Hud_Item(player.extra_speed, "slowdown"))
                 else:
-                    player.player.bonus_item.pop()
+                    player.bonus_item.pop()
         else:
             player.give(self.effect)
         # L'effet que l'item a quand il est ramassé
