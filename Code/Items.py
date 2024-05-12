@@ -17,22 +17,7 @@ class Item(pygame.sprite.Sprite):
             "lightning",
             "speedup",
             "slowdown",
-            "bronze",
-            "silver",
-            "gold",
         ][effect]
-        if self.effect in ["bronze", "silver", "gold"]:
-            self.action = 0
-            self.frame = 0
-            self.last_update = pygame.time.get_ticks()
-            index_y = {"gold": 1, "silver": 2, "bronze": 4}[self.effect]
-            self.animation_list = create_animation(
-                Useful_Item_sprites, [6], 16, 16, 19, index_y, 50, 50
-            ) + [
-                create_animation(Useful_Item_sprites, [6], 16, 16, 26, index_y, 50, 50)[
-                    0
-                ]
-            ]
         self.image = [
             cut_image(Useful_Item_sprites, 16, 16, 48, 36, 50, 50),
             cut_image(Useful_Item_sprites, 16, 16, 46, 35, 50, 50),
@@ -42,9 +27,6 @@ class Item(pygame.sprite.Sprite):
             cut_image(Lightning_icon, 64, 64, 0, 0, 50, 50),
             cut_image(Useful_Item_sprites, 16, 15, 36, 14, 50, 50),
             cut_image(Useful_Item_sprites, 16, 15, 36, 16, 50, 50),
-            self.animation_list[self.action][self.frame],
-            self.animation_list[self.action][self.frame],
-            self.animation_list[self.action][self.frame],
         ][effect]
 
         self.rect = self.image.get_rect(center=pos)
@@ -65,29 +47,12 @@ class Item(pygame.sprite.Sprite):
                     player.bonus_item.append(Hud_Item(player.extra_speed, "slowdown"))
                 else:
                     player.bonus_item.pop()
-        elif self.effect in ["bronze", "silver", "gold"]:
-            player.coin_count += {"bronze": 1, "silver": 2, "gold": 3}[self.effect]
         else:
             player.give(self.effect)
         # L'effet que l'item a quand il est ramassé
 
     def update(self):
-        if self.effect in ["bronze", "silver", "gold"]:
-            animation_cooldown = 100
-            self.last_update, self.frame = animate(
-                self.animation_list,
-                animation_cooldown,
-                self.last_update,
-                self.action,
-                self.frame,
-            )
-            if self.action == 0 and self.frame == 5:
-                self.action = 1
-                self.frame = 0
-            if self.action == 1 and self.frame == 5:
-                self.action = 0
-                self.frame = 0
-            self.image = self.animation_list[self.action][self.frame]
+        pass
 
 
 class Star(pygame.sprite.Sprite):
@@ -377,3 +342,42 @@ class Freeze(pygame.sprite.Sprite):
         current_time = pygame.time.get_ticks()
         if current_time - self.timer >= attack_time:
             self.kill()
+
+
+class Coin(pygame.sprite.Sprite):
+    def __init__(self, pos, group, effect):
+        super().__init__(group)
+        self.effect = [
+            "bronze",
+            "silver",
+            "gold",
+        ][effect]
+        self.action = 0
+        self.frame = 0
+        self.last_update = pygame.time.get_ticks()
+        index_y = {"gold": 1, "silver": 2, "bronze": 4}[self.effect]
+        self.animation_list = create_animation(
+            Useful_Item_sprites, [6], 16, 16, 19, index_y, 50, 50
+        ) + [create_animation(Useful_Item_sprites, [6], 16, 16, 26, index_y, 50, 50)[0]]
+        self.image = self.animation_list[self.action][self.frame]
+        self.rect = self.image.get_rect(center=pos)
+
+    def effect_apply(self, player):
+        player.coin_count += {"bronze": 1, "silver": 2, "gold": 3}[self.effect]
+
+    def update(self):
+        animation_cooldown = 100
+        self.last_update, self.frame = animate(
+            self.animation_list,
+            animation_cooldown,
+            self.last_update,
+            self.action,
+            self.frame,
+        )
+        if self.action == 0 and self.frame == 5:
+            self.action = 1
+            self.frame = 0
+        if self.action == 1 and self.frame == 5:
+            self.action = 0
+            self.frame = 0
+        self.image = self.animation_list[self.action][self.frame]

@@ -132,6 +132,7 @@ while running:
             )
             # Idem mais pour les ennemies, les items et les étoiles
             map_info = Main_menu.network.send(player.kill_list)
+
             # Message d'erreur car dans le cas ou le serveur s'arrete de variable est None
             if not map_info:
                 print("Unable to connect to server")

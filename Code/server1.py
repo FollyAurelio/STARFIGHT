@@ -181,7 +181,7 @@ def threaded_client(conn, client_number):
             reply = data
             for i in reply:
                 kill_list.append(i)
-            conn.send(pickle.dumps(Map_information))
+            conn.send(pickle.dumps((Map_information)))
 
         except:
             break
@@ -206,6 +206,7 @@ def threaded_client(conn, client_number):
 def server_operations(map):
     global Map_information
     global kill_list
+    global Coin
     while True:
         # Si l'élement est dans kill_list (il s'est fait tuer par un des joueurs) alors on le tue pour tous les joueurs.
         for category in Map_information:
@@ -220,14 +221,10 @@ def server_operations(map):
                         Map_information[category][spawner]["cooldown"],
                     ):
                         Map_information[category][spawner]["state"] = "alive"
-                        if map == "Map1":
-                            Map_information[category][spawner]["Item_type"] = (
-                                random.randint(0, 5)
-                            )
-                        if map == "Food1":
-                            Map_information[category][spawner]["Item_type"] = (
-                                random.randint(8, 8)
-                            )
+
+                        Map_information[category][spawner]["Item_type"] = (
+                            random.randint(0, 5)
+                        )
                         Map_information[category][spawner][
                             "last_check"
                         ] = pygame.time.get_ticks()

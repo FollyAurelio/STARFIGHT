@@ -1,7 +1,7 @@
 """Fenêtre qui programme le niveau et tous les éléments qu'elle contient"""
 
 import pygame
-from Items import Item, Star
+from Items import Item, Star, Coin
 import random
 
 # On utilse Pytmx qui est un module qui permet de lire nos fichers type tmx que l'on crée avec Tiled, un outil pour faire les maps.
@@ -80,6 +80,13 @@ class Spawner_Tile(pygame.sprite.Sprite):
                 "map",
                 self.id,
             )
+        if self.type == "Coins":
+            Item(
+                self.rect.center,
+                (map.visible_sprites, map.pickup_sprites),
+                self.id,
+                effect,
+            )
         self.isalive = True
 
 
@@ -144,10 +151,15 @@ class Map:
             1000,
             self.Assign_id(),
         )
+
         # Génère les respawn_tiles
         Respwan_Tile((500, 500), (self.visible_sprites, self.respawn_tile_sprites))
         # Prépare l'envoi des spawners au serveur.
-        self.Spawners = {"Enemies": {}, "Items": {}, "Stars": {}}
+        self.Spawners = {
+            "Enemies": {},
+            "Items": {},
+            "Stars": {},
+        }
         for spawner in self.spawner_sprites:
             self.Spawners[spawner.type][spawner.id] = {
                 "horizontal": spawner.rect.centerx,
@@ -201,24 +213,22 @@ class Map:
                         ):
                             sprite.direction = pygame.math.Vector2(-1, -1)
 
-    # def coin_spawn(self):
-    #     cooldown = 100
-    #     current_time = pygame.time.get_ticks()
-    #     if current_time - self.coin_cooldown >= cooldown and Placeholder_map == "Food1":
-    #         self.coin_cooldown = current_time
-    #         self.coin_list.append(
-    #             Item(
-    #                 (random.randint(0, 3000), random.randint(0, 3000)),
-    #                 (self.visible_sprites, self.pickup_sprites),
-    #                 self.Assign_id(),
-    #                 random.choice([8, 9, 10]),
-    #             )
-    #         )
-    #         for sprite in self.obsticle_sprites:
-    #             if sprite.rect.colliderect(self.coin_list[-1].rect):
-    #                 self.coin_list[-1].kill()
-    #                 self.coin_list.pop()
-    #                 print("a")
+    def coin_spawn(self):
+        cooldown = 100
+        current_time = pygame.time.get_ticks()
+        if current_time - self.coin_cooldown >= cooldown and Placeholder_map == "Food1":
+            self.coin_cooldown = current_time
+            self.coin_list.append(
+                Coin(
+                    (random.randint(0, 3000), random.randint(0, 3000)),
+                    (self.visible_sprites, self.pickup_sprites),
+                    random.randint(0, 2),
+                )
+            )
+            for sprite in self.obsticle_sprites:
+                if sprite.rect.colliderect(self.coin_list[-1].rect):
+                    self.coin_list[-1].kill()
+                    self.coin_list.pop()
 
     # Tue tous les éléments non murs du map.
     def allkill(self):
@@ -255,11 +265,8 @@ class Map:
             if sprite.effect == "star" and sprite.origin == "map":
                 if map_info["Stars"][sprite.id]["state"] == "kill":
                     sprite.kill()
-            elif sprite.effect != "star" and sprite.effect not in [
-                "bronze",
-                "silver",
-                "gold",
-            ]:
+
+            elif sprite.effect not in ["star", "bronze", "silver", "gold"]:
                 if map_info["Items"][sprite.id]["state"] == "kill":
                     sprite.kill()
         for sprite in self.enemy_sprites:
@@ -279,7 +286,7 @@ class Map:
         for sprite in self.particle_sprites:
             sprite.update()
         self.starbounce()
-        # self.coin_spawn()
+        self.coin_spawn()
         self.visible_sprites.custom_draw(player)
         for heart in player.healthbar:
             heart.show(player, screen)
