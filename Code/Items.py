@@ -364,6 +364,10 @@ class Coin(pygame.sprite.Sprite):
 
     def effect_apply(self, player):
         player.coin_count += {"bronze": 1, "silver": 2, "gold": 3}[self.effect]
+        if player.coin_count >= 50:
+            player.coin_count -= 50
+            player.star_count += 1
+            player.star_list.append(Hud_Item(player.star_count, "star"))
 
     def update(self):
         animation_cooldown = 100
