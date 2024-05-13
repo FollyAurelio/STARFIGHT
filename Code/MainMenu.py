@@ -134,6 +134,10 @@ class menu:
             FlashCard((140, 50), (self.hosting, self.joining_join), 1),
             FlashCard((260, 50), (self.hosting, self.joining_join), 2),
             FlashCard((380, 50), (self.hosting, self.joining_join), 3),
+            FlashCard((20, 250), (self.hosting, self.joining_join), 4),
+            FlashCard((140, 250), (self.hosting, self.joining_join), 5),
+            FlashCard((260, 250), (self.hosting, self.joining_join), 6),
+            FlashCard((380, 250), (self.hosting, self.joining_join), 7),
         ]
         self.inputboxes = [
             inputbox((100, 350), self.title_screen, "Name"),
@@ -258,16 +262,11 @@ class FlashCard(pygame.sprite.Sprite):
     def __init__(self, pos, group, id):
         super().__init__(group)
         self.id = id
-        self.image = pygame.Surface((100, 400))
+        self.image = pygame.Surface((100, 170))
         self.image.fill("white")
         self.image.fill(
-            [
-                "blue",
-                "red",
-                "yellow",
-                "green",
-            ][id],
-            (0, 200, 100, 300),
+            ["blue", "red", "yellow", "green", "purple", "black", "gold", "pink"][id],
+            (0, 100, 100, 100),
         )
         self.rect = self.image.get_rect(topleft=pos)
         self.name = f"Player {id+1}"
@@ -280,17 +279,17 @@ class FlashCard(pygame.sprite.Sprite):
             self.connected = ""
         screen.blit(
             Text.render(f"{self.connected}", False, (0, 0, 0)),
-            (self.rect.centerx - 35, self.rect.centery - 130),
+            (self.rect.centerx - 35, self.rect.centery - 90),
         )
         screen.blit(
             Text.render(f"{self.name}", False, (0, 0, 0)),
-            (self.rect.centerx - 30, self.rect.centery - 100),
+            (self.rect.centerx - 30, self.rect.centery - 60),
         )
         for name, id in menu.name_list:
             if id == self.id and self.id in menu.Connected_list:
                 screen.blit(
                     Text.render(f"{name}", False, (0, 0, 0)),
-                    (self.rect.centerx - 50, self.rect.centery - 60),
+                    (self.rect.centerx - 50, self.rect.centery - 40),
                 )
 
 
@@ -300,7 +299,7 @@ class inputbox(pygame.sprite.Sprite):
         self.image = pygame.Surface((300, 50))
         self.image.fill("white")
         self.rect = self.image.get_rect(topleft=pos)
-        self.text = "192.168.2.164"
+        self.text = "192.168.1.160"
         self.error = False
         self.exist = False
         self.function = function
@@ -367,7 +366,7 @@ def endscreen(information, screen):
                 False,
                 (255, 255, 255),
             ),
-            (0, 100 * (id + 1)),
+            (0, 50 * (id + 1)),
         )
     screen.blit(
         Mini_square_text.render(

@@ -117,8 +117,7 @@ class Map:
         self.respawn_tile_sprites = pygame.sprite.Group()
         self.particle_sprites = pygame.sprite.Group()
         self.coin_cooldown = pygame.time.get_ticks()
-        self.coin_list = []
-        self.ids = 4
+        self.ids = 7
 
         # Génère le map
         for layer in tmx_data.layers:

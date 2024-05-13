@@ -61,16 +61,30 @@ class Player(pygame.sprite.Sprite):
         self.inusage = None
         self.weaponask = False
         self.bowask = False
-
-        self.spritesheet = pygame.image.load(Dinos[self.id]).convert_alpha()
+        if self.id <= 3:
+            self.spritesheet = pygame.image.load(Dinos[self.id]).convert_alpha()
+        else:
+            idle, walk, kick, hurt = (
+                pygame.image.load(Extra_Dinos_Idle[self.id - 4]).convert_alpha(),
+                pygame.image.load(Extra_Dinos_Walk[self.id - 4]).convert_alpha(),
+                pygame.image.load(Extra_Dinos_Kick[self.id - 4]).convert_alpha(),
+                pygame.image.load(Extra_Dinos_Hurt[self.id - 4]).convert_alpha(),
+            )
         self.frame = 0
         self.action = 0
         self.last_update = pygame.time.get_ticks()
-
-        animation_length = [4, 6, 3, 4]
-        self.animation_list = create_animation(
-            self.spritesheet, animation_length, 24, 24, 0, 0, 45, 45
-        )
+        if self.id <= 3:
+            animation_length = [4, 6, 3, 4]
+            self.animation_list = create_animation(
+                self.spritesheet, animation_length, 24, 24, 0, 0, 45, 45
+            )
+        else:
+            self.animation_list = (
+                create_animation(idle, [3], 24, 24, 0, 0, 45, 45)
+                + [create_animation(walk, [6], 24, 24, 0, 0, 45, 45)[0]]
+                + [create_animation(kick, [3], 24, 24, 0, 0, 45, 45)[0]]
+                + [create_animation(hurt, [4], 24, 24, 0, 0, 45, 45)[0]]
+            )
 
         self.kill_list = []
         self.image = self.animation_list[self.action][self.frame]
@@ -457,18 +471,33 @@ class otherPlayer(pygame.sprite.Sprite):
         self.id = id
         self.name = name
 
-        self.spritesheet = pygame.image.load(Dinos[self.id]).convert_alpha()
+        if self.id <= 3:
+            self.spritesheet = pygame.image.load(Dinos[self.id]).convert_alpha()
+        else:
+            idle, walk, kick, hurt = (
+                pygame.image.load(Extra_Dinos_Idle[self.id - 4]).convert_alpha(),
+                pygame.image.load(Extra_Dinos_Walk[self.id - 4]).convert_alpha(),
+                pygame.image.load(Extra_Dinos_Kick[self.id - 4]).convert_alpha(),
+                pygame.image.load(Extra_Dinos_Hurt[self.id - 4]).convert_alpha(),
+            )
         self.facing = "right"
         self.action = 0
         self.frame = 0
         self.weapon = None
         self.direction = pygame.math.Vector2()
 
-        self.animation_list = []
-        animation_length = [4, 6, 3, 4]
-        self.animation_list = create_animation(
-            self.spritesheet, animation_length, 24, 24, 0, 0, 45, 45
-        )
+        if self.id <= 3:
+            animation_length = [4, 6, 3, 4]
+            self.animation_list = create_animation(
+                self.spritesheet, animation_length, 24, 24, 0, 0, 45, 45
+            )
+        else:
+            self.animation_list = (
+                create_animation(idle, [3], 24, 24, 0, 0, 45, 45)
+                + [create_animation(walk, [6], 24, 24, 0, 0, 45, 45)[0]]
+                + [create_animation(kick, [3], 24, 24, 0, 0, 45, 45)[0]]
+                + [create_animation(hurt, [4], 24, 24, 0, 0, 45, 45)[0]]
+            )
 
         self.image = self.animation_list[self.action][self.frame]
         self.rect = self.image.get_rect(center=pos)

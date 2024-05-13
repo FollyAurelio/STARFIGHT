@@ -47,6 +47,30 @@ Dinos = [
     "Sprites/DinoSprites - tard.png",
     "Sprites/DinoSprites - vita.png",
 ]
+Extra_Dinos_Idle = [
+    "Sprites/download/male/cole/base/idle.png",
+    "Sprites/download/male/kuro/base/idle.png",
+    "Sprites/download/male/nico/base/idle.png",
+    "Sprites/download/male/kira/base/idle.png",
+]
+Extra_Dinos_Walk = [
+    "Sprites/download/male/cole/base/move.png",
+    "Sprites/download/male/kuro/base/move.png",
+    "Sprites/download/male/nico/base/move.png",
+    "Sprites/download/male/kira/base/move.png",
+]
+Extra_Dinos_Kick = [
+    "Sprites/download/male/cole/base/kick.png",
+    "Sprites/download/male/kuro/base/kick.png",
+    "Sprites/download/male/nico/base/kick.png",
+    "Sprites/download/male/kira/base/kick.png",
+]
+Extra_Dinos_Hurt = [
+    "Sprites/download/male/cole/base/hurt.png",
+    "Sprites/download/male/kuro/base/hurt.png",
+    "Sprites/download/male/nico/base/hurt.png",
+    "Sprites/download/male/kira/base/hurt.png",
+]
 Star_background = pygame.image.load("Sprites/Enjl-Starry Space Background/preview.png")
 Useful_Item_sprites = pygame.image.load(
     "Sprites/coins-chests-etc-2-0.png"

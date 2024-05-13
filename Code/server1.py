@@ -92,7 +92,68 @@ player_information = {
         "hp": 3,
         "name": "",
     },
+    4: {
+        "position": (450, 300),
+        "action_frame": (0, 0),
+        "facing": "right",
+        "inusage": None,
+        "weaponask": False,
+        "bowask": False,
+        "direction": (0, 0),
+        "star_count": 0,
+        "took_damage": False,
+        "star_lost": False,
+        "invincibilty": False,
+        "hp": 3,
+        "name": "",
+    },
+    5: {
+        "position": (500, 300),
+        "action_frame": (0, 0),
+        "facing": "right",
+        "inusage": None,
+        "weaponask": False,
+        "bowask": False,
+        "direction": (0, 0),
+        "star_count": 0,
+        "took_damage": False,
+        "star_lost": False,
+        "invincibilty": False,
+        "hp": 3,
+        "name": "",
+    },
+    6: {
+        "position": (650, 300),
+        "action_frame": (0, 0),
+        "facing": "right",
+        "inusage": None,
+        "weaponask": False,
+        "bowask": False,
+        "direction": (0, 0),
+        "star_count": 0,
+        "took_damage": False,
+        "star_lost": False,
+        "invincibilty": False,
+        "hp": 3,
+        "name": "",
+    },
+    7: {
+        "position": (750, 600),
+        "action_frame": (0, 0),
+        "facing": "right",
+        "inusage": None,
+        "weaponask": False,
+        "bowask": False,
+        "direction": (0, 0),
+        "star_count": 0,
+        "took_damage": False,
+        "star_lost": False,
+        "invincibilty": False,
+        "hp": 3,
+        "name": "",
+    },
 }
+
 # Contient les information des ennemies, des items, des étoiles.
 Map_information = {}
 # Contienne les ids des éléments tué par les autres joueurs
@@ -267,7 +328,7 @@ while True:
             break
     except:
         break
-    if client_number >= 4:
+    if client_number >= 8:
         conn.close()
         continue
     print("Connected to :", addr)
