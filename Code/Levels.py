@@ -134,8 +134,11 @@ class Map:
                     Orb(pos, (self.visible_sprites, self.pickup_sprites), 1)
                 elif layer.name == "Enemy_m_hori":
                     Enemy(pos, (self.visible_sprites, self.enemy_sprites), "m_hori", -1)
+                elif layer.name == "Enemy_proj_up":
+                    Enemy(
+                        pos, (self.visible_sprites, self.enemy_sprites), "proj_up", -1
+                    )
                 else:
-
                     Tile(pos, surf, (self.visible_sprites))
         # Génère les spawners
         Spawner_Tile(

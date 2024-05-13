@@ -110,15 +110,13 @@ class Enemy(pygame.sprite.Sprite):
         self.check_collision("vertical", map)
         self.prev_time = now
 
-    # def project(self,player,map):
-    #     if not self.frozen:
-    #         current_time=pygame.time.get_ticks()
-    #         cooldown=1000
-    #         if current_time-self.projectile_cooldown>=cooldown:
-    #             self.projectile_cooldown=current_time
-    #             temp=map.Assign_id()
-    #             Projectile(player,self,self.g,temp)
-    #             map.Enemy_list[temp]=(self.rect.center,True)
+    def project(self, map):
+        current_time = pygame.time.get_ticks()
+        cooldown = 1000
+        if current_time - self.last_movement >= cooldown:
+            self.last_movement = current_time
+            Projectile(self, (map.visible_sprites, map.enemy_sprites), -1)
+
     def update(self, player, map, map_info):
         if self.type == "movement":
             self.freezetime()
@@ -130,6 +128,8 @@ class Enemy(pygame.sprite.Sprite):
             "m_hori",
         ]:
             self.slide(map)
+        elif self.type in ["proj_up", "proj_down", "proj_left", "proj_right"]:
+            self.project(map)
 
 
 # class Range(pygame.sprite.Sprite):
@@ -142,41 +142,34 @@ class Enemy(pygame.sprite.Sprite):
 #         self.rect=self.image.get_rect(center=enemy.rect.center)
 
 
-# class Projectile(pygame.sprite.Sprite):
-#     def __init__(self,player,enemy,group,id):
-#         self.id=id
-#         super().__init__(group)
-#         self.image=pygame.Surface((25,25))
-#         self.image.fill("brown")
-#         self.rect=self.image.get_rect(center=enemy.rect.center)
-#         self.time=pygame.time.get_ticks()
-#         # angle=math.atan2(player.rect.y-self.rect.y,player.rect.x-self.rect.x)
-#         # de_angle=int(angle/math.pi)
-#         self.direction=pygame.math.Vector2((player.rect.x-self.rect.x)*0.01,(player.rect.y-self.rect.y)*0.01)
-#         if self.direction.magnitude()!=0:
-#             self.direction.normalize()
+class Projectile(pygame.sprite.Sprite):
+    def __init__(self, enemy, group, id):
+        super().__init__(group)
+        self.id = id
+        self.type = "projectile"
+        self.image = pygame.Surface((25, 25))
+        self.image.fill("brown")
+        self.rect = self.image.get_rect(center=enemy.rect.center)
+        self.time = pygame.time.get_ticks()
+        self.direction = enemy.direction
+        self.prev_time = time.time()
+        if self.direction.magnitude() != 0:
+            self.direction.normalize()
 
+        #     angle=self.direction.angle_to((1,0))
+        #     pygame.transform.rotate(self.image,angle)
+        # print(angle)
 
-#         #     angle=self.direction.angle_to((1,0))
-#         #     pygame.transform.rotate(self.image,angle)
-#             # print(angle)
-#         self.isproject=True
-#         self.duration=3000
-
-
-#     def update(self,player,map):
-#         if player.id==0:
-#             k=False
-#             current_time=pygame.time.get_ticks()
-#             for sprite in map.obsticle_sprites:
-#                 if sprite.rect.colliderect(self.rect):
-#                     k=True
-#                     self.kill()
-#             if current_time-self.time>=self.duration:
-#                 k=True
-#                 self.kill()
-#             self.rect.x+=self.direction.x
-#             self.rect.y+=self.direction.y
-#             if k:
-#                 del map.Enemy_list[self.id]
-# map.Enemy_list[self.id]=(self.rect.center,True)
+    def update(self, player, map, map_info):
+        current_time = pygame.time.get_ticks()
+        duration = 3000
+        for sprite in map.obsticle_sprites:
+            if sprite.rect.colliderect(self.rect):
+                self.kill()
+        if current_time - self.time >= duration:
+            self.kill()
+        now = time.time()
+        dt = now - self.prev_time
+        self.rect.x += self.direction.x * dt * 60
+        self.rect.y += self.direction.y * dt * 60
+        self.prev_time = now
