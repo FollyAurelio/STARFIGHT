@@ -126,45 +126,71 @@ class Map:
                 pos = (x * 50, y * 50)
                 if layer.name == "Walls":
                     Tile(pos, surf, (self.visible_sprites, self.obsticle_sprites))
+                elif layer.name == "Stars":
+                    Spawner_Tile(
+                        pos,
+                        (self.visible_sprites, self.spawner_sprites),
+                        "Stars",
+                        5000,
+                        self.Assign_id(),
+                    )
+                elif layer.name == "Items":
+                    Spawner_Tile(
+                        pos,
+                        (self.visible_sprites, self.spawner_sprites),
+                        "Items",
+                        5000,
+                        self.Assign_id(),
+                    )
                 elif layer.name == "Coins":
                     Coin(pos, (self.visible_sprites, self.pickup_sprites))
                 elif layer.name == "Speed_Orb":
                     Orb(pos, (self.visible_sprites, self.pickup_sprites), 0)
                 elif layer.name == "Slow_Orb":
                     Orb(pos, (self.visible_sprites, self.pickup_sprites), 1)
+                elif layer.name == "Enemy_movement":
+                    Spawner_Tile(
+                        pos,
+                        (self.visible_sprites, self.spawner_sprites),
+                        "Enemies",
+                        5000,
+                        self.Assign_id(),
+                    )
                 elif layer.name == "Enemy_m_hori":
                     Enemy(pos, (self.visible_sprites, self.enemy_sprites), "m_hori", -1)
+                elif layer.name == "Enemy_m_ver":
+                    Enemy(pos, (self.visible_sprites, self.enemy_sprites), "m_ver", -1)
                 elif layer.name == "Enemy_proj_up":
                     Enemy(
                         pos, (self.visible_sprites, self.enemy_sprites), "proj_up", -1
                     )
+                elif layer.name == "Enemy_proj_down":
+                    Enemy(
+                        pos, (self.visible_sprites, self.enemy_sprites), "proj_down", -1
+                    )
+                elif layer.name == "Enemy_proj_right":
+                    Enemy(
+                        pos,
+                        (self.visible_sprites, self.enemy_sprites),
+                        "proj_right",
+                        -1,
+                    )
+                elif layer.name == "Enemy_proj_left":
+                    Enemy(
+                        pos, (self.visible_sprites, self.enemy_sprites), "proj_left", -1
+                    )
+                elif layer.name == "Enemy_stationary":
+                    Enemy(
+                        pos,
+                        (self.visible_sprites, self.enemy_sprites),
+                        "stationary",
+                        -1,
+                    )
+                elif layer.name == "Respawn_Tile":
+                    Respwan_Tile(pos, (self.visible_sprites, self.respawn_tile_sprites))
                 else:
                     Tile(pos, surf, (self.visible_sprites))
-        # Génère les spawners
-        Spawner_Tile(
-            (300, 300),
-            (self.visible_sprites, self.spawner_sprites),
-            "Enemies",
-            1000,
-            self.Assign_id(),
-        )
-        Spawner_Tile(
-            (350, 350),
-            (self.visible_sprites, self.spawner_sprites),
-            "Stars",
-            1000,
-            self.Assign_id(),
-        )
-        Spawner_Tile(
-            (400, 400),
-            (self.visible_sprites, self.spawner_sprites),
-            "Items",
-            1000,
-            self.Assign_id(),
-        )
 
-        # Génère les respawn_tiles
-        Respwan_Tile((500, 500), (self.visible_sprites, self.respawn_tile_sprites))
         # Prépare l'envoi des spawners au serveur.
         self.Spawners = {
             "Enemies": {},

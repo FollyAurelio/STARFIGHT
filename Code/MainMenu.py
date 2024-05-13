@@ -360,7 +360,7 @@ def determine_winner(information):
 
 def endscreen(information, screen):
     screen.blit(Starfight.render(f"RESULTS", False, (255, 255, 255)), (170, 0))
-    for id in range(4):
+    for id in Main_menu.Connected_list:
         screen.blit(
             Mini_square_text.render(
                 f"{information[id]['name']} : {information[id]['star_count']} stars",

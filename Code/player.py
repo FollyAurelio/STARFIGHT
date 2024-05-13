@@ -275,6 +275,7 @@ class Player(pygame.sprite.Sprite):
             if sprite.rect.colliderect(self.rect):
                 if sprite.id != self.id:
                     self.Ouch(sprite)
+                    sprite.kill()
         for sprite in Levels.map.flash_sprites:
             if sprite.rect.colliderect(self.rect):
                 if sprite.id != self.id:
@@ -588,6 +589,10 @@ class otherPlayer(pygame.sprite.Sprite):
                             (Levels.map.visible_sprites, Levels.map.particle_sprites),
                             "lightning",
                         )
+        for sprite in Levels.map.arrow_sprites:
+            if sprite.rect.colliderect(self.rect):
+                if sprite.id != self.id:
+                    sprite.kill()
 
         self.image = self.animation_list[self.action][self.frame]
         # Il disparait quand il meurt

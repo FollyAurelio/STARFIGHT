@@ -88,7 +88,7 @@ while running:
             )
             # Inisialise les autres joueurs en fonction de certains informations fourni par le server
             for id in player_information:
-                if id != Main_menu.network.id:
+                if id != Main_menu.network.id and id in Main_menu.Connected_list:
                     otherPlayer(
                         player_information[id]["position"],
                         (Levels.map.visible_sprites, Levels.map.other_player_sprites),
