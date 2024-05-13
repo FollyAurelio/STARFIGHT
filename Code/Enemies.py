@@ -5,14 +5,25 @@ from Settings import *
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, pos, group, id):
+    def __init__(self, pos, group, type, id):
         super().__init__(group)
         self.id = id
+        self.type = type
         self.image = pygame.Surface((50, 50))
         self.image.fill("red")
-        self.g = group
         self.rect = self.image.get_rect(center=pos)
-        self.direction = pygame.math.Vector2()
+
+        self.direction = {
+            "movement": pygame.math.Vector2(),
+            "stationary": pygame.math.Vector2(),
+            "proj_up": pygame.math.Vector2(0, -1),
+            "proj_down": pygame.math.Vector2(0, 1),
+            "proj_left": pygame.math.Vector2(-1, 0),
+            "proj_right": pygame.math.Vector2(1, 0),
+            "m_ver": pygame.math.Vector2(0, -1),
+            "m_hori": pygame.math.Vector2(-1, 0),
+        }[self.type]
+
         self.last_movement = pygame.time.get_ticks()
         self.prev_time = time.time()
         self.frozen = False
@@ -85,6 +96,20 @@ class Enemy(pygame.sprite.Sprite):
                 )
                 self.frozen = True
 
+    def slide(self, map):
+        current_time = pygame.time.get_ticks()
+        cooldown = 5000
+        if current_time - self.last_movement >= cooldown:
+            self.direction = -self.direction
+            self.last_movement = current_time
+        now = time.time()
+        dt = now - self.prev_time
+        self.rect.x += self.direction.x * dt * 60
+        self.check_collision("horizontal", map)
+        self.rect.y += self.direction.y * dt * 60
+        self.check_collision("vertical", map)
+        self.prev_time = now
+
     # def project(self,player,map):
     #     if not self.frozen:
     #         current_time=pygame.time.get_ticks()
@@ -95,9 +120,16 @@ class Enemy(pygame.sprite.Sprite):
     #             Projectile(player,self,self.g,temp)
     #             map.Enemy_list[temp]=(self.rect.center,True)
     def update(self, player, map, map_info):
-        self.freezetime()
-        self.Take_damage(player, map)
-        self.move(map, map_info)
+        if self.type == "movement":
+            self.freezetime()
+            self.Take_damage(player, map)
+            self.move(map, map_info)
+        elif self.type in [
+            "stationary",
+            "m_ver",
+            "m_hori",
+        ]:
+            self.slide(map)
 
 
 # class Range(pygame.sprite.Sprite):

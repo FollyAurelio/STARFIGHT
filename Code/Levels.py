@@ -65,7 +65,12 @@ class Spawner_Tile(pygame.sprite.Sprite):
     # Quand cet fonction est appelé, l'élément dans self.type est spawn.
     def spawn(self, effect):
         if self.type == "Enemies":
-            Enemy(self.rect.center, (map.visible_sprites, map.enemy_sprites), self.id)
+            Enemy(
+                self.rect.center,
+                (map.visible_sprites, map.enemy_sprites),
+                "movement",
+                self.id,
+            )
         if self.type == "Items":
             Item(
                 self.rect.center,
@@ -127,6 +132,8 @@ class Map:
                     Orb(pos, (self.visible_sprites, self.pickup_sprites), 0)
                 elif layer.name == "Slow_Orb":
                     Orb(pos, (self.visible_sprites, self.pickup_sprites), 1)
+                elif layer.name == "Enemy_m_hori":
+                    Enemy(pos, (self.visible_sprites, self.enemy_sprites), "m_hori", -1)
                 else:
 
                     Tile(pos, surf, (self.visible_sprites))
@@ -276,8 +283,9 @@ class Map:
                     sprite.kill()
         for sprite in self.enemy_sprites:
             sprite.update(player, self, map_info)
-            if map_info["Enemies"][sprite.id]["state"] == "kill":
-                sprite.kill()
+            if sprite.type == "movement":
+                if map_info["Enemies"][sprite.id]["state"] == "kill":
+                    sprite.kill()
         for bomb in self.bomb_sprites:
             bomb.detonate(self)
         for sprite in self.arrow_sprites:
