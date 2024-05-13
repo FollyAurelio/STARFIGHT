@@ -187,7 +187,7 @@ class Player(pygame.sprite.Sprite):
                     if sprite.effect == "star":
                         self.kill_list.append(sprite.id)
                         self.star_list.append(Hud_Item(self.star_count, "star"))
-                    elif sprite.effect not in ["bronze", "silver", "gold"]:
+                    elif sprite.effect not in ["speedup", "slowdown", "gold"]:
                         self.kill_list.append(sprite.id)
                     sprite.kill()
 
@@ -565,7 +565,7 @@ class otherPlayer(pygame.sprite.Sprite):
                 sprite.kill()
         for sprite in Levels.map.pickup_sprites:
             if (
-                sprite.effect in ["bronze", "silver", "gold"]
+                sprite.effect in ["speedup", "slowdown", "gold"]
                 and sprite.rect.colliderect(self.rect)
                 and not player_information[self.id]["invincibilty"]
             ):

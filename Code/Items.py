@@ -15,8 +15,6 @@ class Item(pygame.sprite.Sprite):
             "bomb",
             "freeze",
             "lightning",
-            "speedup",
-            "slowdown",
         ][effect]
         self.image = [
             cut_image(Useful_Item_sprites, 16, 16, 48, 36, 50, 50),
@@ -25,30 +23,13 @@ class Item(pygame.sprite.Sprite):
             cut_image(Useful_Item_sprites, 16, 16, 53, 35, 50, 50),
             cut_image(Ice_cream, 64, 64, 0, 0, 50, 50),
             cut_image(Lightning_icon, 64, 64, 0, 0, 50, 50),
-            cut_image(Useful_Item_sprites, 16, 15, 36, 14, 50, 50),
-            cut_image(Useful_Item_sprites, 16, 15, 36, 16, 50, 50),
         ][effect]
 
         self.rect = self.image.get_rect(center=pos)
         # Initialise le type d'item aléatoire
 
     def effect_apply(self, player):
-        if self.effect == "speedup":
-            if player.extra_speed < 7:
-                player.extra_speed += 1
-                if player.extra_speed > 0:
-                    player.bonus_item.append(Hud_Item(player.extra_speed, "speedup"))
-                else:
-                    player.bonus_item.pop()
-        elif self.effect == "slowdown":
-            if player.extra_speed > -3:
-                player.extra_speed -= 1
-                if player.extra_speed < 0:
-                    player.bonus_item.append(Hud_Item(player.extra_speed, "slowdown"))
-                else:
-                    player.bonus_item.pop()
-        else:
-            player.give(self.effect)
+        player.give(self.effect)
         # L'effet que l'item a quand il est ramassé
 
     def update(self):
@@ -345,25 +326,21 @@ class Freeze(pygame.sprite.Sprite):
 
 
 class Coin(pygame.sprite.Sprite):
-    def __init__(self, pos, group, effect):
+    def __init__(self, pos, group):
         super().__init__(group)
-        self.effect = [
-            "bronze",
-            "silver",
-            "gold",
-        ][effect]
+        self.effect = "gold"
         self.action = 0
         self.frame = 0
         self.last_update = pygame.time.get_ticks()
-        index_y = {"gold": 1, "silver": 2, "bronze": 4}[self.effect]
+        self.respawn_timer = pygame.time.get_ticks()
         self.animation_list = create_animation(
-            Useful_Item_sprites, [6], 16, 16, 19, index_y, 50, 50
-        ) + [create_animation(Useful_Item_sprites, [6], 16, 16, 26, index_y, 50, 50)[0]]
+            Useful_Item_sprites, [6], 16, 16, 19, 1, 50, 50
+        ) + [create_animation(Useful_Item_sprites, [6], 16, 16, 26, 1, 50, 50)[0]]
         self.image = self.animation_list[self.action][self.frame]
         self.rect = self.image.get_rect(center=pos)
 
     def effect_apply(self, player):
-        player.coin_count += {"bronze": 1, "silver": 2, "gold": 3}[self.effect]
+        player.coin_count += 1
         if player.coin_count >= 50:
             player.coin_count -= 50
             player.star_count += 1
@@ -371,6 +348,8 @@ class Coin(pygame.sprite.Sprite):
 
     def update(self):
         animation_cooldown = 100
+        # respawn_cooldown = 3000
+        # current_respawn_time = pygame.time.get_ticks()
         self.last_update, self.frame = animate(
             self.animation_list,
             animation_cooldown,
@@ -385,3 +364,42 @@ class Coin(pygame.sprite.Sprite):
             self.action = 0
             self.frame = 0
         self.image = self.animation_list[self.action][self.frame]
+        # print(self.alive())
+        # if not self.alive():
+        #     if current_respawn_time - self.respawn_timer >= respawn_cooldown:
+        #         self.add((map.visible_sprites, map.pickup_sprites))
+        #         print("a")
+        #         self.respawn_timer = current_respawn_time
+
+
+class Orb(pygame.sprite.Sprite):
+    def __init__(self, pos, group, effect):
+        super().__init__(group)
+        self.effect = [
+            "speedup",
+            "slowdown",
+        ][effect]
+        self.image = [
+            cut_image(Useful_Item_sprites, 16, 15, 36, 14, 50, 50),
+            cut_image(Useful_Item_sprites, 16, 15, 36, 16, 50, 50),
+        ][effect]
+        self.rect = self.image.get_rect(center=pos)
+
+    def effect_apply(self, player):
+        if self.effect == "speedup":
+            if player.extra_speed < 7:
+                player.extra_speed += 1
+                if player.extra_speed > 0:
+                    player.bonus_item.append(Hud_Item(player.extra_speed, "speedup"))
+                else:
+                    player.bonus_item.pop()
+        elif self.effect == "slowdown":
+            if player.extra_speed > -3:
+                player.extra_speed -= 1
+                if player.extra_speed < 0:
+                    player.bonus_item.append(Hud_Item(player.extra_speed, "slowdown"))
+                else:
+                    player.bonus_item.pop()
+
+    def update(self):
+        pass

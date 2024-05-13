@@ -1,7 +1,7 @@
 """Fenêtre qui programme le niveau et tous les éléments qu'elle contient"""
 
 import pygame
-from Items import Item, Star, Coin
+from Items import Item, Star, Coin, Orb
 import random
 
 # On utilse Pytmx qui est un module qui permet de lire nos fichers type tmx que l'on crée avec Tiled, un outil pour faire les maps.
@@ -80,13 +80,7 @@ class Spawner_Tile(pygame.sprite.Sprite):
                 "map",
                 self.id,
             )
-        if self.type == "Coins":
-            Item(
-                self.rect.center,
-                (map.visible_sprites, map.pickup_sprites),
-                self.id,
-                effect,
-            )
+
         self.isalive = True
 
 
@@ -128,12 +122,13 @@ class Map:
                 if layer.name == "Walls":
                     Tile(pos, surf, (self.visible_sprites, self.obsticle_sprites))
                 elif layer.name == "Coins":
-                    Coin(
-                        pos,
-                        (self.visible_sprites, self.pickup_sprites),
-                        random.randint(0, 2),
-                    )
+                    Coin(pos, (self.visible_sprites, self.pickup_sprites))
+                elif layer.name == "Speed_Orb":
+                    Orb(pos, (self.visible_sprites, self.pickup_sprites), 0)
+                elif layer.name == "Slow_Orb":
+                    Orb(pos, (self.visible_sprites, self.pickup_sprites), 1)
                 else:
+
                     Tile(pos, surf, (self.visible_sprites))
         # Génère les spawners
         Spawner_Tile(
@@ -219,22 +214,26 @@ class Map:
                         ):
                             sprite.direction = pygame.math.Vector2(-1, -1)
 
-    def coin_spawn(self):
+    def bonus_item_spawn(self):
         cooldown = 10000
         current_time = pygame.time.get_ticks()
         if current_time - self.coin_cooldown >= cooldown and Placeholder_map == "Food1":
             self.coin_cooldown = current_time
             for sprite in self.pickup_sprites:
-                if sprite.effect in ["bronze", "silver", "gold"]:
+                if sprite.effect in ["gold", "speedup", "slowdown"]:
                     sprite.kill()
             for layer in tmx_data.layers:
                 for x, y, surf in layer.tiles():
+                    pos = (x * 50, y * 50)
                     if layer.name == "Coins":
                         Coin(
-                            (x * 50, y * 50),
+                            pos,
                             (self.visible_sprites, self.pickup_sprites),
-                            random.randint(0, 2),
                         )
+                    if layer.name == "Speed_Orb":
+                        Orb(pos, (self.visible_sprites, self.pickup_sprites), 0)
+                    if layer.name == "Slow_Orb":
+                        Orb(pos, (self.visible_sprites, self.pickup_sprites), 1)
 
     # Tue tous les éléments non murs du map.
     def allkill(self):
@@ -272,7 +271,7 @@ class Map:
                 if map_info["Stars"][sprite.id]["state"] == "kill":
                     sprite.kill()
 
-            elif sprite.effect not in ["star", "bronze", "silver", "gold"]:
+            elif sprite.effect not in ["star", "speedup", "slowdown", "gold"]:
                 if map_info["Items"][sprite.id]["state"] == "kill":
                     sprite.kill()
         for sprite in self.enemy_sprites:
@@ -292,7 +291,7 @@ class Map:
         for sprite in self.particle_sprites:
             sprite.update()
         self.starbounce()
-        self.coin_spawn()
+        self.bonus_item_spawn()
         self.visible_sprites.custom_draw(player)
         for heart in player.healthbar:
             heart.show(player, screen, Placeholder_map)

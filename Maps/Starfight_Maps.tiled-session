@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "MAP.tmx",
+    "activeFile": "Food1.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
@@ -17,23 +17,23 @@
         },
         "Food elements.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 1,
+            "scaleInDock": 1.5,
             "scaleInEditor": 4
         },
         "Food1.tmx": {
-            "scale": 1,
-            "selectedLayer": 0,
+            "scale": 0.75,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 241,
-                "y": -0.5
+                "x": 537.3333333333333,
+                "y": 307.33333333333326
             }
         },
         "MAP.tmx": {
             "scale": 1.3355882352941175,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 335.4327240695882,
-                "y": 358.26910372164724
+                "x": 340.6738603831755,
+                "y": 339.5507597445497
             }
         },
         "MAP2.tmx": {
@@ -57,15 +57,16 @@
     "map.tileWidth": 18,
     "map.width": 60,
     "openFiles": [
-        "MAP2.tmx",
-        "MAP.tmx"
+        "MAP.tmx",
+        "Food1.tmx",
+        "Food elements.tsx"
     ],
     "project": "Starfight_Maps.tiled-project",
     "recentFiles": [
-        "MAP2.tmx",
-        "Food1.tmx",
+        "MAP.tmx",
         "Food elements.tsx",
-        "MAP.tmx"
+        "Food1.tmx",
+        "MAP2.tmx"
     ],
     "tileset.lastUsedFilter": "Fichiers de jeu de tuiles Tiled (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
