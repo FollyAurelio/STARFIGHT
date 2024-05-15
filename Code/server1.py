@@ -159,7 +159,7 @@ Map_information = {}
 # Contienne les ids des éléments tué par les autres joueurs
 kill_list = []
 # On vérifie si il situe dans un ménu ou pas.
-inmenu = True
+# inmenu = True
 # Liste des joueurs connectés
 Connected_list = []
 # Noms des joueurs
@@ -168,6 +168,7 @@ name_list = []
 map_chosen = "Map1"
 # Temps du jeu
 Game_time = 300
+host_start = False
 try:
     server.bind((host, port))
 except socket.error as e:
@@ -184,7 +185,8 @@ def threaded_client(conn, client_number):
     global player_information
     global Map_information
     global kill_list
-    global inmenu
+    # global inmenu
+    global host_start
     global Connected_list
     global open_slots
     global map_chosen
@@ -193,6 +195,7 @@ def threaded_client(conn, client_number):
     # Ce variable permet de break si le joueur se déconnecte dans le menu.
     breakall = False
     count = 0
+    inmenu = True
     # On envoi au client son client_number, soit l'ordre auquel il s'est connceté.
     conn.send(pickle.dumps(client_number))
     # Dans le menu
@@ -202,25 +205,36 @@ def threaded_client(conn, client_number):
         try:
             # On envoi si on est dans un menu, le map chosi, et le name.
             if client_number == 0:
-                inmenu, map_chosen, name, Game_time = pickle.loads(conn.recv(2048))
+                inmenu, map_chosen, name, Game_time, host_start = pickle.loads(
+                    conn.recv(2048)
+                )  # inmenu
             # On envoi le name
             else:
-                name = pickle.loads(conn.recv(2048))[2]
+                thing = pickle.loads(conn.recv(2048))
+                inmenu, name = (
+                    thing[0],
+                    thing[2],
+                )
+
             # On l'ajout à un name_list, qui va permettre l'affichage de tous les noms plus tard.
             if (name, client_number) not in name_list:
                 name_list.append((name, client_number))
                 player_information[client_number]["name"] = name
             conn.send(
-                pickle.dumps((Connected_list, inmenu, name_list, map_chosen, Game_time))
+                pickle.dumps(
+                    (Connected_list, name_list, map_chosen, Game_time, host_start)
+                )  # inmenu
             )
-        except:
+        except socket.error as e:
+            print(e)
             breakall = True
-        count += 1
-        if count % 100 == 0:
-            print(client_number)
+        # count += 1
+        # if count % 100 == 0:
+        #     print(client_number)
     # On échange les information permettant de commencé le jeu.
     if not breakall:
         p = pickle.loads(conn.recv(2048))
+        print("l")
         conn.send(pickle.dumps((player_information, map_chosen)))
         if client_number == 0:
             info = pickle.loads(conn.recv(2048))

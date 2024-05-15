@@ -126,7 +126,7 @@ class menu:
         Button((100, 200), 200, 100, self.chosing_map_1, "Food1")
         Button((100, 300), 200, 100, self.chosing_map_1, "Race3")
 
-        Button((250, 475), 100, 50, self.hosting, "Start")
+        self.Start_button = Button((250, 475), 100, 50, (self.hosting,), "Start")
         Button((350, 475), 100, 50, self.hosting, "Set")
 
         self.flashcards = [
@@ -145,9 +145,10 @@ class menu:
         ]
         self.serverstarted = False
         self.inmenu = True
+        self.host_start = False
         self.Connected_list = []
         self.network = ""
-        self.map_chosen = "Map1"
+        self.map_chosen = "Food1"
         self.Game_time = 300
         self.name = ""
         self.name_list = []
@@ -193,6 +194,8 @@ class menu:
         screen.blit(Text.render(f"IP : {MyIP}", False, (255, 255, 255)), (350, 0))
         for button in self.menus[self.state]:
             button.update(self, screen)
+        if self.host_start:
+            self.Start_button.add(self.joining_join)
 
 
 class Button(pygame.sprite.Sprite):
@@ -226,6 +229,7 @@ class Button(pygame.sprite.Sprite):
             if self.function in self.Functions and menu.name:
                 menu.state = self.Functions.index(self.function) + 1
             elif self.function == "Start":
+                menu.host_start = True
                 menu.inmenu = False
             elif self.function in self.map_list:
                 menu.map_chosen = self.function
@@ -299,7 +303,7 @@ class inputbox(pygame.sprite.Sprite):
         self.image = pygame.Surface((300, 50))
         self.image.fill("white")
         self.rect = self.image.get_rect(topleft=pos)
-        self.text = "192.168.56.1"
+        self.text = "192.168.2.164"
         self.error = False
         self.exist = False
         self.function = function

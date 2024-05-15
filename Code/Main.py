@@ -53,16 +53,17 @@ while running:
         if Main_menu.serverstarted:
             (
                 Main_menu.Connected_list,
-                Main_menu.inmenu,
                 Main_menu.name_list,
                 Main_menu.map_chosen,
                 Main_menu.Game_time,
+                Main_menu.host_start,
             ) = Main_menu.network.send(
                 (
                     Main_menu.inmenu,
                     Main_menu.map_chosen,
                     Main_menu.name,
                     Main_menu.Game_time,
+                    Main_menu.host_start,
                 )
             )
     else:

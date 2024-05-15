@@ -3,7 +3,7 @@ import pygame
 pygame.init()
 pygame.font.init()
 
-Placeholder_map = "Map1"
+Placeholder_map = "Food1"
 Maps = {"Map1": "Maps/MAP.tmx", "Food1": "Maps/Food1.tmx"}
 Text = pygame.font.SysFont("Arial", 20)
 
