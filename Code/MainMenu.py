@@ -299,7 +299,7 @@ class inputbox(pygame.sprite.Sprite):
         self.image = pygame.Surface((300, 50))
         self.image.fill("white")
         self.rect = self.image.get_rect(topleft=pos)
-        self.text = "192.168.1.160"
+        self.text = "192.168.56.1"
         self.error = False
         self.exist = False
         self.function = function

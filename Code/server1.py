@@ -167,7 +167,7 @@ name_list = []
 # Map choisi
 map_chosen = "Map1"
 # Temps du jeu
-Game_time = 500
+Game_time = 300
 try:
     server.bind((host, port))
 except socket.error as e:
@@ -192,6 +192,7 @@ def threaded_client(conn, client_number):
     global clock
     # Ce variable permet de break si le joueur se déconnecte dans le menu.
     breakall = False
+    count = 0
     # On envoi au client son client_number, soit l'ordre auquel il s'est connceté.
     conn.send(pickle.dumps(client_number))
     # Dans le menu
@@ -214,6 +215,9 @@ def threaded_client(conn, client_number):
             )
         except:
             breakall = True
+        count += 1
+        if count % 100 == 0:
+            print(client_number)
     # On échange les information permettant de commencé le jeu.
     if not breakall:
         p = pickle.loads(conn.recv(2048))
@@ -250,9 +254,12 @@ def threaded_client(conn, client_number):
     # Dans le cas d'une déconnection
     print("Lost connection")
     Connected_list.remove(client_number)
-    for i in range(len(name_list)):
-        if name_list[i][1] == client_number:
-            name_list.remove(name_list[i])
+    print(name_list)
+    if inmenu:
+        for i in range(len(name_list)):
+            print(i)
+            if name_list[i][1] == client_number:
+                name_list.remove(name_list[i])
     if client_number == 0:
         server.close()
 
