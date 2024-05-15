@@ -69,6 +69,7 @@ while running:
     else:
         # Import de tous les autres modules pour faire marcher le jeu
         if not setup:
+            screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
             player_information, map_chosen = Main_menu.network.send("")
             from Debugger import *
             import Items
@@ -163,6 +164,7 @@ while running:
             )
         else:
             # Actions appliqués à la fin du jeu
+            screen = pygame.display.set_mode((500, 500))
             Main_menu.network.client.close()
             Main_menu.state = 11
             Main_menu.inmenu = True
