@@ -235,14 +235,18 @@ class Player(pygame.sprite.Sprite):
     # Applique les changement correspondants lorsque le joueur prend des dégats:
     # On perd un hp, on devient invincible et on perd un étoile si on à un.
     # On prend aussi de la knockback, la direction de ceci étant en fonction de la source des dégats.
-    def Ouch(self, dealer=None):
+    def Ouch(self, Damage, dealer=None):
         if not self.invincibilty and not self.invincibilty_power:
             self.invincibilty = True
-            self.took_damage = True
-            self.hp -= 1
+            if Damage:
+                self.took_damage = True
+                self.hp -= 1
             self.taking_knockback = True
             if dealer:
-                if dealer in Levels.map.enemy_sprites:
+                if (
+                    dealer in Levels.map.enemy_sprites
+                    or dealer in Levels.map.other_player_sprites
+                ):
                     if self.direction == (0, 0):
                         temp = dealer.direction
                         self.knockback_direction = temp
@@ -258,7 +262,7 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.knockback_direction = pygame.math.Vector2(0, 0)
 
-            if self.star_count > 0:
+            if self.star_count > 0 and self.took_damage:
                 self.star_count -= 1
                 self.star_list.pop()
                 self.star_lost = True
@@ -282,20 +286,20 @@ class Player(pygame.sprite.Sprite):
     def Damage_Check(self):
         for sprite in Levels.map.enemy_sprites:
             if sprite.rect.colliderect(self.rect):
-                self.Ouch(sprite)
+                self.Ouch(True, sprite)
         for sprite in Levels.map.weapon_sprites:
             if sprite.rect.colliderect(self.rect):
                 if sprite.id != self.id:
-                    self.Ouch(sprite)
+                    self.Ouch(True, sprite)
         for sprite in Levels.map.arrow_sprites:
             if sprite.rect.colliderect(self.rect):
                 if sprite.id != self.id:
-                    self.Ouch(sprite)
+                    self.Ouch(True, sprite)
                     sprite.kill()
         for sprite in Levels.map.flash_sprites:
             if sprite.rect.colliderect(self.rect):
                 if sprite.id != self.id:
-                    self.Ouch()
+                    self.Ouch(True)
                     if sprite.type == "lightning":
                         Particle(
                             self.rect.center,
@@ -322,6 +326,9 @@ class Player(pygame.sprite.Sprite):
                         (Levels.map.visible_sprites, Levels.map.particle_sprites),
                         "freeze",
                     )
+        for sprite in Levels.map.other_player_sprites:
+            if sprite.rect.colliderect(self.rect):
+                self.Ouch(False, sprite)
 
     # On prend de la knockback quand il est appelé pendant un certain temps.
     # On ne peut pas bouger quand on prend de la knockback.
