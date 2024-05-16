@@ -237,8 +237,8 @@ class Player(pygame.sprite.Sprite):
     # On prend aussi de la knockback, la direction de ceci étant en fonction de la source des dégats.
     def Ouch(self, Damage, dealer=None):
         if not self.invincibilty and not self.invincibilty_power:
-            self.invincibilty = True
             if Damage:
+                self.invincibilty = True
                 self.took_damage = True
                 self.hp -= 1
             self.taking_knockback = True
@@ -248,16 +248,18 @@ class Player(pygame.sprite.Sprite):
                     or dealer in Levels.map.other_player_sprites
                 ):
                     if self.direction == (0, 0):
-                        temp = pygame.math.Vector2(tuple(dealer.direction))
-                        self.knockback_direction = temp
+                        self.knockback_direction = pygame.math.Vector2(
+                            tuple(dealer.direction)
+                        )
                     else:
                         self.knockback_direction = -self.direction
                 if (
                     dealer in Levels.map.weapon_sprites
                     or dealer in Levels.map.arrow_sprites
                 ):
-                    temp = dealer.direction
-                    self.knockback_direction = temp
+                    self.knockback_direction = pygame.math.Vector2(
+                        tuple(dealer.direction)
+                    )
 
             else:
                 self.knockback_direction = pygame.math.Vector2(0, 0)
@@ -279,7 +281,7 @@ class Player(pygame.sprite.Sprite):
             if not self.invincibilty_power:
                 if self.frame > 3:
                     self.frame = 0
-                self.action = 3
+                #self.action = 3
 
     # Vérifie si on à rentré en collision avec un source de dégats.
     # Si c'est un gèle, on devient gelé.

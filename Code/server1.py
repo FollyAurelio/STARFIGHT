@@ -239,7 +239,7 @@ def threaded_client(conn, client_number):
         if client_number == 0:
             info = pickle.loads(conn.recv(2048))
             Map_information = info
-            start_new_thread(server_operations, (map_chosen,))
+            start_new_thread(server_operations, ())
     # Game loop principal, on échange les infos du joueur et des maps.
     while True:
         if breakall:
@@ -285,10 +285,9 @@ def threaded_client(conn, client_number):
 
 
 # Gère les opérations du serveur pour le map.
-def server_operations(map):
+def server_operations():
     global Map_information
     global kill_list
-    global Coin
     while True:
         # Si l'élement est dans kill_list (il s'est fait tuer par un des joueurs) alors on le tue pour tous les joueurs.
         for category in Map_information:

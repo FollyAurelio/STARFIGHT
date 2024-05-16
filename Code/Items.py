@@ -341,8 +341,8 @@ class Coin(pygame.sprite.Sprite):
 
     def effect_apply(self, player):
         player.coin_count += 1
-        if player.coin_count >= 50:
-            player.coin_count -= 50
+        if player.coin_count >= Coin_convergence:
+            player.coin_count -= Coin_convergence
             player.star_count += 1
             player.star_list.append(Hud_Item(player.star_count, "star"))
 

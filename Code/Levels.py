@@ -220,8 +220,8 @@ class Map:
                 dt = now - sprite.prev_time
                 if sprite.direction.magnitude() != 0:
                     sprite.direction = sprite.direction.normalize()
-                sprite.rect.x += sprite.direction.x * dt * 60
-                sprite.rect.y += sprite.direction.y * dt * 60
+                sprite.rect.x += sprite.direction.x * 4 * dt * 60
+                sprite.rect.y += sprite.direction.y * 4 * dt * 60
                 sprite.prev_time = now
                 for Wall in self.obsticle_sprites:
                     if Wall.rect.colliderect(sprite.rect):
@@ -253,7 +253,7 @@ class Map:
     def bonus_item_spawn(self):
         cooldown = 10000
         current_time = pygame.time.get_ticks()
-        if current_time - self.coin_cooldown >= cooldown and Placeholder_map == "Food1":
+        if current_time - self.coin_cooldown >= cooldown:
             self.coin_cooldown = current_time
             for sprite in self.pickup_sprites:
                 if sprite.effect in ["gold", "speedup", "slowdown"]:

@@ -4,6 +4,7 @@ pygame.init()
 pygame.font.init()
 
 Placeholder_map = "Food1"
+Coin_convergence = 50
 Maps = {"Map1": "Maps/MAP.tmx", "Food1": "Maps/Food1.tmx", "Candy": "Maps/Candy.tmx"}
 Text = pygame.font.SysFont("Arial", 20)
 
@@ -206,13 +207,10 @@ class Hud_Item(pygame.sprite.Sprite):
             screen.blit(self.image, self.rect.center)
         if self.type == "speedup" or self.type == "slowdown":
             screen.blit(self.image, self.rect.center)
-        if map_chosen == "Food1":
-            screen.blit(
-                Mini_square_text.render(
-                    f"Coins : {player.coin_count}", False, (0, 0, 0)
-                ),
-                (0, pygame.display.get_surface().get_height() - 200),
-            )
+        screen.blit(
+            Mini_square_text.render(f"Coins : {player.coin_count}", False, (0, 0, 0)),
+            (0, pygame.display.get_surface().get_height() - 200),
+        )
 
     def __repr__(self):
         return self.type
