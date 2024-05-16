@@ -248,7 +248,7 @@ class Player(pygame.sprite.Sprite):
                     or dealer in Levels.map.other_player_sprites
                 ):
                     if self.direction == (0, 0):
-                        temp = dealer.direction
+                        temp = pygame.math.Vector2(tuple(dealer.direction))
                         self.knockback_direction = temp
                     else:
                         self.knockback_direction = -self.direction
