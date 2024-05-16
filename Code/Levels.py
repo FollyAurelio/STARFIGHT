@@ -251,7 +251,7 @@ class Map:
                             sprite.direction = pygame.math.Vector2(-1, -1)
 
     def bonus_item_spawn(self):
-        cooldown = 10000
+        cooldown = 30000
         current_time = pygame.time.get_ticks()
         if current_time - self.coin_cooldown >= cooldown:
             self.coin_cooldown = current_time

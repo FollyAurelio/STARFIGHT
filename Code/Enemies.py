@@ -104,9 +104,9 @@ class Enemy(pygame.sprite.Sprite):
             self.last_movement = current_time
         now = time.time()
         dt = now - self.prev_time
-        self.rect.x += self.direction.x * dt * 60
+        self.rect.x += self.direction.x * 4 * dt * 60
         self.check_collision("horizontal", map)
-        self.rect.y += self.direction.y * dt * 60
+        self.rect.y += self.direction.y * 4 * dt * 60
         self.check_collision("vertical", map)
         self.prev_time = now
 
