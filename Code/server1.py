@@ -235,7 +235,7 @@ def threaded_client(conn, client_number):
     if not breakall:
         p = pickle.loads(conn.recv(2048))
         print("l")
-        conn.send(pickle.dumps((player_information, map_chosen)))
+        conn.send(pickle.dumps((player_information, map_chosen, Game_time)))
         if client_number == 0:
             info = pickle.loads(conn.recv(2048))
             Map_information = info
@@ -257,7 +257,8 @@ def threaded_client(conn, client_number):
             break
         try:
             data = pickle.loads(conn.recv(2048))
-            reply = data
+            reply, Game_time = data[0], data[1]
+            print(Game_time)
             for i in reply:
                 kill_list.append(i)
             conn.send(pickle.dumps((Map_information)))
