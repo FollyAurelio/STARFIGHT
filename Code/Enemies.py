@@ -152,6 +152,7 @@ class Projectile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=enemy.rect.center)
         self.time = pygame.time.get_ticks()
         self.direction = enemy.direction
+        self.speed = 5
         self.prev_time = time.time()
         if self.direction.magnitude() != 0:
             self.direction.normalize()
@@ -170,6 +171,6 @@ class Projectile(pygame.sprite.Sprite):
             self.kill()
         now = time.time()
         dt = now - self.prev_time
-        self.rect.x += self.direction.x * dt * 60
-        self.rect.y += self.direction.y * dt * 60
+        self.rect.x += self.direction.x * self.speed * dt * 60
+        self.rect.y += self.direction.y * self.speed * dt * 60
         self.prev_time = now

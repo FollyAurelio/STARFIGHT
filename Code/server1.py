@@ -258,7 +258,6 @@ def threaded_client(conn, client_number):
         try:
             data = pickle.loads(conn.recv(2048))
             reply, Game_time = data[0], data[1]
-            print(Game_time)
             for i in reply:
                 kill_list.append(i)
             conn.send(pickle.dumps((Map_information)))

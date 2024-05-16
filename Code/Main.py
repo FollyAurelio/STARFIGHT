@@ -70,7 +70,7 @@ while running:
         # Import de tous les autres modules pour faire marcher le jeu
         if not setup:
             # screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-            player_information, map_chosen, Main_menu.Game_time = (
+            (player_information, map_chosen, Main_menu.Game_time) = (
                 Main_menu.network.send("")
             )
             from Debugger import *

@@ -54,7 +54,8 @@ class Spawner_Tile(pygame.sprite.Sprite):
     def __init__(self, pos, group, type, cooldown, id):
         super().__init__(group)
         self.image = pygame.Surface((50, 50))
-        self.image.fill(("darkblue"))
+        self.image.set_alpha(0)
+        # self.image.fill(("darkblue"))
         self.rect = self.image.get_rect(topleft=pos)
         self.type = type
         self.cooldown = cooldown

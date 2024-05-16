@@ -244,14 +244,16 @@ class Player(pygame.sprite.Sprite):
             if dealer:
                 if dealer in Levels.map.enemy_sprites:
                     if self.direction == (0, 0):
-                        self.knockback_direction = dealer.direction
+                        temp = dealer.direction
+                        self.knockback_direction = temp
                     else:
                         self.knockback_direction = -self.direction
                 if (
                     dealer in Levels.map.weapon_sprites
                     or dealer in Levels.map.arrow_sprites
                 ):
-                    self.knockback_direction = dealer.direction
+                    temp = dealer.direction
+                    self.knockback_direction = temp
 
             else:
                 self.knockback_direction = pygame.math.Vector2(0, 0)
