@@ -124,7 +124,7 @@ class menu:
 
         Button((100, 100), 200, 100, self.chosing_map_1, "Map1")
         Button((100, 200), 200, 100, self.chosing_map_1, "Food1")
-        Button((100, 300), 200, 100, self.chosing_map_1, "Race3")
+        Button((100, 300), 200, 100, self.chosing_map_1, "Candy")
 
         self.Start_button = Button((250, 475), 100, 50, (self.hosting,), "Start")
         Button((350, 475), 100, 50, self.hosting, "Set")
@@ -206,7 +206,7 @@ class Button(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
         self.function = function
         self.Functions = ["Play", "Host", "Join", "Maps"]
-        self.map_list = ["Map1", "Map2", "Food1"]
+        self.map_list = ["Map1", "Candy", "Food1"]
         self.map_screens = ["1", "2", "3", "4", "5"]
         self.buttoncooldown = pygame.time.get_ticks()
 
@@ -328,7 +328,7 @@ class inputbox(pygame.sprite.Sprite):
             elif event.key == pygame.K_BACKSPACE:
                 self.text = self.text[:-1]
             elif self.exist:
-                if len(self.text) <= 10 and self.function == "Name":
+                if len(self.text) <= 1000 and self.function == "Name":
                     self.text += event.unicode
                 elif self.function == "Join":
                     self.text += event.unicode

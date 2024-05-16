@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Food1.tmx",
+    "activeFile": "Candy.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
@@ -11,9 +11,25 @@
         "": {
             "scaleInDock": 1
         },
+        "Base elements.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "C:/Users/Aureliowork/Documents/Project NSI/Maps/Castle elements.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 1
+        },
+        "Candy.tmx": {
+            "scale": 0.5524074074074073,
+            "selectedLayer": 13,
+            "viewCenter": {
+                "x": 535.8364063023803,
+                "y": 810.09051290647
+            }
+        },
+        "Enemies.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "Food elements.tsx": {
             "dynamicWrapping": false,
@@ -24,16 +40,16 @@
             "scale": 0.75,
             "selectedLayer": 16,
             "viewCenter": {
-                "x": 529.3333333333333,
-                "y": 120.66666666666663
+                "x": 528,
+                "y": 565.9999999999999
             }
         },
         "MAP.tmx": {
             "scale": 1.3355882352941175,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 339.1763928650077,
-                "y": 338.8020259854657
+                "x": 338.4276591059238,
+                "y": 337.30455846729797
             }
         },
         "MAP2.tmx": {
@@ -43,6 +59,18 @@
                 "x": 314.3144485417365,
                 "y": 337.3784780422394
             }
+        },
+        "Maps/Food elements.tsx": {
+            "scaleInDock": 1
+        },
+        "Maps/Various elements.tsx": {
+            "scaleInDock": 1
+        },
+        "STARFIGHT-main/Code/Maps/Food elements.tsx": {
+            "scaleInDock": 1
+        },
+        "STARFIGHT-main/Code/Maps/Various elements.tsx": {
+            "scaleInDock": 1
         },
         "Various elements.tsx": {
             "scaleInDock": 1,
@@ -54,7 +82,7 @@
         }
     },
     "last.externalTilesetPath": "C:/Users/Aureliowork/Documents/Starfight/Maps",
-    "last.imagePath": "C:/Users/Aureliowork/Documents/Starfight/Sprites",
+    "last.imagePath": "C:/Users/Aureliowork/Documents/Starfight/Sprites/kenney_pixel-platformer/Tilemap",
     "map.height": 60,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 18,
@@ -64,20 +92,26 @@
         "MAP.tmx",
         "Food1.tmx",
         "Food elements.tsx",
-        "Various elements.tsx"
+        "Various elements.tsx",
+        "Candy.tmx",
+        "Base elements.tsx",
+        "Enemies.tsx"
     ],
     "project": "Starfight_Maps.tiled-project",
     "recentFiles": [
         "MAP.tmx",
-        "Various elements.tsx",
-        "Food elements.tsx",
         "Food1.tmx",
+        "Food elements.tsx",
+        "Various elements.tsx",
+        "Enemies.tsx",
+        "Base elements.tsx",
+        "Candy.tmx",
         "MAP2.tmx"
     ],
     "tileset.lastUsedFilter": "Fichiers de jeu de tuiles Tiled (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
-        "height": 16,
-        "width": 16
+        "height": 18,
+        "width": 18
     }
 }

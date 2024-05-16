@@ -4,7 +4,7 @@ pygame.init()
 pygame.font.init()
 
 Placeholder_map = "Food1"
-Maps = {"Map1": "Maps/MAP.tmx", "Food1": "Maps/Food1.tmx"}
+Maps = {"Map1": "Maps/MAP.tmx", "Food1": "Maps/Food1.tmx", "Candy": "Maps/Candy.tmx"}
 Text = pygame.font.SysFont("Arial", 20)
 
 
@@ -157,10 +157,20 @@ class Hud_Item(pygame.sprite.Sprite):
             )
         if self.type == "speedup":
             self.image = cut_image(Useful_Item_sprites, 16, 15, 36, 14, 50, 50)
-            self.rect = self.image.get_rect(center=(400, 400 - (id - 1) * 50))
+            self.rect = self.image.get_rect(
+                center=(
+                    pygame.display.get_surface().get_width() - 100,
+                    (pygame.display.get_surface().get_height() - 100) - (id - 1) * 50,
+                )
+            )
         if self.type == "slowdown":
             self.image = cut_image(Useful_Item_sprites, 16, 15, 36, 16, 50, 50)
-            self.rect = self.image.get_rect(center=(400, 400 + (id + 1) * 50))
+            self.rect = self.image.get_rect(
+                center=(
+                    pygame.display.get_surface().get_width() - 100,
+                    (pygame.display.get_surface().get_height() - 100) + (id + 1) * 50,
+                )
+            )
 
         self.id = id
 
@@ -190,7 +200,9 @@ class Hud_Item(pygame.sprite.Sprite):
                 cut_image(Ice_cream, 64, 64, 0, 0, 50, 50),
                 cut_image(Lightning_icon, 64, 64, 0, 0, 50, 50),
             ][effect_index]
-            self.rect = self.image.get_rect(center=(50 * self.id, 400))
+            self.rect = self.image.get_rect(
+                center=(50 * self.id, pygame.display.get_surface().get_height() - 100)
+            )
             screen.blit(self.image, self.rect.center)
         if self.type == "speedup" or self.type == "slowdown":
             screen.blit(self.image, self.rect.center)
@@ -199,7 +211,7 @@ class Hud_Item(pygame.sprite.Sprite):
                 Mini_square_text.render(
                     f"Coins : {player.coin_count}", False, (0, 0, 0)
                 ),
-                (0, 300),
+                (0, pygame.display.get_surface().get_height() - 200),
             )
 
     def __repr__(self):

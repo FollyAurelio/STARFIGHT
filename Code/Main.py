@@ -160,7 +160,7 @@ while running:
                     False,
                     (0, 0, 0),
                 ),
-                (400, 0),
+                (pygame.display.get_surface().get_width() - 100, 0),
             )
         else:
             # Actions appliqués à la fin du jeu
