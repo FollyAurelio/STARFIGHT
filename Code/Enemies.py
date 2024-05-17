@@ -29,7 +29,7 @@ class Enemy(pygame.sprite.Sprite):
             self.image = pygame.transform.rotate(self.image, coef)
             self.animation_list = []
 
-        self.rect = self.image.get_rect(center=pos)
+        self.rect = self.image.get_rect(topleft=pos)
 
         self.direction = {
             "movement": pygame.math.Vector2(),
@@ -64,9 +64,9 @@ class Enemy(pygame.sprite.Sprite):
         if not self.frozen:
             now = time.time()
             dt = now - self.prev_time
-            self.rect.x += self.direction.x * 3 * dt * 60
+            self.rect.x += self.direction.x * 2 * dt * 60
             self.check_collision("horizontal", map)
-            self.rect.y += self.direction.y * 3 * dt * 60
+            self.rect.y += self.direction.y * 2 * dt * 60
             self.check_collision("vertical", map)
             self.prev_time = now
 
@@ -101,10 +101,12 @@ class Enemy(pygame.sprite.Sprite):
         for sprite in map.weapon_sprites:
             if sprite.rect.colliderect(self.rect):
                 player.kill_list.append(self.id)
+                Enemy_Death_sound.play(maxtime=100)
                 self.kill()
         for sprite in map.arrow_sprites:
             if sprite.rect.colliderect(self.rect):
                 player.kill_list.append(self.id)
+                Enemy_Death_sound.play(maxtime=100)
                 self.kill()
         for sprite in map.flash_sprites:
             if sprite.rect.colliderect(self.rect):

@@ -5,7 +5,12 @@ pygame.font.init()
 
 Placeholder_map = "Food1"
 Coin_convergence = 50
-Maps = {"Map1": "Maps/MAP.tmx", "Food1": "Maps/Food1.tmx", "Candy": "Maps/Candy.tmx"}
+Maps = {
+    "Map1": "Maps/MAP.tmx",
+    "Food1": "Maps/Food1.tmx",
+    "Candy": "Maps/Candy.tmx",
+    "Grass": "Maps/Grass.tmx",
+}
 Text = pygame.font.SysFont("Arial", 20)
 
 
@@ -104,6 +109,18 @@ Character_sprites = pygame.image.load(
 Artilery_sprites = pygame.image.load(
     "Sprites/kenney_pixel-shmup/Tilemap/tiles_packed.png"
 )
+Button_press_sound = pygame.mixer.Sound("Sound/Button_press_sound.mp3")
+Coin_sound = pygame.mixer.Sound("Sound/Coin_sound.mp3")
+Damage_sound = pygame.mixer.Sound("Sound/Damage_sound.mp3")
+Enemy_Death_sound = pygame.mixer.Sound("Sound/Enemy_Death_sound.mp3")
+Game_start_sound = pygame.mixer.Sound("Sound/Game_start_sound.mp3")
+Ice_sound = pygame.mixer.Sound("Sound/Ice_sound.mp3")
+Item_sound = pygame.mixer.Sound("Sound/Item_sound.mp3")
+Lightning_sound = pygame.mixer.Sound("Sound/Lightning_sound.mp3")
+Player_Death_sound = pygame.mixer.Sound("Sound/Player_Death_sound.mp3")
+Slowdown_sound = pygame.mixer.Sound("Sound/Slowdown_sound.mp3")
+Speedup_sound = pygame.mixer.Sound("Sound/Speedup_sound.mp3")
+Star_sound = pygame.mixer.Sound("Sound/Star_sound.mp3")
 
 
 class Particle(pygame.sprite.Sprite):

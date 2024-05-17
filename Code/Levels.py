@@ -220,8 +220,8 @@ class Map:
                 dt = now - sprite.prev_time
                 if sprite.direction.magnitude() != 0:
                     sprite.direction = sprite.direction.normalize()
-                sprite.rect.x += sprite.direction.x * 4 * dt * 60
-                sprite.rect.y += sprite.direction.y * 4 * dt * 60
+                sprite.rect.x += sprite.direction.x * 2 * dt * 60
+                sprite.rect.y += sprite.direction.y * 2 * dt * 60
                 sprite.prev_time = now
                 for Wall in self.obsticle_sprites:
                     if Wall.rect.colliderect(sprite.rect):

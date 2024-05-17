@@ -29,6 +29,7 @@ class Item(pygame.sprite.Sprite):
         # Initialise le type d'item aléatoire
 
     def effect_apply(self, player):
+        Item_sound.play(maxtime=200)
         player.give(self.effect)
         # L'effet que l'item a quand il est ramassé
 
@@ -56,6 +57,7 @@ class Star(pygame.sprite.Sprite):
         # Crée des stars
 
     def effect_apply(self, player):
+        Star_sound.play(maxtime=250)
         player.star_count += 1
 
         # Augmente le nombre de stars quand on en ramasse
@@ -220,16 +222,20 @@ class Spell:
 
     def cast(self, player, map):
         if self.type == "bomb":
+            Item_sound.play(maxtime=200)
             Bomb(
                 player,
                 (map.visible_sprites, map.bomb_sprites),
                 player.id,
             )
         if self.type == "invincible":
+            Item_sound.play(maxtime=200)
             player.invincibilty_power = True
         if self.type == "freeze":
+            Ice_sound.play()
             Freeze(player, (map.visible_sprites, map.freeze_sprites), player.id)
         if self.type == "lightning":
+            Lightning_sound.play()
             Flash(
                 player,
                 (map.visible_sprites, map.flash_sprites),
@@ -254,6 +260,7 @@ class Bomb(pygame.sprite.Sprite):
     def detonate(self, map):
         for enemy in map.enemy_sprites:
             if enemy.rect.colliderect(self.rect):
+                Lightning_sound.play()
                 Flash(
                     self,
                     (map.visible_sprites, map.flash_sprites),
@@ -337,11 +344,13 @@ class Coin(pygame.sprite.Sprite):
             Useful_Item_sprites, [6], 16, 16, 19, 1, 50, 50
         ) + [create_animation(Useful_Item_sprites, [6], 16, 16, 26, 1, 50, 50)[0]]
         self.image = self.animation_list[self.action][self.frame]
-        self.rect = self.image.get_rect(center=pos)
+        self.rect = self.image.get_rect(topleft=pos)
 
     def effect_apply(self, player):
         player.coin_count += 1
+        Coin_sound.play(maxtime=100)
         if player.coin_count >= Coin_convergence:
+            Star_sound.play(maxtime=200)
             player.coin_count -= Coin_convergence
             player.star_count += 1
             player.star_list.append(Hud_Item(player.star_count, "star"))
@@ -383,10 +392,11 @@ class Orb(pygame.sprite.Sprite):
             cut_image(Useful_Item_sprites, 16, 15, 36, 14, 50, 50),
             cut_image(Useful_Item_sprites, 16, 15, 36, 16, 50, 50),
         ][effect]
-        self.rect = self.image.get_rect(center=pos)
+        self.rect = self.image.get_rect(topleft=pos)
 
     def effect_apply(self, player):
         if self.effect == "speedup":
+            Speedup_sound.play(maxtime=250)
             if player.extra_speed < 7:
                 player.extra_speed += 1
                 if player.extra_speed > 0:
@@ -394,6 +404,7 @@ class Orb(pygame.sprite.Sprite):
                 else:
                     player.bonus_item.pop()
         elif self.effect == "slowdown":
+            Slowdown_sound.play(maxtime=250)
             if player.extra_speed > -3:
                 player.extra_speed -= 1
                 if player.extra_speed < 0:

@@ -88,7 +88,7 @@ class Player(pygame.sprite.Sprite):
 
         self.kill_list = []
         self.image = self.animation_list[self.action][self.frame]
-        self.rect = self.image.get_rect(center=pos)
+        self.rect = self.image.get_rect(topleft=pos)
         self.nametag = Nametag(self, (Levels.map.visible_sprites))
 
     # Réuni tous les methodes du joueurs ainsi que gérer ses animations
@@ -241,6 +241,7 @@ class Player(pygame.sprite.Sprite):
                 self.invincibilty = True
                 self.took_damage = True
                 self.hp -= 1
+                Damage_sound.play(maxtime=100)
             self.taking_knockback = True
             if dealer:
                 if (
@@ -281,7 +282,7 @@ class Player(pygame.sprite.Sprite):
             if not self.invincibilty_power:
                 if self.frame > 3:
                     self.frame = 0
-                #self.action = 3
+                # self.action = 3
 
     # Vérifie si on à rentré en collision avec un source de dégats.
     # Si c'est un gèle, on devient gelé.
@@ -301,6 +302,7 @@ class Player(pygame.sprite.Sprite):
         for sprite in Levels.map.flash_sprites:
             if sprite.rect.colliderect(self.rect):
                 if sprite.id != self.id:
+                    Lightning_sound.play()
                     self.Ouch(True)
                     if sprite.type == "lightning":
                         Particle(
@@ -323,6 +325,7 @@ class Player(pygame.sprite.Sprite):
             if sprite.rect.colliderect(self.rect):
                 if sprite.id != self.id:
                     self.frozen = True
+                    Ice_sound.play()
                     Particle(
                         self.rect.center,
                         (Levels.map.visible_sprites, Levels.map.particle_sprites),
@@ -387,11 +390,10 @@ class Player(pygame.sprite.Sprite):
                     if self.items_list[i]:
                         if (
                             self.items_list[i].type == "sword"
-                            or self.items_list[i].type == "spear"
-                            or self.items_list[i].type == "axe"
                             or self.items_list[i].type == "bow"
                         ):
                             self.items_list[i].add(Levels.map.visible_sprites)
+                            Item_sound.play(maxtime=200)
                             self.weaponask = self.items_list[i].type
                             self.inusage = self.items_list[i].type
                             self.using_item = i + 1
@@ -451,9 +453,11 @@ class Player(pygame.sprite.Sprite):
         self.prev_time = time.time()
         current_time = pygame.time.get_ticks()
         if self.hp <= 0:
+            Player_Death_sound.play()
             self.speed = 4
             self.extra_speed = 0
             self.bonus_item = []
+            self.item_hud = [Hud_Item(0, ""), Hud_Item(1, ""), Hud_Item(2, "")]
             self.image.set_alpha(0)
             if self.using_item:
                 self.items_list[self.using_item - 1].kill()

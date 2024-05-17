@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Candy.tmx",
+    "activeFile": "grass.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
@@ -21,10 +21,10 @@
         },
         "Candy.tmx": {
             "scale": 0.5524074074074073,
-            "selectedLayer": 13,
+            "selectedLayer": 16,
             "viewCenter": {
-                "x": 528.5953737847806,
-                "y": 799.2289641300706
+                "x": 540.36205162588,
+                "y": 540.36205162588
             }
         },
         "Enemies.tsx": {
@@ -44,8 +44,8 @@
             "scale": 0.75,
             "selectedLayer": 16,
             "viewCenter": {
-                "x": 540,
-                "y": 540.6666666666665
+                "x": 516.6666666666666,
+                "y": 539.3333333333333
             }
         },
         "Ice elements.tsx": {
@@ -60,7 +60,7 @@
             "scale": 1.3355882352941175,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 340.6738603831755,
+                "x": 339.9251266240916,
                 "y": 339.5507597445497
             }
         },
@@ -88,6 +88,14 @@
             "scaleInDock": 1,
             "scaleInEditor": 4
         },
+        "grass.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 16,
+            "viewCenter": {
+                "x": 702.6666666666665,
+                "y": 612.6666666666667
+            }
+        },
         "nes.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1
@@ -106,24 +114,25 @@
         "Food elements.tsx",
         "Various elements.tsx",
         "Candy.tmx",
-        "Base elements.tsx",
-        "Enemies.tsx",
         "Farm elements.tsx",
         "Industrial elements.tsx",
-        "Ice elements.tsx"
+        "Ice elements.tsx",
+        "grass.tmx",
+        "Base elements.tsx"
     ],
     "project": "Starfight_Maps.tiled-project",
     "recentFiles": [
+        "grass.tmx",
         "MAP.tmx",
         "Food1.tmx",
         "Food elements.tsx",
         "Various elements.tsx",
-        "Ice elements.tsx",
-        "Industrial elements.tsx",
-        "Farm elements.tsx",
-        "Enemies.tsx",
-        "Base elements.tsx",
         "Candy.tmx",
+        "Farm elements.tsx",
+        "Industrial elements.tsx",
+        "Ice elements.tsx",
+        "Base elements.tsx",
+        "Enemies.tsx",
         "MAP2.tmx"
     ],
     "tileset.lastUsedFilter": "Fichiers de jeu de tuiles Tiled (*.tsx *.xml)",

@@ -125,6 +125,7 @@ class menu:
         Button((100, 100), 200, 100, self.chosing_map_1, "Map1")
         Button((100, 200), 200, 100, self.chosing_map_1, "Food1")
         Button((100, 300), 200, 100, self.chosing_map_1, "Candy")
+        Button((100, 100), 200, 100, self.chosing_map_2, "Grass")
 
         self.Start_button = Button((250, 475), 100, 50, (self.hosting,), "Start")
         Button((350, 475), 100, 50, self.hosting, "Set")
@@ -206,7 +207,7 @@ class Button(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
         self.function = function
         self.Functions = ["Play", "Host", "Join", "Maps"]
-        self.map_list = ["Map1", "Candy", "Food1"]
+        self.map_list = ["Map1", "Candy", "Food1", "Grass"]
         self.map_screens = ["1", "2", "3", "4", "5"]
         self.buttoncooldown = pygame.time.get_ticks()
 
@@ -226,6 +227,7 @@ class Button(pygame.sprite.Sprite):
             and current_time - self.buttoncooldown >= 100
         ):
             self.buttoncooldown = current_time
+            Button_press_sound.play(maxtime=100)
             if self.function in self.Functions and menu.name:
                 menu.state = self.Functions.index(self.function) + 1
             elif self.function == "Start":
