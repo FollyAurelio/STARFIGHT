@@ -264,21 +264,6 @@ class Player(pygame.sprite.Sprite):
 
             else:
                 self.knockback_direction = pygame.math.Vector2(0, 0)
-
-            if self.star_count > 0 and self.took_damage:
-                self.star_count -= 1
-                self.star_list.pop()
-                self.star_lost = True
-                Levels.Star(
-                    self.rect.center,
-                    (
-                        Levels.map.visible_sprites,
-                        Levels.map.pickup_sprites,
-                        Levels.map.star_sprites,
-                    ),
-                    "player",
-                    0,
-                )
             if not self.invincibilty_power:
                 if self.frame > 3:
                     self.frame = 0
@@ -459,6 +444,20 @@ class Player(pygame.sprite.Sprite):
             self.bonus_item = []
             self.item_hud = [Hud_Item(0, ""), Hud_Item(1, ""), Hud_Item(2, "")]
             self.image.set_alpha(0)
+            if self.star_count > 0 and self.took_damage:
+                self.star_count -= 1
+                self.star_list.pop()
+                self.star_lost = True
+                Levels.Star(
+                    self.rect.center,
+                    (
+                        Levels.map.visible_sprites,
+                        Levels.map.pickup_sprites,
+                        Levels.map.star_sprites,
+                    ),
+                    "player",
+                    0,
+                )
             if self.using_item:
                 self.items_list[self.using_item - 1].kill()
                 self.using_item = False

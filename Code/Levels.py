@@ -131,7 +131,7 @@ class Map:
                         pos,
                         (self.visible_sprites, self.spawner_sprites),
                         "Stars",
-                        5000,
+                        30000,
                         self.Assign_id(),
                     )
                 elif layer.name == "Items":
@@ -139,7 +139,7 @@ class Map:
                         pos,
                         (self.visible_sprites, self.spawner_sprites),
                         "Items",
-                        5000,
+                        10000,
                         self.Assign_id(),
                     )
                 elif layer.name == "Coins":
@@ -153,7 +153,7 @@ class Map:
                         pos,
                         (self.visible_sprites, self.spawner_sprites),
                         "Enemies",
-                        5000,
+                        30000,
                         self.Assign_id(),
                     )
                 elif layer.name == "Enemy_m_hori":
@@ -251,7 +251,7 @@ class Map:
                             sprite.direction = pygame.math.Vector2(-1, -1)
 
     def bonus_item_spawn(self):
-        cooldown = 30000
+        cooldown = 70000
         current_time = pygame.time.get_ticks()
         if current_time - self.coin_cooldown >= cooldown:
             self.coin_cooldown = current_time
