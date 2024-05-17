@@ -98,6 +98,12 @@ Block_text = pygame.font.Font("Sprites/kenney_kenney-fonts/Fonts/Kenney Blocks.t
 Mini_square_text = pygame.font.Font(
     "Sprites/kenney_kenney-fonts/Fonts/Kenney Mini Square.ttf", 30
 )
+Character_sprites = pygame.image.load(
+    "Sprites/kenney_pixel-platformer/Tilemap/tilemap-characters_packed.png"
+)
+Artilery_sprites = pygame.image.load(
+    "Sprites/kenney_pixel-shmup/Tilemap/tiles_packed.png"
+)
 
 
 class Particle(pygame.sprite.Sprite):

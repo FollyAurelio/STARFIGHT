@@ -1,6 +1,7 @@
 # Crée des ennemies
 import pygame
 import time
+import random
 from Settings import *
 
 
@@ -9,8 +10,25 @@ class Enemy(pygame.sprite.Sprite):
         super().__init__(group)
         self.id = id
         self.type = type
-        self.image = pygame.Surface((50, 50))
-        self.image.fill("red")
+        self.frame = 0
+        self.facing = "left"
+
+        if self.type == "movement":
+            random_enemy = random.choice([(6, 1), (0, 2), (6, 2)])
+            self.animation_list = create_animation(
+                Character_sprites, [3], 24, 24, random_enemy[0], random_enemy[1], 50, 50
+            )
+            self.image = self.animation_list[0][self.frame]
+        elif self.type in ["m_ver", "m_hori", "stationary"]:
+            self.image = cut_image(Character_sprites, 24, 24, 8, 0, 50, 50)
+            self.animation_list = []
+        else:
+            self.image = cut_image(Artilery_sprites, 16, 16, 4, 2, 50, 50)
+            directions = ["proj_down", "proj_right", "proj_up", "proj_left"]
+            coef = 90 * directions.index(self.type)
+            self.image = pygame.transform.rotate(self.image, coef)
+            self.animation_list = []
+
         self.rect = self.image.get_rect(center=pos)
 
         self.direction = {
@@ -25,6 +43,7 @@ class Enemy(pygame.sprite.Sprite):
         }[self.type]
 
         self.last_movement = pygame.time.get_ticks()
+        self.last_update = pygame.time.get_ticks()
         self.prev_time = time.time()
         self.frozen = False
         self.frozen_timer = pygame.time.get_ticks()
@@ -32,12 +51,22 @@ class Enemy(pygame.sprite.Sprite):
     def move(self, map, map_info):
         self.direction.x = map_info["Enemies"][self.id]["movement"][0]
         self.direction.y = map_info["Enemies"][self.id]["movement"][1]
+        if self.direction.x == 1 and self.facing == "left":
+            self.turn()
+            self.facing = "right"
+        if self.direction.x == -1 and self.facing == "right":
+            self.turn()
+            self.facing = "left"
+        self.last_update, self.frame = animate(
+            self.animation_list, 100, self.last_update, 0, self.frame
+        )
+        self.image = self.animation_list[0][self.frame]
         if not self.frozen:
             now = time.time()
             dt = now - self.prev_time
-            self.rect.x += self.direction.x * dt * 60
+            self.rect.x += self.direction.x * 3 * dt * 60
             self.check_collision("horizontal", map)
-            self.rect.y += self.direction.y * dt * 60
+            self.rect.y += self.direction.y * 3 * dt * 60
             self.check_collision("vertical", map)
             self.prev_time = now
 
@@ -116,6 +145,11 @@ class Enemy(pygame.sprite.Sprite):
         if current_time - self.last_movement >= cooldown:
             self.last_movement = current_time
             Projectile(self, (map.visible_sprites, map.enemy_sprites), -1)
+
+    def turn(self):
+        for animation in self.animation_list:
+            for frame in range(len(animation)):
+                animation[frame] = pygame.transform.flip(animation[frame], True, False)
 
     def update(self, player, map, map_info):
         if self.type == "movement":
