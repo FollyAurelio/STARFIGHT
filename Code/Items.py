@@ -1,6 +1,7 @@
 # Fenêtre qui programme les items
 import pygame
 import time
+import random
 from Settings import *
 
 
@@ -415,3 +416,38 @@ class Orb(pygame.sprite.Sprite):
 
     def update(self):
         pass
+
+
+class Food(pygame.sprite.Sprite):
+    def __init__(self, pos, group):
+        super().__init__(group)
+        Food_image_index = [
+            (33, 19),
+            (34, 19),
+            (35, 19),
+            (36, 19),
+            (37, 19),
+            (33, 20),
+            (34, 20),
+            (35, 20),
+            (36, 20),
+            (37, 20),
+            (33, 21),
+            (34, 21),
+        ][random.randint(0, 11)]
+        self.effect = "heal"
+        self.image = cut_image(
+            Useful_Item_sprites,
+            16,
+            16,
+            Food_image_index[0],
+            Food_image_index[1],
+            50,
+            50,
+        )
+        self.rect = self.image.get_rect(topleft=pos)
+
+    def effect_apply(self, player):
+        if player.hp <= 10:
+            player.hp += 1
+            player.healthbar.append(Hud_Item((player.hp - 1), "heart"))

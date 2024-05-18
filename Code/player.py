@@ -201,7 +201,7 @@ class Player(pygame.sprite.Sprite):
                     if sprite.effect == "star":
                         self.kill_list.append(sprite.id)
                         self.star_list.append(Hud_Item(self.star_count, "star"))
-                    elif sprite.effect not in ["speedup", "slowdown", "gold"]:
+                    elif sprite.effect not in ["speedup", "slowdown", "gold", "heal"]:
                         self.kill_list.append(sprite.id)
                     sprite.kill()
 
@@ -241,6 +241,7 @@ class Player(pygame.sprite.Sprite):
                 self.invincibilty = True
                 self.took_damage = True
                 self.hp -= 1
+                self.healthbar.pop()
                 Damage_sound.play(maxtime=100)
                 if self.hp == 0:
                     Player_Death_sound.play()
@@ -473,6 +474,11 @@ class Player(pygame.sprite.Sprite):
                     self.appear = True
                 if current_time - self.death_timer >= death_time + death_time_post_tp:
                     self.hp = 3
+                    self.healthbar = [
+                        Hud_Item(0, "heart"),
+                        Hud_Item(1, "heart"),
+                        Hud_Item(2, "heart"),
+                    ]
                     self.death_timer = current_time
         else:
             self.death_timer = pygame.time.get_ticks()
@@ -610,7 +616,7 @@ class otherPlayer(pygame.sprite.Sprite):
                 sprite.kill()
         for sprite in Levels.map.pickup_sprites:
             if (
-                sprite.effect in ["speedup", "slowdown", "gold"]
+                sprite.effect in ["speedup", "slowdown", "gold", "heal"]
                 and sprite.rect.colliderect(self.rect)
                 and not player_information[self.id]["invincibilty"]
             ):

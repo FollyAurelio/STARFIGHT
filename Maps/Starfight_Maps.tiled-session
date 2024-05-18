@@ -21,10 +21,10 @@
         },
         "Candy.tmx": {
             "scale": 0.75,
-            "selectedLayer": 6,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 477.33333333333337,
-                "y": 553.9999999999999
+                "x": 476,
+                "y": 552.6666666666667
             }
         },
         "Enemies.tsx": {

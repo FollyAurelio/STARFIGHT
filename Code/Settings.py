@@ -205,13 +205,13 @@ class Hud_Item(pygame.sprite.Sprite):
 
     def show(self, player, screen, map_chosen):
         if self.type == "heart":
-            if player.hp >= self.id + 1:
-                screen.blit(self.image, self.rect.center)
-                self.image = self.animation_list[0][player.hudframe]
+            # if player.hp >= self.id + 1:
+            screen.blit(self.image, self.rect.center)
+            self.image = self.animation_list[0][player.hudframe]
         if self.type == "star":
-            if player.star_count >= self.id:
-                screen.blit(self.image, self.rect.center)
-                self.image = self.animation_list[0][player.hudframe]
+            # if player.star_count >= self.id:
+            screen.blit(self.image, self.rect.center)
+            self.image = self.animation_list[0][player.hudframe]
         if self.type in ["invincible", "sword", "bow", "bomb", "freeze", "lightning"]:
             effect_index = [
                 "invincible",

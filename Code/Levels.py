@@ -1,7 +1,7 @@
 """Fenêtre qui programme le niveau et tous les éléments qu'elle contient"""
 
 import pygame
-from Items import Item, Star, Coin, Orb
+from Items import Item, Star, Coin, Orb, Food
 import random
 
 # On utilse Pytmx qui est un module qui permet de lire nos fichers type tmx que l'on crée avec Tiled, un outil pour faire les maps.
@@ -131,7 +131,7 @@ class Map:
                         pos,
                         (self.visible_sprites, self.spawner_sprites),
                         "Stars",
-                        30000,
+                        1000,
                         self.Assign_id(),
                     )
                 elif layer.name == "Items":
@@ -188,6 +188,8 @@ class Map:
                     )
                 elif layer.name == "Respawn_Tile":
                     Respwan_Tile(pos, (self.visible_sprites, self.respawn_tile_sprites))
+                elif layer.name == "Food":
+                    Food(pos, (self.visible_sprites, self.pickup_sprites))
                 else:
                     Tile(pos, surf, (self.visible_sprites))
 
@@ -256,7 +258,7 @@ class Map:
         if current_time - self.coin_cooldown >= cooldown:
             self.coin_cooldown = current_time
             for sprite in self.pickup_sprites:
-                if sprite.effect in ["gold", "speedup", "slowdown"]:
+                if sprite.effect in ["gold", "speedup", "slowdown", "heal"]:
                     sprite.kill()
             for layer in tmx_data.layers:
                 for x, y, surf in layer.tiles():
@@ -270,6 +272,8 @@ class Map:
                         Orb(pos, (self.visible_sprites, self.pickup_sprites), 0)
                     if layer.name == "Slow_Orb":
                         Orb(pos, (self.visible_sprites, self.pickup_sprites), 1)
+                    if layer.name == "Food":
+                        Food(pos, (self.visible_sprites, self.pickup_sprites))
 
     # Tue tous les éléments non murs du map.
     def allkill(self):
@@ -307,7 +311,7 @@ class Map:
                 if map_info["Stars"][sprite.id]["state"] == "kill":
                     sprite.kill()
 
-            elif sprite.effect not in ["star", "speedup", "slowdown", "gold"]:
+            elif sprite.effect not in ["star", "speedup", "slowdown", "gold", "heal"]:
                 if map_info["Items"][sprite.id]["state"] == "kill":
                     sprite.kill()
         for sprite in self.enemy_sprites:
