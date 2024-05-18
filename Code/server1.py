@@ -33,7 +33,7 @@ def new_movement():
 # Dictionnaire qui contient les informations de chaque joueur.
 player_information = {
     0: {
-        "position": (500, 500),
+        "position": (150, 250),
         "action_frame": (0, 0),
         "facing": "right",
         "inusage": None,
@@ -48,7 +48,7 @@ player_information = {
         "name": "",
     },
     1: {
-        "position": (290, 290),
+        "position": (1500, 250),
         "action_frame": (0, 0),
         "facing": "right",
         "inusage": None,
@@ -63,7 +63,7 @@ player_information = {
         "name": "",
     },
     2: {
-        "position": (230, 450),
+        "position": (2800, 250),
         "action_frame": (0, 0),
         "facing": "right",
         "inusage": None,
@@ -78,7 +78,7 @@ player_information = {
         "name": "",
     },
     3: {
-        "position": (400, 300),
+        "position": (150, 1500),
         "action_frame": (0, 0),
         "facing": "right",
         "inusage": None,
@@ -93,7 +93,7 @@ player_information = {
         "name": "",
     },
     4: {
-        "position": (450, 300),
+        "position": (2800, 1500),
         "action_frame": (0, 0),
         "facing": "right",
         "inusage": None,
@@ -108,7 +108,7 @@ player_information = {
         "name": "",
     },
     5: {
-        "position": (500, 300),
+        "position": (150, 2800),
         "action_frame": (0, 0),
         "facing": "right",
         "inusage": None,
@@ -123,7 +123,7 @@ player_information = {
         "name": "",
     },
     6: {
-        "position": (650, 300),
+        "position": (1500, 2800),
         "action_frame": (0, 0),
         "facing": "right",
         "inusage": None,
@@ -138,7 +138,7 @@ player_information = {
         "name": "",
     },
     7: {
-        "position": (750, 600),
+        "position": (2800, 2800),
         "action_frame": (0, 0),
         "facing": "right",
         "inusage": None,
@@ -225,8 +225,8 @@ def threaded_client(conn, client_number):
                     (Connected_list, name_list, map_chosen, Game_time, host_start)
                 )  # inmenu
             )
-        except socket.error as e:
-            print(e)
+        except:
+            # print(e)
             breakall = True
         # count += 1
         # if count % 100 == 0:

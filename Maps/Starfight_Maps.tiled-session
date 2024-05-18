@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "grass.tmx",
+    "activeFile": "Grass.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
@@ -20,11 +20,11 @@
             "scaleInDock": 1
         },
         "Candy.tmx": {
-            "scale": 0.5524074074074073,
-            "selectedLayer": 16,
+            "scale": 0.75,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 540.36205162588,
-                "y": 540.36205162588
+                "x": 477.33333333333337,
+                "y": 553.9999999999999
             }
         },
         "Enemies.tsx": {
@@ -46,6 +46,14 @@
             "viewCenter": {
                 "x": 516.6666666666666,
                 "y": 539.3333333333333
+            }
+        },
+        "Grass.tmx": {
+            "scale": 0.7107407407407407,
+            "selectedLayer": 6,
+            "viewCenter": {
+                "x": 607.8165711307973,
+                "y": 712.636789994789
             }
         },
         "Ice elements.tsx": {
@@ -117,12 +125,11 @@
         "Farm elements.tsx",
         "Industrial elements.tsx",
         "Ice elements.tsx",
-        "grass.tmx",
-        "Base elements.tsx"
+        "Base elements.tsx",
+        "Grass.tmx"
     ],
     "project": "Starfight_Maps.tiled-project",
     "recentFiles": [
-        "grass.tmx",
         "MAP.tmx",
         "Food1.tmx",
         "Food elements.tsx",
@@ -132,8 +139,9 @@
         "Industrial elements.tsx",
         "Ice elements.tsx",
         "Base elements.tsx",
-        "Enemies.tsx",
-        "MAP2.tmx"
+        "Grass.tmx",
+        "grass.tmx",
+        "Enemies.tsx"
     ],
     "tileset.lastUsedFilter": "Fichiers de jeu de tuiles Tiled (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
