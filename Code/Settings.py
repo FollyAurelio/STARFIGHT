@@ -1,7 +1,6 @@
 import pygame
 
 pygame.init()
-pygame.font.init()
 
 Placeholder_map = "Food1"
 Coin_convergence = 50
@@ -77,7 +76,7 @@ Extra_Dinos_Hurt = [
     "Sprites/download/male/nico/base/hurt.png",
     "Sprites/download/male/kira/base/hurt.png",
 ]
-Star_background = pygame.image.load("Sprites/Enjl-Starry Space Background/preview.png")
+
 Useful_Item_sprites = pygame.image.load(
     "Sprites/coins-chests-etc-2-0.png"
 ).convert_alpha()
@@ -103,12 +102,17 @@ Block_text = pygame.font.Font("Sprites/kenney_kenney-fonts/Fonts/Kenney Blocks.t
 Mini_square_text = pygame.font.Font(
     "Sprites/kenney_kenney-fonts/Fonts/Kenney Mini Square.ttf", 30
 )
+Starfight = pygame.font.SysFont("Arial", 40)
+Text = pygame.font.SysFont("Arial", 20)
 Character_sprites = pygame.image.load(
     "Sprites/kenney_pixel-platformer/Tilemap/tilemap-characters_packed.png"
 )
 Artilery_sprites = pygame.image.load(
     "Sprites/kenney_pixel-shmup/Tilemap/tiles_packed.png"
 )
+Star_background = pygame.image.load("Sprites/Enjl-Starry Space Background/preview.png")
+
+Background = cut_image(Star_background, 256, 224, 0, 0, 500, 500)
 Button_press_sound = pygame.mixer.Sound("Sound/Button_press_sound.mp3")
 Coin_sound = pygame.mixer.Sound("Sound/Coin_sound.mp3")
 Damage_sound = pygame.mixer.Sound("Sound/Damage_sound.mp3")
@@ -121,6 +125,7 @@ Player_Death_sound = pygame.mixer.Sound("Sound/Player_Death_sound.mp3")
 Slowdown_sound = pygame.mixer.Sound("Sound/Slowdown_sound.mp3")
 Speedup_sound = pygame.mixer.Sound("Sound/Speedup_sound.mp3")
 Star_sound = pygame.mixer.Sound("Sound/Star_sound.mp3")
+Arrow_sound = pygame.mixer.Sound("Sound/Arrow_sound.mp3")
 
 
 class Particle(pygame.sprite.Sprite):

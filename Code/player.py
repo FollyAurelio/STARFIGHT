@@ -242,6 +242,8 @@ class Player(pygame.sprite.Sprite):
                 self.took_damage = True
                 self.hp -= 1
                 Damage_sound.play(maxtime=100)
+                if self.hp == 0:
+                    Player_Death_sound.play()
             self.taking_knockback = True
             if dealer:
                 if (
@@ -393,7 +395,7 @@ class Player(pygame.sprite.Sprite):
     # Si il s'agit d'un bow, on peut envoyer des arrows avec la touche espace.
     # Les items permettent de faire des dégats aux autres joueurs.
     def show_item(self):
-        cooldown = 3000
+        cooldown = 10000
         if self.using_item:
             current_time = pygame.time.get_ticks()
             self.items_list[self.using_item - 1].use_weapon(self)
@@ -438,7 +440,6 @@ class Player(pygame.sprite.Sprite):
         self.prev_time = time.time()
         current_time = pygame.time.get_ticks()
         if self.hp <= 0:
-            Player_Death_sound.play()
             self.speed = 4
             self.extra_speed = 0
             self.bonus_item = []

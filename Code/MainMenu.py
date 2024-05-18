@@ -4,9 +4,6 @@ from Client import *
 from _thread import *
 
 pygame.init()
-Starfight = pygame.font.SysFont("Arial", 40)
-Text = pygame.font.SysFont("Arial", 20)
-Background = cut_image(Star_background, 256, 224, 0, 0, 500, 500)
 
 
 def server_start():

@@ -173,6 +173,7 @@ class Weapon(pygame.sprite.Sprite):
             if current_time - self.bow_cooldown >= cooldown:
                 self.bow_cooldown = current_time
                 if pygame.key.get_pressed()[pygame.K_SPACE]:
+                    Arrow_sound.play(maxtime=200)
                     Arrow(self, (map.visible_sprites, map.arrow_sprites), player.id)
                     player.bowask = True
 

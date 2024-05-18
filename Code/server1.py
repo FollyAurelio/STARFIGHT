@@ -234,7 +234,6 @@ def threaded_client(conn, client_number):
     # On échange les information permettant de commencé le jeu.
     if not breakall:
         p = pickle.loads(conn.recv(2048))
-        print("l")
         conn.send(pickle.dumps((player_information, map_chosen, Game_time)))
         if client_number == 0:
             info = pickle.loads(conn.recv(2048))
@@ -268,7 +267,6 @@ def threaded_client(conn, client_number):
     # Dans le cas d'une déconnection
     print("Lost connection")
     Connected_list.remove(client_number)
-    print(name_list)
     if inmenu:
         for i in range(len(name_list)):
             print(i)
@@ -304,7 +302,7 @@ def server_operations():
                         Map_information[category][spawner]["state"] = "alive"
 
                         Map_information[category][spawner]["Item_type"] = (
-                            random.randint(0, 5)
+                            random.randint(2, 2)
                         )
                         Map_information[category][spawner][
                             "last_check"
