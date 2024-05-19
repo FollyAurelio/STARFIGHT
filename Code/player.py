@@ -51,7 +51,7 @@ class Player(pygame.sprite.Sprite):
 
         self.frozen = False
         self.frozen_mesure = pygame.time.get_ticks()
-
+        self.ingame = True
         self.items_list = ["", "", ""]
         self.coin_count = 0
         self.item_hud = [Hud_Item(0, ""), Hud_Item(1, ""), Hud_Item(2, "")]

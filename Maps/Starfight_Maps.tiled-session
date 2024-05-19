@@ -24,7 +24,7 @@
             "selectedLayer": 3,
             "viewCenter": {
                 "x": 476,
-                "y": 552.6666666666667
+                "y": 471.33333333333326
             }
         },
         "Enemies.tsx": {
@@ -50,10 +50,10 @@
         },
         "Grass.tmx": {
             "scale": 0.7107407407407407,
-            "selectedLayer": 6,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 607.8165711307973,
-                "y": 712.636789994789
+                "x": 606.4095883272538,
+                "y": 540.9848879624805
             }
         },
         "Ice elements.tsx": {

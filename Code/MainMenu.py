@@ -204,7 +204,12 @@ class Button(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
         self.function = function
         self.Functions = ["Play", "Host", "Join", "Maps"]
-        self.map_list = ["Map1", "Candy", "Food1", "Grass"]
+        self.map_list = {
+            "Map1": Grass_Image,
+            "Candy": Candy_Image,
+            "Food1": Candy_Image,
+            "Grass": Grass_Image,
+        }
         self.map_screens = ["1", "2", "3", "4", "5"]
         self.buttoncooldown = pygame.time.get_ticks()
 
@@ -216,6 +221,8 @@ class Button(pygame.sprite.Sprite):
         )
         if self.rect.collidepoint(pygame.mouse.get_pos()):
             self.image.set_alpha(155)
+            if self.function in self.map_list:
+                screen.blit(self.map_list[self.function], (250, 100))
         else:
             self.image.set_alpha(255)
         if (
@@ -302,7 +309,7 @@ class inputbox(pygame.sprite.Sprite):
         self.image = pygame.Surface((300, 50))
         self.image.fill("white")
         self.rect = self.image.get_rect(topleft=pos)
-        self.text = "192.168.2.164"
+        self.text = "192.168.56.1"
         self.error = False
         self.exist = False
         self.function = function

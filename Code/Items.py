@@ -448,6 +448,7 @@ class Food(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
 
     def effect_apply(self, player):
+        Item_sound.play(maxtime=200)
         if player.hp <= 10:
             player.hp += 1
             player.healthbar.append(Hud_Item((player.hp - 1), "heart"))

@@ -128,25 +128,30 @@ class Enemy(pygame.sprite.Sprite):
                 self.frozen = True
 
     def slide(self, map):
-        current_time = pygame.time.get_ticks()
-        cooldown = 5000
-        if current_time - self.last_movement >= cooldown:
-            self.direction = -self.direction
-            self.last_movement = current_time
-        now = time.time()
-        dt = now - self.prev_time
-        self.rect.x += self.direction.x * 4 * dt * 60
-        self.check_collision("horizontal", map)
-        self.rect.y += self.direction.y * 4 * dt * 60
-        self.check_collision("vertical", map)
-        self.prev_time = now
+        if map.start_sync:
+            current_time = pygame.time.get_ticks()
+            cooldown = 5000
+            if current_time - self.last_movement >= cooldown:
+                self.direction = -self.direction
+                self.last_movement = current_time
+            now = time.time()
+            dt = now - self.prev_time
+            self.rect.x += self.direction.x * 4 * dt * 60
+            self.check_collision("horizontal", map)
+            self.rect.y += self.direction.y * 4 * dt * 60
+            self.check_collision("vertical", map)
+            self.prev_time = now
+        else:
+            self.prev_time = time.time()
+            self.last_movement = pygame.time.get_ticks()
 
     def project(self, map):
-        current_time = pygame.time.get_ticks()
-        cooldown = 1000
-        if current_time - self.last_movement >= cooldown:
-            self.last_movement = current_time
-            Projectile(self, (map.visible_sprites, map.enemy_sprites), -1)
+        if map.start_sync:
+            current_time = pygame.time.get_ticks()
+            cooldown = 1000
+            if current_time - self.last_movement >= cooldown:
+                self.last_movement = current_time
+                Projectile(self, (map.visible_sprites, map.enemy_sprites), -1)
 
     def turn(self):
         for animation in self.animation_list:

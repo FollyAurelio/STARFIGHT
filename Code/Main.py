@@ -130,10 +130,20 @@ while running:
                     "took_damage": player.took_damage,
                     "star_lost": player.star_lost,
                     "invincibilty": player.invincibilty,
+                    "ingame": player.ingame,
                     "hp": player.hp,
                     "name": player.name,
                 }
             )
+
+            if not Levels.map.start_sync:
+                i = 0
+                for id in Main_menu.Connected_list:
+                    if player_information[id]["ingame"]:
+                        i += 1
+                if i == len(Main_menu.Connected_list):
+                    Levels.map.start_sync = True
+            print(Levels.map.start_sync)
             # Idem mais pour les ennemies, les items et les étoiles
             map_info = Main_menu.network.send(
                 (player.kill_list, round(Main_menu.Game_time - (time.time() - Timer)))

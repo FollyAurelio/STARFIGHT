@@ -44,6 +44,7 @@ player_information = {
         "took_damage": False,
         "star_lost": False,
         "invincibilty": False,
+        "ingame": False,
         "hp": 3,
         "name": "",
     },
@@ -59,6 +60,7 @@ player_information = {
         "took_damage": False,
         "star_lost": False,
         "invincibilty": False,
+        "ingame": False,
         "hp": 3,
         "name": "",
     },
@@ -74,6 +76,7 @@ player_information = {
         "took_damage": False,
         "star_lost": False,
         "invincibilty": False,
+        "ingame": False,
         "hp": 3,
         "name": "",
     },
@@ -89,6 +92,7 @@ player_information = {
         "took_damage": False,
         "star_lost": False,
         "invincibilty": False,
+        "ingame": False,
         "hp": 3,
         "name": "",
     },
@@ -104,6 +108,7 @@ player_information = {
         "took_damage": False,
         "star_lost": False,
         "invincibilty": False,
+        "ingame": False,
         "hp": 3,
         "name": "",
     },
@@ -119,6 +124,7 @@ player_information = {
         "took_damage": False,
         "star_lost": False,
         "invincibilty": False,
+        "ingame": False,
         "hp": 3,
         "name": "",
     },
@@ -134,6 +140,7 @@ player_information = {
         "took_damage": False,
         "star_lost": False,
         "invincibilty": False,
+        "ingame": False,
         "hp": 3,
         "name": "",
     },
@@ -149,6 +156,7 @@ player_information = {
         "took_damage": False,
         "star_lost": False,
         "invincibilty": False,
+        "ingame": False,
         "hp": 3,
         "name": "",
     },
@@ -302,7 +310,7 @@ def server_operations():
                         Map_information[category][spawner]["state"] = "alive"
 
                         Map_information[category][spawner]["Item_type"] = (
-                            random.randint(2, 2)
+                            random.randint(0, 5)
                         )
                         Map_information[category][spawner][
                             "last_check"

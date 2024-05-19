@@ -127,6 +127,13 @@ Speedup_sound = pygame.mixer.Sound("Sound/Speedup_sound.mp3")
 Star_sound = pygame.mixer.Sound("Sound/Star_sound.mp3")
 Arrow_sound = pygame.mixer.Sound("Sound/Arrow_sound.mp3")
 
+Grass_Image = cut_image(
+    pygame.image.load("Sprites/Map_Images/Grass_Image.png"), 770, 765, 0, 0, 250, 250
+)
+Candy_Image = cut_image(
+    pygame.image.load("Sprites/Map_Images/Candy_Image.png"), 770, 765, 0, 0, 250, 250
+)
+
 
 class Particle(pygame.sprite.Sprite):
     def __init__(self, pos, group, type):
