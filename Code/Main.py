@@ -13,7 +13,6 @@ screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("STARFIGHT")
 from Settings import *
 
-os.system("exit")
 pygame.display.set_icon(cut_image(Useful_Item_sprites, 16, 16, 4, 12, 50, 50))
 clock = pygame.time.Clock()
 running = True
