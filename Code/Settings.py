@@ -2,7 +2,7 @@ import pygame
 
 pygame.init()
 
-Placeholder_map = "Food1"
+Placeholder_map = "Candy"
 Coin_convergence = 50
 Maps = {
     "Map1": "Maps/MAP.tmx",

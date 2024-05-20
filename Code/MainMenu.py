@@ -313,7 +313,7 @@ class inputbox(pygame.sprite.Sprite):
         self.image = pygame.Surface((300, 50))
         self.image.fill("white")
         self.rect = self.image.get_rect(topleft=pos)
-        self.text = "192.168.56.1"
+        self.text = ""
         self.error = False
         self.exist = False
         self.function = function
@@ -338,7 +338,7 @@ class inputbox(pygame.sprite.Sprite):
             elif event.key == pygame.K_BACKSPACE:
                 self.text = self.text[:-1]
             elif self.exist:
-                if len(self.text) <= 1000 and self.function == "Name":
+                if len(self.text) <= 30 and self.function == "Name":
                     self.text += event.unicode
                 elif self.function == "Join":
                     self.text += event.unicode

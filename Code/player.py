@@ -651,6 +651,3 @@ class otherPlayer(pygame.sprite.Sprite):
             self.image.set_alpha(0)
         else:
             self.image.set_alpha(255)
-
-
-# 14,25,6 long
