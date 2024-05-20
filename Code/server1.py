@@ -5,10 +5,10 @@ from _thread import *
 import pickle
 import random
 import pygame
+import os
 
 pygame.init()
 clock = pygame.time.Clock()
-
 # Création du socket, à parir duquel on va envoyer des informations.
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = socket.gethostbyname(socket.gethostname())
