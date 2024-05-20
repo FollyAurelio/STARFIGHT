@@ -119,11 +119,12 @@ class menu:
         Button((340, 120), 70, 25, self.settings, "-time")
         Button((420, 120), 70, 25, self.settings, "+time")
 
-        Button((100, 100), 200, 100, self.chosing_map_1, "Map1")
-        Button((100, 200), 200, 100, self.chosing_map_1, "Food1")
-        Button((100, 300), 200, 100, self.chosing_map_1, "Candy")
+        # Button((100, 100), 200, 100, self.chosing_map_1, "Map1")
+        # Button((100, 200), 200, 100, self.chosing_map_1, "Food1")
+        Button((100, 100), 200, 100, self.chosing_map_1, "Candy")
         Button((100, 100), 200, 100, self.chosing_map_2, "Grass")
         Button((100, 100), 200, 100, self.chosing_map_3, "Farm")
+        Button((100, 100), 200, 100, self.chosing_map_4, "Factory")
 
         self.Start_button = Button((250, 475), 100, 50, (self.hosting,), "Start")
         Button((350, 475), 100, 50, self.hosting, "Set")
@@ -211,6 +212,7 @@ class Button(pygame.sprite.Sprite):
             "Food1": Candy_Image,
             "Grass": Grass_Image,
             "Farm": Farm_Image,
+            "Factory": Factory_Image,
         }
         self.map_screens = ["1", "2", "3", "4", "5"]
         self.buttoncooldown = pygame.time.get_ticks()

@@ -57,9 +57,10 @@ class Enemy(pygame.sprite.Sprite):
         if self.direction.x == -1 and self.facing == "right":
             self.turn()
             self.facing = "left"
-        self.last_update, self.frame = animate(
-            self.animation_list, 100, self.last_update, 0, self.frame
-        )
+        if not self.frozen:
+            self.last_update, self.frame = animate(
+                self.animation_list, 100, self.last_update, 0, self.frame
+            )
         self.image = self.animation_list[0][self.frame]
         if not self.frozen:
             now = time.time()

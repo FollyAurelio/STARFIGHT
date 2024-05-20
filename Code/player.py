@@ -97,13 +97,14 @@ class Player(pygame.sprite.Sprite):
         heart_cooldown = 100
         spin_cooldown = 2000
         current_time = pygame.time.get_ticks()
-        self.last_update, self.frame = animate(
-            self.animation_list,
-            animation_cooldown,
-            self.last_update,
-            self.action,
-            self.frame,
-        )
+        if not self.frozen:
+            self.last_update, self.frame = animate(
+                self.animation_list,
+                animation_cooldown,
+                self.last_update,
+                self.action,
+                self.frame,
+            )
         if current_time - self.hudspin[1] >= spin_cooldown:
             self.hudspin[0], self.hudframe = animate(
                 [["1", "2", "3", "4", "5", "6"]],
