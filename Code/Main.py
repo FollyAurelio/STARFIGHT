@@ -3,7 +3,6 @@ jeu et doit être lancé pour faire marche le jeu"""
 
 import pygame
 import time
-import os
 
 pygame.init()
 
