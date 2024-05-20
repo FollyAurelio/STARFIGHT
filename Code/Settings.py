@@ -9,6 +9,7 @@ Maps = {
     "Food1": "Maps/Food1.tmx",
     "Candy": "Maps/Candy.tmx",
     "Grass": "Maps/Grass.tmx",
+    "Farm": "Maps/Farm.tmx",
 }
 Text = pygame.font.SysFont("Arial", 20)
 
@@ -132,6 +133,9 @@ Grass_Image = cut_image(
 )
 Candy_Image = cut_image(
     pygame.image.load("Sprites/Map_Images/Candy_Image.png"), 770, 765, 0, 0, 250, 250
+)
+Farm_Image = cut_image(
+    pygame.image.load("Sprites/Map_Images/Farm_Image.png"), 770, 765, 0, 0, 250, 250
 )
 
 

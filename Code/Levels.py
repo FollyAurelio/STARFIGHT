@@ -276,6 +276,8 @@ class Map:
                             Orb(pos, (self.visible_sprites, self.pickup_sprites), 1)
                         if layer.name == "Food":
                             Food(pos, (self.visible_sprites, self.pickup_sprites))
+        else:
+            self.coin_cooldown = pygame.time.get_ticks()
 
     # Tue tous les éléments non murs du map.
     def allkill(self):

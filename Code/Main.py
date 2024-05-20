@@ -143,7 +143,6 @@ while running:
                         i += 1
                 if i == len(Main_menu.Connected_list):
                     Levels.map.start_sync = True
-            print(Levels.map.start_sync)
             # Idem mais pour les ennemies, les items et les étoiles
             map_info = Main_menu.network.send(
                 (player.kill_list, round(Main_menu.Game_time - (time.time() - Timer)))

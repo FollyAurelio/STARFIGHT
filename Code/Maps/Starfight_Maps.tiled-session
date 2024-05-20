@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Grass.tmx",
+    "activeFile": "Farm.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
@@ -19,12 +19,54 @@
             "dynamicWrapping": true,
             "scaleInDock": 1
         },
-        "Candy.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 3,
+        "C:/Users/Aureliowork/Documents/Starfight/Documents/Starfight/Maps/Farm elements.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Aureliowork/Documents/Starfight/Documents/Starfight/Maps/Food elements.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Aureliowork/Documents/Starfight/Documents/Starfight/Maps/Various elements.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Aureliowork/Downloads/STARFIGHT-main/Code/Maps/Food elements.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Aureliowork/Downloads/STARFIGHT-main/Code/Maps/Various elements.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Aureliowork/Downloads/map tiled 2 finis.tmx": {
+            "scale": 0.5524074074074073,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 476,
-                "y": 471.33333333333326
+                "x": 537.6466644317801,
+                "y": 540.3620516258801
+            }
+        },
+        "C:/Users/Aureliowork/Downloads/map tiled 3.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 563.9999999999999,
+                "y": 603.3333333333334
+            }
+        },
+        "C:/Users/Aureliowork/Downloads/maps tiled 4.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 86,
+                "y": 509
+            }
+        },
+        "C:/Users/Projet NSI.tsx": {
+            "scaleInDock": 1
+        },
+        "Candy.tmx": {
+            "scale": 0.71,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 540.8450704225353,
+                "y": 540.1408450704225
             }
         },
         "Enemies.tsx": {
@@ -35,6 +77,14 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "Farm.tmx": {
+            "scale": 0.71,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 488.7323943661971,
+                "y": 535.9154929577464
+            }
+        },
         "Food elements.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1.5,
@@ -44,15 +94,15 @@
             "scale": 0.75,
             "selectedLayer": 16,
             "viewCenter": {
-                "x": 516.6666666666666,
-                "y": 539.3333333333333
+                "x": 540,
+                "y": 540.6666666666665
             }
         },
         "Grass.tmx": {
             "scale": 0.7107407407407407,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 606.4095883272538,
+                "x": 540.2813965607088,
                 "y": 540.9848879624805
             }
         },
@@ -68,7 +118,7 @@
             "scale": 1.3355882352941175,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 339.9251266240916,
+                "x": 340.6738603831755,
                 "y": 339.5507597445497
             }
         },
@@ -93,7 +143,7 @@
             "scaleInDock": 1
         },
         "Various elements.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 0.75,
             "scaleInEditor": 4
         },
         "grass.tmx": {
@@ -126,7 +176,8 @@
         "Industrial elements.tsx",
         "Ice elements.tsx",
         "Base elements.tsx",
-        "Grass.tmx"
+        "Grass.tmx",
+        "Farm.tmx"
     ],
     "project": "Starfight_Maps.tiled-project",
     "recentFiles": [
@@ -140,8 +191,8 @@
         "Ice elements.tsx",
         "Base elements.tsx",
         "Grass.tmx",
-        "grass.tmx",
-        "Enemies.tsx"
+        "Farm.tmx",
+        "C:/Users/Aureliowork/Downloads/map tiled 3.tmx"
     ],
     "tileset.lastUsedFilter": "Fichiers de jeu de tuiles Tiled (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
