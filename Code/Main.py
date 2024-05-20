@@ -5,6 +5,7 @@ import pygame
 import time
 
 pygame.init()
+
 width, height = 500, 500
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("STARFIGHT")
@@ -73,7 +74,7 @@ while running:
     else:
         # Import de tous les autres modules pour faire marcher le jeu
         if not setup:
-            # screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+            screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
             (player_information, map_chosen, Main_menu.Game_time) = (
                 Main_menu.network.send("")
             )

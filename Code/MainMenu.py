@@ -148,7 +148,7 @@ class menu:
         self.host_start = False
         self.Connected_list = []
         self.network = ""
-        self.map_chosen = "Food1"
+        self.map_chosen = "Candy"
         self.Game_time = 300
         self.name = ""
         self.name_list = []
