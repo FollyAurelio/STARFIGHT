@@ -2,6 +2,7 @@ import pygame
 from Settings import *
 from Client import *
 from _thread import *
+import subprocess
 
 pygame.init()
 
@@ -261,6 +262,7 @@ class Button(pygame.sprite.Sprite):
             elif self.function == "-time" and menu.Game_time > 0:
                 menu.Game_time -= 10
             if self.function == "Host":
+                # subprocess.Popen("python server1.py")
                 start_new_thread(server_start, ())
                 menu.network = Network()
                 menu.serverstarted = True
@@ -313,7 +315,7 @@ class inputbox(pygame.sprite.Sprite):
         self.image = pygame.Surface((300, 50))
         self.image.fill("white")
         self.rect = self.image.get_rect(topleft=pos)
-        self.text = ""
+        self.text = "192.168.2.164"
         self.error = False
         self.exist = False
         self.function = function

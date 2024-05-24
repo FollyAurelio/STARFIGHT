@@ -75,7 +75,7 @@ while running:
     else:
         # Import de tous les autres modules pour faire marcher le jeu
         if not setup:
-            screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+            # screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
             (player_information, map_chosen, Main_menu.Game_time) = (
                 Main_menu.network.send("")
             )
@@ -123,7 +123,7 @@ while running:
 
             screen.fill("white")
             # Envoi ces propres informations pour que le serveur puisse les traiter ainsi que reçoit les informations des autres joueurs
-            player_information = Main_menu.network.send(
+            player_information = Main_menu.network.speedsend(
                 {
                     "position": player.rect.center,
                     "action_frame": (player.action, player.frame),
@@ -150,7 +150,7 @@ while running:
                 if i == len(Main_menu.Connected_list):
                     Levels.map.start_sync = True
             # Idem mais pour les ennemies, les items et les étoiles
-            map_info = Main_menu.network.send(
+            map_info = Main_menu.network.speedsend(
                 (player.kill_list, round(Main_menu.Game_time - (time.time() - Timer)))
             )
 

@@ -5,12 +5,12 @@ from _thread import *
 import pickle
 import random
 import pygame
-import os
 
 pygame.init()
 clock = pygame.time.Clock()
 # Création du socket, à parir duquel on va envoyer des informations.
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+speedserver = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 host = socket.gethostbyname(socket.gethostname())
 port = 12345
 
@@ -179,6 +179,7 @@ Game_time = 300
 host_start = False
 try:
     server.bind((host, port))
+    speedserver.bind((host, port))
 except socket.error as e:
     str(e)
 
@@ -199,6 +200,7 @@ def threaded_client(conn, client_number):
     global open_slots
     global map_chosen
     global Game_time
+    global port
     global clock
     # Ce variable permet de break si le joueur se déconnecte dans le menu.
     breakall = False
@@ -251,26 +253,26 @@ def threaded_client(conn, client_number):
     while True:
         if breakall:
             break
-        try:
-            data = pickle.loads(conn.recv(2048))
-            if not data:
-                print("Disconnected")
-                break
-            else:
-                player_information[client_number] = data
 
-            conn.send(pickle.dumps(player_information))
-        except:
+        data, add = speedserver.recvfrom(2048)
+        data = pickle.loads(data)
+        print((add, client_number))
+        if not data:
+            print("Disconnected")
             break
-        try:
-            data = pickle.loads(conn.recv(2048))
-            reply, Game_time = data[0], data[1]
-            for i in reply:
-                kill_list.append(i)
-            conn.send(pickle.dumps((Map_information)))
+        else:
+            player_information[client_number] = data
+            # (player_information)
+        speedserver.sendto(pickle.dumps(player_information), (add))
 
-        except:
-            break
+        data, add = speedserver.recvfrom(2048)
+        data = pickle.loads(data)
+        # print(data)
+        reply, Game_time = data[0], data[1]
+        for i in reply:
+            kill_list.append(i)
+        speedserver.sendto(pickle.dumps((Map_information)), (add))
+
         clock.tick(60)
     # Dans le cas d'une déconnection
     print("Lost connection")

@@ -6,17 +6,20 @@ MyIP = socket.gethostbyname(socket.gethostname())
 
 class Network:
     def __init__(self, ip=""):
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.id = self.connect(ip)
-
-    def connect(self, ip):
         if ip:
-            host = ip
+            self.serverip = ip
         else:
-            host = MyIP
-        port = 12345
+            self.serverip = MyIP
+        self.port = 12345
+        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.speedclient = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # self.speedclient.bind((MyIP, self.port))
+        self.id = self.connect()
+
+    def connect(self):
+
         try:
-            self.client.connect((host, port))
+            self.client.connect((self.serverip, self.port))
             return pickle.loads(self.client.recv(4096))
         except:
             return
@@ -36,3 +39,10 @@ class Network:
 
     def recv_sol(self):
         return pickle.loads(self.client.recv(2048))
+
+    def speedsend(self, info):
+        self.speedclient.sendto(pickle.dumps(info), (self.serverip, self.port))
+        data = self.speedclient.recvfrom(2048)[0]
+        data = pickle.loads(data)
+        # print(data)
+        return data
